@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>India Domestic Flight Tracker</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="map"></div>
+
+  <header id="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <strong>India Domestic</strong> Flight Tracker
+    </div>
+    <div id="counts">
+      <span id="c-live">0</span> flights
+      <span class="sep">·</span>
+      <span id="c-air">0</span> airborne
+      <span class="sep">·</span>
+      <span id="c-status" class="muted">connecting…</span>
+    </div>
+  </header>
+
+  <section id="filters">
+    <label>
+      Airline
+      <select id="f-airline"><option value="">All airlines</option></select>
+    </label>
+    <label>
+      Min altitude <span id="f-alt-val" class="mono">0 ft</span>
+      <input id="f-alt" type="range" min="0" max="40000" step="1000" value="0" />
+    </label>
+    <label>
+      Search
+      <input id="f-search" type="text" placeholder="6E203, VT-…, callsign" autocomplete="off" />
+    </label>
+    <ul id="legend">
+      <li><i style="background:#94a3b8"></i>&lt;3k</li>
+      <li><i style="background:#f87171"></i>3k</li>
+      <li><i style="background:#fb923c"></i>10k</li>
+      <li><i style="background:#fbbf24"></i>20k</li>
+      <li><i style="background:#4ade80"></i>30k</li>
+      <li><i style="background:#38bdf8"></i>38k+</li>
+    </ul>
+  </section>
+
+  <aside id="detail" class="hidden">
+    <button id="detail-close" aria-label="close">×</button>
+    <div id="detail-body"></div>
+  </aside>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

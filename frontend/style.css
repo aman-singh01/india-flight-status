@@ -1,0 +1,124 @@
+:root {
+  --bg: #0b1020;
+  --panel: rgba(16, 22, 40, 0.86);
+  --panel-solid: #101628;
+  --border: rgba(255, 255, 255, 0.10);
+  --text: #e8ecf6;
+  --muted: #8b95ad;
+  --accent: #38bdf8;
+  --accent-2: #f97316;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+#map { position: absolute; inset: 0; }
+
+#trail-canvas {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 2;
+}
+
+/* plane markers */
+.plane { color: #94a3b8; line-height: 0; will-change: transform; }
+.plane svg { display: block; overflow: visible; }
+.plane.sel svg {
+  filter: drop-shadow(0 0 4px #38bdf8);
+}
+.plane.sel svg path { stroke: #ffffff; stroke-width: 1.6; }
+.maplibregl-marker { cursor: pointer; }
+
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; }
+.muted { color: var(--muted); }
+.hidden { display: none !important; }
+
+/* ---- top bar ---- */
+#topbar {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 10px 16px;
+  background: linear-gradient(180deg, rgba(11,16,32,0.92), rgba(11,16,32,0.0));
+  pointer-events: none;
+  z-index: 5;
+}
+#topbar .brand { font-size: 15px; letter-spacing: 0.2px; }
+#topbar .brand strong { font-weight: 700; }
+#topbar .dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent); margin-right: 8px;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+}
+#counts { font-size: 13px; color: var(--muted); }
+#counts #c-live, #counts #c-air { color: var(--text); font-weight: 600; }
+#counts .sep { margin: 0 6px; opacity: 0.5; }
+#c-status.ok { color: #4ade80; }
+#c-status.bad { color: #f87171; }
+
+/* ---- filters ---- */
+#filters {
+  position: absolute; top: 56px; left: 16px;
+  width: 240px; padding: 14px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 12px; backdrop-filter: blur(8px);
+  z-index: 5;
+}
+#filters label {
+  display: block; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.6px; color: var(--muted); margin-bottom: 12px;
+}
+#filters select, #filters input[type="text"] {
+  width: 100%; margin-top: 5px; padding: 7px 9px;
+  background: rgba(0,0,0,0.28);
+  color: var(--text); border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px;
+}
+#filters input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--accent); }
+#f-alt-val { color: var(--text); text-transform: none; letter-spacing: 0; }
+
+#legend {
+  list-style: none; margin: 4px 0 0; padding: 10px 0 0;
+  border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 8px 10px; font-size: 11px; color: var(--muted);
+}
+#legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+
+/* ---- detail panel ---- */
+#detail {
+  position: absolute; top: 56px; right: 16px; bottom: 16px;
+  width: 320px; padding: 18px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 12px; backdrop-filter: blur(8px);
+  overflow-y: auto; z-index: 6;
+}
+#detail-close {
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none; color: var(--muted);
+  font-size: 22px; line-height: 1; cursor: pointer;
+}
+#detail-close:hover { color: var(--text); }
+
+.d-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+.d-flightno { font-size: 22px; font-weight: 700; }
+.d-airline { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+.d-route {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  font-size: 18px; font-weight: 600;
+}
+.d-route .arrow { color: var(--accent); }
+.d-route .unk { color: var(--muted); font-weight: 400; font-size: 15px; }
+
+.d-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.d-grid div { border-top: 1px solid var(--border); padding-top: 8px; }
+.d-grid .k { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); }
+.d-grid .v { font-size: 15px; margin-top: 2px; }
+
+.maplibregl-ctrl-attrib { font-size: 10px; }

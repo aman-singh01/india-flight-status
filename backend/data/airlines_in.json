@@ -1,0 +1,18 @@
+{
+  "IGO": { "name": "IndiGo",              "iata": "6E", "callsign": "IFLY" },
+  "AIC": { "name": "Air India",           "iata": "AI", "callsign": "AIRINDIA" },
+  "AXB": { "name": "Air India Express",   "iata": "IX", "callsign": "EXPRESS INDIA" },
+  "IAD": { "name": "Air India Express",   "iata": "IX", "callsign": "ARIYA" },
+  "SEJ": { "name": "SpiceJet",            "iata": "SG", "callsign": "SPICEJET" },
+  "AKJ": { "name": "Akasa Air",           "iata": "QP", "callsign": "AKASA AIR" },
+  "LLR": { "name": "Alliance Air",        "iata": "9I", "callsign": "ALLIED" },
+  "GOW": { "name": "Go First",            "iata": "G8", "callsign": "GOAIR" },
+  "VTI": { "name": "Vistara",             "iata": "UK", "callsign": "VISTARA" },
+  "JAI": { "name": "Jet Airways",         "iata": "9W", "callsign": "JET AIRWAYS" },
+  "BDA": { "name": "Blue Dart Aviation",  "iata": "BZ", "callsign": "BLUE DART" },
+  "QAI": { "name": "Quikjet Cargo",       "iata": "",   "callsign": "QUIKJET" },
+  "FLK": { "name": "FLY91",               "iata": "IB", "callsign": "FLYNINEONE" },
+  "SDG": { "name": "Star Air",            "iata": "S5", "callsign": "STARWIN" },
+  "IIN": { "name": "IndiaOne Air",        "iata": "I7", "callsign": "INDIA ONE" },
+  "ZAI": { "name": "Zoom Air",            "iata": "ZO", "callsign": "ZANGO" }
+}
