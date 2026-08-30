@@ -123,16 +123,24 @@ def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> d
     if track and nearest_foreign(track[0][1], track[0][2]) is not None:
         return None
 
+    # Origin/destination from vertical state: a low, climbing aircraft is leaving
+    # the airport under it; a low, descending one is arriving at the airport under
+    # it. In cruise we can't tell without a schedule feed, so leave both blank.
     dep = arr = None
-    if track:
-        t0 = track[0]
-        if (t0[3] if t0[3] is not None else 99999) < 12000:
-            dep, _ = nearest_indian_airport(t0[1], t0[2], max_nm=35)
-
     alt = ac.get("alt_ft")
     vs = ac.get("vs_fpm") or 0
-    if alt is not None and alt < 12000 and vs < -250:
-        arr, _ = nearest_indian_airport(lat, lon, max_nm=45)
+    if alt is not None and alt < 11000:
+        if vs > 250:
+            dep, _ = nearest_indian_airport(lat, lon, max_nm=45)
+        elif vs < -250:
+            arr, _ = nearest_indian_airport(lat, lon, max_nm=45)
+        if track and len(track) >= 6:
+            # if we've watched it climb out of somewhere, remember that as origin
+            t0 = track[0]
+            if t0[3] is not None and t0[3] < 8000:
+                d0, _ = nearest_indian_airport(t0[1], t0[2], max_nm=35)
+                if d0 and d0 != arr:
+                    dep = d0
 
     return {
         "status": "domestic",

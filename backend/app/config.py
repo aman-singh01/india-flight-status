@@ -8,9 +8,11 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    sources: str = "demo"
+    # demo | adsblol | readsb:<url>  (comma-separated, later wins on conflict)
+    sources: str = "adsblol"
+    # adsblol self-paces at ~25s/sweep; this just gates the WS push cadence.
     poll_interval: float = 5.0
-    stale_ttl: float = 90.0
+    stale_ttl: float = 150.0
     include_ga: bool = False
     persist: bool = True
     db_path: str = "flights.db"
