@@ -19,8 +19,11 @@ delay. Built on public ADS‑B data, no vendor lock‑in.
   Filter by flight/airline/airport/status; sort; click a row for full detail.
 - **Live map** — MapLibre GL, aircraft as heading‑rotated silhouettes coloured by
   altitude, smooth **dead‑reckoned motion** between updates, selected‑flight trail.
+- **Historical playback** — a scrubber over the persisted position history: play at
+  60–900×, jump to any time, watch the sky redraw.
 - **Flight lookup** — `GET /api/status/{6E2416 | IGO2416 | VT‑IPZ | hex}` returns a
   flight’s live status even if it’s filtered off the board.
+- **Ops** — `/metrics` (Prometheus) and a `/api/health` with resolver stats.
 
 ## Architecture
 
@@ -134,14 +137,18 @@ Flights with no resolvable route are hidden from the board but still reachable v
 | `GET /api/flights` | all current domestic flights (`dep`/`arr`/`phase`/`schedule`) |
 | `GET /api/flights/{hex}` | one flight + position trail |
 | `GET /api/status/{q}` | live status by flight no / registration / hex |
+| `GET /api/history/span` · `GET /api/history?at=` | replay data range / a snapshot of the sky at time `at` |
 | `GET /api/airports` · `GET /api/airlines` · `GET /api/stats` | bundled data / breakdown |
+| `GET /metrics` | Prometheus metrics |
 | `WS /ws` | pushes the full domestic list every poll |
+
+Interactive schema at **`/docs`**.
 
 ## Testing
 
 ```bash
 pip install -r backend/requirements-dev.txt
-pytest -q            # 43 tests on the pure logic
+pytest -q            # 47 tests on the pure logic
 ruff check backend/ && black --check backend/app backend/tests
 ```
 
@@ -160,7 +167,6 @@ CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs lint + format +
 ## Roadmap
 
 - Airport pages (live arrival/departure boards per Indian airport)
-- Historical playback from the SQLite track store
 - Alerts (“VT‑XXX just departed BLR”)
 - Postgres + PostGIS + TimescaleDB option for real history
 - Explicit filter/label for state aircraft (IAF/BSF/VIP)
