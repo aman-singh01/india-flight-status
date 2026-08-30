@@ -9,20 +9,31 @@
   <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-  <!-- ===== STATUS VIEW (default) ===== -->
+  <!-- ===== STATUS BOARD (default) ===== -->
   <section id="status-view" class="view">
-    <div class="sv-box">
-      <h1 class="sv-title"><span class="dot"></span> India Flight Status</h1>
-      <p class="sv-tag">Live status of any Indian domestic flight, straight from ADS&#8209;B.</p>
-
-      <form id="sv-form" autocomplete="off">
-        <input id="sv-q" type="text" inputmode="text" spellcheck="false"
-               placeholder="Flight number   e.g.  6E2416   AI2984   QP1401" />
-        <button type="submit">Check status</button>
-      </form>
-
-      <div id="sv-examples" class="sv-examples" aria-label="live examples"></div>
-      <div id="sv-result" aria-live="polite"></div>
+    <div class="board">
+      <header class="board-head">
+        <div class="board-title">
+          <span class="dot"></span> India Domestic Flights
+          <span id="board-conn" class="board-conn">connecting…</span>
+        </div>
+        <div class="board-meta">
+          <b id="board-count">0</b> flights ·
+          <b id="board-air">0</b> airborne ·
+          <span id="board-upd" class="muted">—</span>
+        </div>
+      </header>
+      <div class="board-controls">
+        <input id="board-filter" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Filter — flight no, airline, airport code, status…" />
+        <select id="board-sort">
+          <option value="status">Sort: status</option>
+          <option value="flight">Sort: flight no</option>
+          <option value="alt">Sort: altitude</option>
+          <option value="airline">Sort: airline</option>
+        </select>
+      </div>
+      <div id="board-list"></div>
     </div>
     <button class="view-switch" data-goto="map">Live map &rarr;</button>
   </section>

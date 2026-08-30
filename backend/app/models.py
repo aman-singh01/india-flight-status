@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .status import nearest_place, phase
 from .store import Tracked
 
 
@@ -7,6 +8,7 @@ def flight_dict(t: Tracked) -> dict | None:
     """Serialize a tracked aircraft for the API, or None if it is not a domestic flight."""
     if not t.klass:
         return None
+    phase_name, phase_detail = phase(t.alt_ft, t.vs_fpm, t.gs_kt)
     return {
         "hex": t.hex,
         "callsign": t.callsign,
@@ -18,6 +20,9 @@ def flight_dict(t: Tracked) -> dict | None:
         "dep": t.klass["dep"],
         "arr": t.klass["arr"],
         "status": t.klass["status"],
+        "phase": phase_name,
+        "phase_detail": phase_detail,
+        "near": nearest_place(t.lat, t.lon),
         "lat": round(t.lat, 5),
         "lon": round(t.lon, 5),
         "alt_ft": t.alt_ft,

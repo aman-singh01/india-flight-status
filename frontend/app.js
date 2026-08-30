@@ -4,97 +4,26 @@
 const el = (id) => document.getElementById(id);
 
 /* ================================================================
- *  STATUS VIEW  (default screen: type a flight number, get status)
+ *  STATUS BOARD  (default screen: live status of every domestic flight)
  * ================================================================ */
 
-const STATUS_COLORS = {
+const PHASE_COLORS = {
   "On ground": "#94a3b8",
   Departed: "#fb923c",
   "On approach": "#38bdf8",
   "En route": "#4ade80",
   Airborne: "#4ade80",
 };
+const PHASE_ORDER = { "On approach": 0, Departed: 1, "En route": 2, Airborne: 2, "On ground": 3 };
 
-let svTimer = null;
-let svLastQuery = "";
+const boardExpanded = new Set();
+let feedTs = 0;
+let feedLive = false;
+let statusFallback = null; // {query, data} from /api/status when the filter matched no live row
 
-el("sv-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  runStatus(el("sv-q").value);
-});
-
-async function loadExamples() {
-  try {
-    const j = await (await fetch("/api/flights")).json();
-    const nums = [...new Set((j.flights || []).map((f) => f.flight_no).filter((n) => n && /^[0-9A-Z]{2}\d/.test(n)))];
-    // prefer plain numeric flight numbers for the chips
-    nums.sort((a, b) => (/\d$/.test(a) ? 0 : 1) - (/\d$/.test(b) ? 0 : 1));
-    const wrap = el("sv-examples");
-    wrap.innerHTML = "<span>Try:</span>";
-    for (const n of nums.slice(0, 4)) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.textContent = n;
-      b.addEventListener("click", () => {
-        el("sv-q").value = n;
-        runStatus(n);
-      });
-      wrap.appendChild(b);
-    }
-  } catch {
-    /* no chips if the feed isn't up yet */
-  }
+function fmt(n, s = "") {
+  return n == null ? "—" : Number(n).toLocaleString() + s;
 }
-
-async function runStatus(query) {
-  query = (query || "").trim();
-  if (!query) return;
-  svLastQuery = query;
-  clearInterval(svTimer);
-
-  const box = el("sv-result");
-  box.className = "loading";
-  box.textContent = "Checking…";
-
-  let d;
-  try {
-    d = await (await fetch("/api/status/" + encodeURIComponent(query))).json();
-  } catch {
-    box.className = "";
-    box.innerHTML = `<div class="sv-card err"><p>Couldn't reach the server. Is it running?</p></div>`;
-    return;
-  }
-  if (svLastQuery !== query) return; // superseded
-
-  box.className = "";
-  box.innerHTML = d.found ? cardFound(d) : cardMissing(d);
-
-  if (d.found) {
-    const btn = box.querySelector("[data-track]");
-    if (btn) btn.addEventListener("click", () => trackOnMap(d.hex));
-    svTimer = setInterval(() => {
-      if (svLastQuery === query) refreshStatus(query);
-    }, 15000);
-  }
-}
-
-async function refreshStatus(query) {
-  try {
-    const d = await (await fetch("/api/status/" + encodeURIComponent(query))).json();
-    if (svLastQuery !== query) return;
-    const box = el("sv-result");
-    box.innerHTML = d.found ? cardFound(d) : cardMissing(d);
-    const btn = box.querySelector("[data-track]");
-    if (btn) btn.addEventListener("click", () => trackOnMap(d.hex));
-  } catch {
-    /* keep the last card on a transient error */
-  }
-}
-
-function fmt(n, suffix = "") {
-  return n == null ? "—" : Number(n).toLocaleString() + suffix;
-}
-
 function ago(ts) {
   if (!ts) return "—";
   const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
@@ -102,69 +31,139 @@ function ago(ts) {
   if (s < 3600) return Math.round(s / 60) + " min ago";
   return Math.round(s / 3600) + " h ago";
 }
-
 function since(ts) {
   if (!ts) return "—";
   const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
   if (s < 3600) return Math.round(s / 60) + " min";
-  const h = Math.floor(s / 3600);
-  return h + " h " + Math.round((s % 3600) / 60) + " min";
+  return Math.floor(s / 3600) + " h " + Math.round((s % 3600) / 60) + " min";
 }
 
-function cardFound(d) {
-  const color = STATUS_COLORS[d.status] || "#4ade80";
-  const dep = d.origin || "•••";
-  const arr = d.destination || "•••";
-  const row = (k, v) => `<div><span class="k">${k}</span><span class="v mono">${v}</span></div>`;
+function boardMatch(f, q) {
+  if (!q) return true;
+  return [f.flight_no, f.callsign, f.airline, f.registration, f.dep, f.arr, f.phase]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()
+    .includes(q);
+}
 
-  return `
-  <div class="sv-card">
-    <div class="sv-card-top">
-      <div>
-        <div class="sv-flightno">${d.flight_no || d.callsign}</div>
-        <div class="sv-airline">${[d.airline, d.aircraft_type, d.registration].filter(Boolean).join(" · ") || "—"}</div>
-      </div>
-      <span class="sv-badge" style="--c:${color}">${d.status}</span>
-    </div>
+function sortBoard(list, mode) {
+  const fno = (a, b) => (a.flight_no || "").localeCompare(b.flight_no || "", undefined, { numeric: true });
+  const cmp = {
+    status: (a, b) => ((PHASE_ORDER[a.phase] ?? 9) - (PHASE_ORDER[b.phase] ?? 9)) || fno(a, b),
+    flight: fno,
+    alt: (a, b) => (b.alt_ft || 0) - (a.alt_ft || 0),
+    airline: (a, b) => (a.airline || "").localeCompare(b.airline || "") || fno(a, b),
+  };
+  return list.slice().sort(cmp[mode] || cmp.status);
+}
 
-    <div class="sv-route">
-      <span class="ap">${dep}</span>
-      <span class="line"><span class="plane">✈</span></span>
-      <span class="ap">${arr}</span>
-    </div>
-    <div class="sv-detail">${d.detail}${d.near ? " · " + d.near : ""}</div>
+function bxCell(k, v) {
+  return `<div><span class="k">${k}</span><span class="v mono">${v}</span></div>`;
+}
 
-    <div class="sv-grid">
-      ${row("Altitude", fmt(d.altitude_ft, " ft"))}
-      ${row("Ground speed", fmt(d.ground_speed_kt, " kt"))}
-      ${row("Vertical rate", fmt(d.vertical_rate_fpm, " fpm"))}
-      ${row("Heading", d.heading_deg == null ? "—" : d.heading_deg + "°")}
-      ${row("Position", d.lat != null ? d.lat + ", " + d.lon : "—")}
-      ${row("Callsign", d.callsign || "—")}
-      ${row("Tracked for", since(d.tracked_since))}
-      ${row("Updated", ago(d.last_update))}
-    </div>
-
-    <div class="sv-foot">
-      <button data-track class="sv-track">Track on map →</button>
-      <p class="sv-note">${d.note}</p>
-    </div>
+function boardRow(f) {
+  const c = PHASE_COLORS[f.phase] || "#4ade80";
+  const dep = f.dep || "•••";
+  const arr = f.arr || "•••";
+  const open = boardExpanded.has(f.hex);
+  const exp = open
+    ? `<div class="brow-exp">
+         <div class="bx-grid">
+           ${bxCell("Altitude", fmt(f.alt_ft, " ft"))}
+           ${bxCell("Ground speed", fmt(f.gs_kt, " kt"))}
+           ${bxCell("Vertical rate", fmt(f.vs_fpm, " fpm"))}
+           ${bxCell("Heading", f.track_deg == null ? "—" : f.track_deg + "°")}
+           ${bxCell("Position", f.lat != null ? f.lat + ", " + f.lon : "—")}
+           ${bxCell("Callsign", f.callsign || "—")}
+           ${bxCell("Registration", f.registration || "—")}
+           ${bxCell("Tracked for", since(f.first_seen))}
+         </div>
+         <button class="sv-track" data-track="${f.hex}">Track on map →</button>
+       </div>`
+    : "";
+  return `<div class="brow${open ? " x" : ""}" data-hex="${f.hex}">
+    <button class="brow-main">
+      <span class="bf">
+        <span class="bf-no">${f.flight_no || f.callsign || f.hex}</span>
+        <span class="bf-sub">${[f.airline, f.type].filter(Boolean).join(" · ")}</span>
+      </span>
+      <span class="bbadge" style="--c:${c}">${f.phase}</span>
+      <span class="broute mono">${dep}<span class="ar">→</span>${arr}</span>
+      <span class="bpos">${f.phase_detail}${f.near ? " · " + f.near : ""}</span>
+    </button>${exp}
   </div>`;
 }
 
-function cardMissing(d) {
-  return `
-  <div class="sv-card err">
-    <div class="sv-flightno">${d.query}</div>
-    <p class="sv-miss">${d.reason}</p>
-    ${
-      d.tried && d.tried.length
-        ? `<p class="sv-note">Looked for callsign${d.tried.length > 1 ? "s" : ""}: ${d.tried.join(", ")}</p>`
-        : ""
-    }
-    <button class="sv-track" onclick="showView('map')">Browse the live map →</button>
-  </div>`;
+function renderBoard() {
+  const listEl = el("board-list");
+  if (!listEl) return;
+  const q = (el("board-filter").value || "").trim().toLowerCase();
+  const rows = sortBoard(state.flights.filter((f) => boardMatch(f, q)), el("board-sort").value);
+
+  el("board-count").textContent = state.flights.length;
+  el("board-air").textContent = state.flights.filter((f) => (f.alt_ft || 0) > 1000).length;
+  updateBoardAge();
+  const conn = el("board-conn");
+  conn.textContent = feedLive ? "● live" : "connecting…";
+  conn.className = "board-conn" + (feedLive ? " ok" : "");
+
+  const keep = listEl.scrollTop;
+  if (rows.length) {
+    listEl.innerHTML = rows.map(boardRow).join("");
+    statusFallback = null;
+  } else if (q) {
+    const canLookup = /^[0-9a-z]{2}[0-9a-z]*\d/i.test(q);
+    listEl.innerHTML =
+      `<div class="board-empty">No flight in the live list matches “${q}”.` +
+      (canLookup ? ` <button id="board-lookup">Look it up anyway &rarr;</button>` : "") +
+      (statusFallback && statusFallback.query === q ? renderFallback(statusFallback.data) : "") +
+      `</div>`;
+    const lk = el("board-lookup");
+    if (lk) lk.addEventListener("click", () => lookupOne(q));
+  } else {
+    listEl.innerHTML = `<div class="board-empty">Waiting for the feed…</div>`;
+  }
+  listEl.scrollTop = keep;
 }
+
+function updateBoardAge() {
+  const e = el("board-upd");
+  if (e) e.textContent = feedTs ? "updated " + ago(Math.round(feedTs / 1000)) : "—";
+}
+setInterval(updateBoardAge, 1000);
+
+async function lookupOne(q) {
+  try {
+    const d = await (await fetch("/api/status/" + encodeURIComponent(q))).json();
+    statusFallback = { query: q.toLowerCase(), data: d };
+    renderBoard();
+  } catch {}
+}
+function renderFallback(d) {
+  if (d.found) {
+    return `<div class="board-fallback">
+      <b>${d.flight_no}</b> · ${d.airline || "?"} · ${d.status} · ${d.detail}${d.near ? " · " + d.near : ""}
+      <button class="sv-track" onclick="trackOnMap('${d.hex}')">Track on map &rarr;</button>
+    </div>`;
+  }
+  return `<div class="board-fallback err">${d.reason}</div>`;
+}
+
+el("board-filter").addEventListener("input", renderBoard);
+el("board-sort").addEventListener("change", renderBoard);
+el("board-list").addEventListener("click", (e) => {
+  const track = e.target.closest("[data-track]");
+  if (track) {
+    trackOnMap(track.dataset.track);
+    return;
+  }
+  const row = e.target.closest(".brow");
+  if (!row) return;
+  const hex = row.dataset.hex;
+  boardExpanded.has(hex) ? boardExpanded.delete(hex) : boardExpanded.add(hex);
+  renderBoard();
+});
 
 /* view switching */
 function showView(name) {
@@ -183,14 +182,12 @@ document.querySelectorAll(".view-switch").forEach((b) =>
 async function trackOnMap(hex) {
   showView("map");
   ensureMap();
-  // wait until the live feed has this aircraft, then select + fly to it
+  // wait until the map has drawn this aircraft, then select + fly to it
   for (let i = 0; i < 40 && !(planes && planes.get(hex)); i++) {
     await new Promise((r) => setTimeout(r, 250));
   }
   if (planes && planes.get(hex)) selectFlight(hex);
 }
-
-loadExamples();
 
 /* ================================================================
  *  MAP VIEW  (lazy: only built the first time it is shown)
@@ -292,12 +289,17 @@ function ensureMap() {
     b.addEventListener("click", () => setBasemap(b.dataset.style))
   );
 
-  const start = () => {
+  const start = async () => {
     if (mapInited) return;
     mapInited = true;
     initOverlay();
     map.on("click", closeDetail);
-    bootstrap();
+    try {
+      const a = await (await fetch("/api/airports")).json();
+      airports = a.airports || [];
+    } catch {}
+    render(); // draw markers from whatever the feed already has
+    drawOverlay();
   };
   // don't gate on the basemap style loading -- markers, the overlay and the feed
   // work from the map's initial transform alone.
@@ -470,14 +472,9 @@ function setBasemap(name) {
   map.once("styledata", () => setTimeout(drawOverlay, 60));
 }
 
-/* ---- live feed ---- */
+/* ---- live feed (runs on page load; the board and the map both consume it) ---- */
 
-async function bootstrap() {
-  try {
-    const a = await (await fetch("/api/airports")).json();
-    airports = a.airports || [];
-    drawOverlay();
-  } catch {}
+async function connectFeed() {
   try {
     const j = await (await fetch("/api/flights")).json();
     onFlights(j.flights || []);
@@ -490,7 +487,9 @@ function connectWS() {
   const proto = location.protocol === "https:" ? "wss" : "ws";
   ws = new WebSocket(`${proto}://${location.host}/ws`);
   ws.onopen = () => {
+    feedLive = true;
     setStatus("live", "ok");
+    renderBoard();
     clearInterval(wsPing);
     wsPing = setInterval(() => ws.readyState === 1 && ws.send("ping"), 25000);
   };
@@ -499,7 +498,9 @@ function connectWS() {
     if (m.type === "flights") onFlights(m.flights || []);
   };
   ws.onclose = () => {
+    feedLive = false;
     setStatus("reconnecting…", "bad");
+    renderBoard();
     clearInterval(wsPing);
     setTimeout(connectWS, 3000);
   };
@@ -515,7 +516,9 @@ function setStatus(text, cls) {
 
 function onFlights(list) {
   state.flights = list;
+  feedTs = Date.now();
   rebuildAirlineFilter(list);
+  renderBoard();
   render();
 }
 
@@ -643,3 +646,7 @@ async function refreshDetail() {
   trailCoords.list = (d.track || []).map((p) => [p[2], p[1]]);
   drawOverlay();
 }
+
+/* ---- go ---- */
+renderBoard();
+connectFeed();
