@@ -11,6 +11,7 @@ env/
 *.db-journal
 *.sqlite
 backend/.env
+backend/route_cache.json
 *.log
 
 # Editors / OS

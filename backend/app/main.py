@@ -43,6 +43,7 @@ async def lifespan(app: FastAPI):
         asyncio.create_task(run_ingest()),
         asyncio.create_task(push_loop(max(2.0, settings.poll_interval), payload)),
         asyncio.create_task(route_db.resolver_loop()),
+        asyncio.create_task(route_db.schedule_loop()),
     ]
     log.info("started (sources=%s, poll=%ss)", settings.sources, settings.poll_interval)
     try:

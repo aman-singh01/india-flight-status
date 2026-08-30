@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 
+from . import route as route_db
 from .domestic import (
     INDIAN_AIRPORTS,
     _airlines,
@@ -159,12 +160,13 @@ def lookup(query: str) -> dict:
         "origin_city": k.get("dep_city"),
         "destination_city": k.get("arr_city"),
         "route_src": k.get("route_src"),
+        "schedule": route_db.schedule_summary(hit.callsign),
         "tracked_since": round(hit.first_seen),
         "last_update": round(hit.last_seen),
         "source": hit.source,
         "note": (
-            "Position and phase are live from ADS-B; the route is from adsbdb's "
-            "community schedule data. Estimated times, gates and delay would need a "
-            "commercial schedule provider, which is not connected."
+            "Position and phase are live from ADS-B. Route is from adsbdb's free "
+            "routeset, or a keyed schedule API when configured (which also fills "
+            "scheduled/estimated times, gate and delay)."
         ),
     }

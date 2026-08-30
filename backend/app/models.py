@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .route import schedule_summary
 from .status import nearest_place, phase
 from .store import Tracked
 
@@ -22,6 +23,7 @@ def flight_dict(t: Tracked) -> dict | None:
         "dep_city": t.klass.get("dep_city"),
         "arr_city": t.klass.get("arr_city"),
         "route_src": t.klass.get("route_src"),
+        "schedule": schedule_summary(t.callsign),
         "status": t.klass["status"],
         "phase": phase_name,
         "phase_detail": phase_detail,

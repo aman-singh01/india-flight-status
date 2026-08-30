@@ -38,6 +38,18 @@ function since(ts) {
   return Math.floor(s / 3600) + " h " + Math.round((s % 3600) / 60) + " min";
 }
 
+function istTime(iso) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (isNaN(d)) return null;
+  return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" }) + " IST";
+}
+function delayText(min) {
+  if (min == null) return null;
+  if (min <= 0 && min > -3) return "on time";
+  return min > 0 ? `${min} min late` : `${-min} min early`;
+}
+
 function boardMatch(f, q) {
   if (!q) return true;
   return [f.flight_no, f.callsign, f.airline, f.registration, f.dep, f.arr, f.phase]
@@ -75,6 +87,18 @@ function boardRow(f) {
         : dep === "•••" && arr === "•••"
           ? "unknown"
           : `${dep} → ${arr}`;
+  const s = f.schedule;
+  const schedCells =
+    s && (s.sched_dep || s.sched_arr)
+      ? bxCell("Sched. dep", istTime(s.sched_dep) || "—") +
+        bxCell("Sched. arr", istTime(s.sched_arr) || "—") +
+        bxCell("Est. arrival", istTime(s.est_arr) || "—") +
+        bxCell("Delay", delayText(s.delay_min) || "—")
+      : "";
+  const delayChip =
+    s && s.delay_min != null && s.delay_min >= 10
+      ? ` <span class="bdelay">+${s.delay_min}m</span>`
+      : "";
   const exp = open
     ? `<div class="brow-exp">
          <div class="bx-grid">
@@ -87,6 +111,7 @@ function boardRow(f) {
            ${bxCell("Callsign", f.callsign || "—")}
            ${bxCell("Registration", f.registration || "—")}
            ${bxCell("Tracked for", since(f.first_seen))}
+           ${schedCells}
          </div>
          <button class="sv-track" data-track="${f.hex}">Track on map →</button>
        </div>`
@@ -98,7 +123,7 @@ function boardRow(f) {
         <span class="bf-sub">${[f.airline, f.type].filter(Boolean).join(" · ")}</span>
       </span>
       <span class="bbadge" style="--c:${c}">${f.phase}</span>
-      <span class="broute mono">${dep}<span class="ar">→</span>${arr}</span>
+      <span class="broute mono">${dep}<span class="ar">→</span>${arr}${delayChip}</span>
       <span class="bpos">${f.phase_detail}${f.near ? " · " + f.near : ""}</span>
     </button>${exp}
   </div>`;

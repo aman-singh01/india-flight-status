@@ -6,7 +6,7 @@ import logging
 from . import db
 from . import route as route_db
 from .config import settings
-from .domestic import classify
+from .domestic import airline_from_callsign, classify
 from .sources import build_sources
 from .store import store
 
@@ -29,7 +29,8 @@ async def _cycle(sources) -> None:
 
     domestic = 0
     for t in store.all():
-        route_db.enqueue(t.callsign)
+        if airline_from_callsign(t.callsign):  # only resolve routes for Indian carriers
+            route_db.enqueue(t.callsign)
         t.klass = classify(
             {
                 "callsign": t.callsign,
@@ -43,14 +44,17 @@ async def _cycle(sources) -> None:
         )
         if t.klass:
             domestic += 1
+            # still no confirmed route? hand the flight number to the schedule API
+            if t.klass.get("route_src") != "schedule":
+                route_db.enqueue_schedule(t.callsign, t.klass.get("flight_no"))
 
     if settings.persist:
         await db.write_positions(store.all())
 
     rs = route_db.stats()
     log.info(
-        "ingest: %d tracked, %d domestic  (routes %d/%d, %d queued)",
-        len(store.all()), domestic, rs["resolved"], rs["resolved"] + rs["unknown"], rs["queued"],
+        "ingest: %d tracked, %d domestic  (routes %d, adsbdb-q %d, sched-q %d, sched calls %d/1h)",
+        len(store.all()), domestic, rs["resolved"], rs["queued"], rs["sched_queued"], rs["sched_calls_1h"],
     )
 
 

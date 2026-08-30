@@ -73,21 +73,38 @@ list to receivers you control.
 - it is not within ~40 nm of a reachable foreign airport (KTM, CMB, DAC, CGP, PBH,
   MLE, LHE, KHI, ISB) — this rejects short international hops that never leave the box.
 
-Departure / arrival airports are inferred from low-altitude track endpoints against
-`data/airports_in.json` (~90 airports; replace with an OurAirports `IN` extract for
-full coverage).
+## Origin / destination
 
-**Known limitations:** during cruise, an Indian-carrier flight to Kathmandu/Colombo
-can briefly look domestic until it descends; a flight already airborne when first
-seen has no departure airport; `INCLUDE_GA=true` adds VT- bizjets that stay inside
-the box but have no airline/route.
+`app/route.py` resolves `callsign → origin/destination`:
+
+1. **adsbdb.com** — free community routeset, no key, for every Indian-carrier
+   callsign. A background loop drains a queue at ~2.5 req/s; the cache is written
+   to `route_cache.json` so restarts don't re-fetch.
+2. **Keyed schedule API** (optional) — tried *only* for the callsigns adsbdb
+   doesn't have (odd ferry/positioning callsigns), quota-guarded. Set
+   `SCHEDULE_PROVIDER=aerodatabox` + `SCHEDULE_API_KEY=<RapidAPI key>`. This also
+   fills scheduled / estimated times, gate, and arrival delay.
+3. **Fallback** — if neither has it: arrival inferred from a low-altitude descent
+   near an airport, else `••• → •••`.
+
+A known route is authoritative for the domestic check: a flight is domestic only
+if **both** endpoints are in India — this also drops international flights that
+Indian carriers operate (e.g. `AIC356` BOM–HND).
+
+Without a schedule key, expect ~85–90% of live flights to show a real route once
+the resolver warms up; with one, nearly all.
+
+**Other limitations:** a flight already airborne when first seen and with no route
+yet shows `••• → •••` until adsbdb/schedule resolves it; `INCLUDE_GA=true` adds
+VT- bizjets that have no airline/route.
 
 ## API
 
 | Endpoint | Purpose |
 |---|---|
-| `GET /api/health` | counts + active sources |
-| `GET /api/flights` | all current domestic flights |
+| `GET /api/health` | counts + active sources + route-resolver stats |
+| `GET /api/flights` | all current domestic flights (with `dep`/`arr`/`schedule`) |
+| `GET /api/status/{q}` | live status by flight no / registration / hex |
 | `GET /api/flights/{hex}` | one flight + position trail |
 | `GET /api/airports` | bundled Indian airport list |
 | `GET /api/airlines` | Indian airline callsign table |
@@ -122,7 +139,8 @@ sharper labels.
 - Airport pages: live arrival / departure boards per Indian airport
 - Historical playback (scrub a day of traffic from SQLite / TimescaleDB)
 - Alerts ("VT-XXX just departed BLR")
-- Delay stats per airline / airport
+- Delay stats per airline / airport (needs a schedule key)
+- More schedule providers (AviationStack, FlightAware AeroAPI)
 - Swap SQLite → Postgres + PostGIS + TimescaleDB for real history
 - Filter/label state aircraft (IAF/BSF/VIP) explicitly
 

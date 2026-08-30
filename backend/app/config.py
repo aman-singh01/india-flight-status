@@ -22,5 +22,14 @@ class Settings(BaseSettings):
     # lat_min, lat_max, lon_min, lon_max  -- covers mainland India + Andaman & Nicobar + Lakshadweep.
     india_bbox: tuple[float, float, float, float] = (6.0, 37.5, 67.0, 98.5)
 
+    # Optional keyed schedule API, tried only for callsigns adsbdb can't resolve.
+    #   schedule_provider="aerodatabox"  schedule_api_key="<RapidAPI key>"
+    schedule_provider: str = ""
+    schedule_api_key: str = ""
+    schedule_max_per_hour: int = 30
+    schedule_max_per_day: int = 300
+    schedule_spacing: float = 4.0
+    route_cache_path: str = "route_cache.json"
+
 
 settings = Settings()
