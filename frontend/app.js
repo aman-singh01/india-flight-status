@@ -668,10 +668,14 @@ async function refreshDetail() {
     clearInterval(state.detailTimer);
     return;
   }
+  const rdep = d.dep || "";
+  const rarr = d.arr || "";
+  const arw = '<span class="arrow">&rarr;</span>';
   const route =
-    `<span>${d.dep || '<span class="unk">???</span>'}</span>` +
-    `<span class="arrow">&rarr;</span>` +
-    `<span>${d.arr || '<span class="unk">???</span>'}</span>`;
+    rdep && rarr ? `<span>${rdep}</span>${arw}<span>${rarr}</span>`
+    : rarr ? `${arw}<span>${rarr}</span>`
+    : rdep ? `<span>${rdep}</span>${arw}`
+    : '<span class="unk">&mdash;</span>';
   const row = (k, v) => `<div><div class="k">${k}</div><div class="v mono">${v}</div></div>`;
   const f2 = (n, s = "") => (n == null ? "&mdash;" : Number(n).toLocaleString() + s);
   el("detail-body").innerHTML =
