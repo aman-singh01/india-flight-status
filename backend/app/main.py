@@ -72,6 +72,7 @@ app = FastAPI(
     openapi_tags=[
         {"name": "flights", "description": "The live domestic-flight feed."},
         {"name": "status", "description": "Look up one flight by number / registration / hex."},
+        {"name": "history", "description": "Replay the sky from the persisted position history."},
         {"name": "reference", "description": "Bundled airport & airline data, aggregate stats."},
         {"name": "ops", "description": "Health and ingest/resolver stats."},
     ],
@@ -125,6 +126,18 @@ async def flight_detail(hexid: str):
     if settings.persist and len(d["track"]) < 5:
         d["track"] = await db.track_for(hexid.lower())
     return d
+
+
+@app.get("/api/history/span", response_model=schemas.HistorySpan, tags=["history"])
+async def history_span():
+    """Time range and row count available in the position history table."""
+    return await db.span()
+
+
+@app.get("/api/history", response_model=schemas.HistorySnapshot, tags=["history"])
+async def history(at: float, window: float = 240.0):
+    """Every aircraft's last known position at unix time `at` (looking back `window` s)."""
+    return {"at": round(at), "aircraft": await db.snapshot(at, window)}
 
 
 @app.get("/api/airports", response_model=schemas.AirportsResponse, tags=["reference"])

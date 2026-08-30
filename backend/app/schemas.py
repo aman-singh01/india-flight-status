@@ -98,6 +98,27 @@ class Stats(BaseModel):
     by_airline: dict[str, int]
 
 
+class HistorySpan(BaseModel):
+    from_: int | None = Field(None, alias="from", description="oldest position, unix seconds")
+    to: int | None = Field(None, description="newest position, unix seconds")
+    rows: int
+
+
+class HistoryAircraft(BaseModel):
+    hex: str
+    callsign: str | None = None
+    ts: int
+    lat: float
+    lon: float
+    alt_ft: int | None = None
+    track_deg: int | None = None
+
+
+class HistorySnapshot(BaseModel):
+    at: int
+    aircraft: list[HistoryAircraft]
+
+
 class FlightStatus(BaseModel):
     query: str
     found: bool

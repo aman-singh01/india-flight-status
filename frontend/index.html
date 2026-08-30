@@ -12,7 +12,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0c12'/%3E%3Cpath d='M16 4 L18 9 L18 15 L29 21 L29 23 L18 20 L18 26 L21 28 L21 29 L16 27.5 L11 29 L11 28 L14 26 L14 20 L3 23 L3 21 L14 15 L14 9 Z' fill='%2338bdf8'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://unpkg.com" />
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <link href="style.css?v=11" rel="stylesheet" />
+  <link href="style.css?v=12" rel="stylesheet" />
 </head>
 <body>
   <div id="toast" role="status" aria-live="polite"></div>
@@ -94,10 +94,23 @@
       <button data-style="satellite">Satellite</button>
     </div>
 
+    <button id="pb-enter">&#9201; Playback</button>
+    <div id="playback" class="hidden">
+      <button id="pb-play" aria-label="play/pause">&#9654;</button>
+      <input id="pb-slider" type="range" step="10" aria-label="time" />
+      <div class="pb-info"><span id="pb-time" class="mono">&mdash;</span> &middot; <span id="pb-count">0</span> ac</div>
+      <select id="pb-speed" aria-label="speed">
+        <option value="60">60&times;</option>
+        <option value="240" selected>240&times;</option>
+        <option value="900">900&times;</option>
+      </select>
+      <button id="pb-exit">&larr; Live</button>
+    </div>
+
     <button class="view-switch" data-goto="status">&larr; Flight status</button>
   </div>
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>

@@ -343,6 +343,7 @@ function ensureMap() {
   document.querySelectorAll("#basemap button").forEach((b) =>
     b.addEventListener("click", () => setBasemap(b.dataset.style))
   );
+  wirePlayback();
 
   const start = async () => {
     if (mapInited) return;
@@ -527,6 +528,135 @@ function setBasemap(name) {
   map.once("styledata", () => setTimeout(drawOverlay, 60));
 }
 
+/* ---- historical playback ---- */
+
+const playback = { active: false, playing: false, clock: 0, from: 0, to: 0, timer: null, lastFetch: 0 };
+const histMarkers = new Map();
+
+function wirePlayback() {
+  el("pb-enter").addEventListener("click", enterPlayback);
+  el("pb-exit").addEventListener("click", exitPlayback);
+  el("pb-play").addEventListener("click", () => (playback.playing ? pausePlayback() : playPlayback()));
+  el("pb-slider").addEventListener("input", () => {
+    playback.clock = Number(el("pb-slider").value);
+    pbTime();
+    drawSnapshot();
+  });
+}
+
+async function enterPlayback() {
+  let span;
+  try {
+    span = await (await fetch("/api/history/span")).json();
+  } catch {
+    return toast("History is unavailable.");
+  }
+  if (!span.from || span.to - span.from < 120) {
+    return toast("Not enough history yet — let the server run a while.");
+  }
+  playback.active = true;
+  playback.from = span.from;
+  playback.to = span.to;
+  playback.clock = Math.max(span.from, span.to - 3600); // start ~1h before the latest
+  el("pb-enter").classList.add("hidden");
+  el("basemap").classList.add("hidden");
+  el("playback").classList.remove("hidden");
+  const s = el("pb-slider");
+  s.min = span.from;
+  s.max = span.to;
+  s.value = playback.clock;
+  closeDetail();
+  for (const p of planes.values()) p.marker.remove();
+  planes.clear();
+  trailCoords.list = [];
+  drawOverlay();
+  pbTime();
+  await drawSnapshot();
+}
+
+function exitPlayback() {
+  pausePlayback();
+  playback.active = false;
+  for (const m of histMarkers.values()) m.remove();
+  histMarkers.clear();
+  el("playback").classList.add("hidden");
+  el("basemap").classList.remove("hidden");
+  el("pb-enter").classList.remove("hidden");
+  render(); // rebuild live markers from the current feed
+}
+
+function playPlayback() {
+  playback.playing = true;
+  el("pb-play").textContent = "⏸"; // pause
+  let last = performance.now();
+  playback.timer = setInterval(() => {
+    const now = performance.now();
+    playback.clock = Math.min(playback.to, playback.clock + ((now - last) / 1000) * Number(el("pb-speed").value));
+    last = now;
+    el("pb-slider").value = playback.clock;
+    pbTime();
+    if (now - playback.lastFetch > 550) drawSnapshot();
+    if (playback.clock >= playback.to) pausePlayback();
+  }, 100);
+}
+
+function pausePlayback() {
+  playback.playing = false;
+  el("pb-play").textContent = "▶"; // play
+  clearInterval(playback.timer);
+  playback.timer = null;
+}
+
+function pbTime() {
+  el("pb-time").textContent =
+    new Date(playback.clock * 1000).toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata", hour12: false,
+      month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
+    }) + " IST";
+}
+
+async function drawSnapshot() {
+  if (!playback.active) return;
+  playback.lastFetch = performance.now();
+  let snap;
+  try {
+    snap = await (await fetch("/api/history?at=" + Math.round(playback.clock))).json();
+  } catch {
+    return;
+  }
+  if (!playback.active) return;
+  const seen = new Set();
+  for (const a of snap.aircraft) {
+    seen.add(a.hex);
+    let m = histMarkers.get(a.hex);
+    if (!m) {
+      m = new maplibregl.Marker({ element: planeElement("jet"), rotationAlignment: "map" });
+      m.setLngLat([a.lon, a.lat]).addTo(map);
+      histMarkers.set(a.hex, m);
+    }
+    const elm = m.getElement();
+    elm.style.color = bandColor(a.alt_ft);
+    let hdg = a.track_deg;
+    if (hdg == null && m._prev) {
+      const dlon = a.lon - m._prev[0];
+      const dlat = a.lat - m._prev[1];
+      if (Math.abs(dlon) > 1e-5 || Math.abs(dlat) > 1e-5) {
+        hdg = ((Math.atan2(dlon, dlat) * 180) / Math.PI + 360) % 360;
+      }
+    }
+    m.setRotation(hdg || 0);
+    m.setLngLat([a.lon, a.lat]);
+    m._prev = [a.lon, a.lat];
+  }
+  for (const [hex, m] of histMarkers) {
+    if (!seen.has(hex)) {
+      m.remove();
+      histMarkers.delete(hex);
+    }
+  }
+  el("pb-count").textContent = snap.aircraft.length;
+}
+
 /* ---- live feed (runs on page load; the board and the map both consume it) ---- */
 
 async function connectFeed() {
@@ -621,7 +751,7 @@ function passesFilters(f) {
 
 /* ---- render ---- */
 function render() {
-  if (!map) return;
+  if (!map || playback.active) return; // playback drives the markers instead
   const shown = state.flights.filter(passesFilters);
   const seen = new Set();
   for (const f of shown) {
