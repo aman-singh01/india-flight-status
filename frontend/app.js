@@ -76,17 +76,28 @@ function bxCell(k, v) {
 
 function boardRow(f) {
   const c = PHASE_COLORS[f.phase] || "#4ade80";
-  const dep = f.dep || "•••";
-  const arr = f.arr || "•••";
+  const dep = f.dep || "";
+  const arr = f.arr || "";
   const open = boardExpanded.has(f.hex);
+
+  const arrow = '<span class="ar">→</span>';
+  const routeShort =
+    dep && arr ? `${dep}${arrow}${arr}`
+    : arr ? `${arrow}${arr}`
+    : dep ? `${dep}${arrow}`
+    : '<span class="runknown">—</span>';
+
+  const inferred = f.route_src === "inferred" ? " (inferred)" : "";
   const routeText =
     f.dep_city && f.arr_city
       ? `${f.dep_city} → ${f.arr_city}`
-      : f.route_src === "inferred"
-        ? `${dep} → ${arr} (inferred)`
-        : dep === "•••" && arr === "•••"
-          ? "unknown"
-          : `${dep} → ${arr}`;
+      : dep && arr
+        ? `${dep} → ${arr}${inferred}`
+        : arr
+          ? `→ ${arr}${inferred}`
+          : dep
+            ? `${dep} →`
+            : "unknown";
   const s = f.schedule;
   const schedCells =
     s && (s.sched_dep || s.sched_arr)
@@ -123,7 +134,7 @@ function boardRow(f) {
         <span class="bf-sub">${[f.airline, f.type].filter(Boolean).join(" · ")}</span>
       </span>
       <span class="bbadge" style="--c:${c}">${f.phase}</span>
-      <span class="broute mono">${dep}<span class="ar">→</span>${arr}${delayChip}</span>
+      <span class="broute mono">${routeShort}${delayChip}</span>
       <span class="bpos">${f.phase_detail}${f.near ? " · " + f.near : ""}</span>
     </button>${exp}
   </div>`;
