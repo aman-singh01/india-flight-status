@@ -1,32 +1,44 @@
 /* India Domestic Flight Tracker - frontend */
 "use strict";
 
-// Self-contained raster style: no sprite / no glyph host to stall on. Swap in a
-// vector style (OpenFreeMap, MapTiler, your own) for production if you want
-// crisper labels. Esri's canvas basemaps need no API key.
-const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
-const BASE_STYLE = {
-  version: 8,
-  sources: {
-    base: {
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services";
+
+function rasterStyle(layers, bg) {
+  const sources = {};
+  const lyrs = [{ id: "bg", type: "background", paint: { "background-color": bg } }];
+  layers.forEach((l, i) => {
+    sources["s" + i] = {
       type: "raster",
-      tiles: [ESRI + "/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"],
+      tiles: [l.url],
       tileSize: 256,
-      maxzoom: 16,
-      attribution: "Tiles &copy; Esri",
-    },
-    labels: {
-      type: "raster",
-      tiles: [ESRI + "/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"],
-      tileSize: 256,
-      maxzoom: 16,
-    },
-  },
-  layers: [
-    { id: "bg", type: "background", paint: { "background-color": "#0b1020" } },
-    { id: "base", type: "raster", source: "base" },
-    { id: "labels", type: "raster", source: "labels" },
-  ],
+      maxzoom: l.maxzoom || 19,
+      attribution: "Tiles &copy; Esri, Maxar, Earthstar Geographics",
+    };
+    lyrs.push({ id: "s" + i, type: "raster", source: "s" + i });
+  });
+  return { version: 8, sources, layers: lyrs };
+}
+
+// No-key basemaps. `dark` is the default; the switcher offers realism options.
+const STYLES = {
+  dark: rasterStyle(
+    [
+      { url: ESRI + "/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", maxzoom: 16 },
+      { url: ESRI + "/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", maxzoom: 16 },
+    ],
+    "#0b1020"
+  ),
+  satellite: rasterStyle(
+    [
+      { url: ESRI + "/World_Imagery/MapServer/tile/{z}/{y}/{x}", maxzoom: 19 },
+      { url: ESRI + "/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", maxzoom: 19 },
+    ],
+    "#0b1020"
+  ),
+  terrain: rasterStyle(
+    [{ url: ESRI + "/World_Topo_Map/MapServer/tile/{z}/{y}/{x}", maxzoom: 19 }],
+    "#e8e5df"
+  ),
 };
 
 // Altitude bands (ft) -> colour. Matches the legend in index.html.
@@ -45,135 +57,252 @@ function bandColor(alt) {
   return c;
 }
 
+// Top-down silhouettes, nose pointing north (rotated to heading by the marker).
+const SILHOUETTE = {
+  jet:
+    "M16 2 L17.5 6 L17.5 12 L29 19 L29 21 L17.5 18 L17.5 25 L20 28 L20 29.5 " +
+    "L16 28 L12 29.5 L12 28 L14.5 25 L14.5 18 L3 21 L3 19 L14.5 12 L14.5 6 Z",
+  prop:
+    "M16 3 L17.2 7 L17.2 13 L28 16.5 L28 18.5 L17.2 17 L17.2 24 L19.4 27 L19.4 28.5 " +
+    "L16 27.6 L12.6 28.5 L12.6 27 L14.8 24 L14.8 17 L4 18.5 L4 16.5 L14.8 13 L14.8 7 Z",
+};
+const CAT_SIZE = { prop: 20, jet: 26, heavy: 32 };
+
+function category(type) {
+  const t = (type || "").toUpperCase();
+  if (/^(AT[0-9]|AT4|AT7|DH8|SF3|J41|E12|E19|B19|C208|D22|L410|BE[0-9])/.test(t)) return "prop";
+  if (/^(B74|B75|B76|B77|B78|A30|A31|A33|A34|A35|A38|IL9|MD1|DC1)/.test(t)) return "heavy";
+  return "jet";
+}
+
 const state = {
   flights: [],
   selected: null,
   detailTimer: null,
   airlineKeys: "",
+  basemap: "dark",
 };
 
 const el = (id) => document.getElementById(id);
 
 const map = new maplibregl.Map({
   container: "map",
-  style: BASE_STYLE,
+  style: STYLES.dark,
   center: [80.9, 22.6],
-  zoom: 4.2,
+  zoom: 4.4,
   minZoom: 3,
   maxBounds: [[58, 2], [102, 40]],
   attributionControl: { compact: true },
 });
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
 
-/* ---------- plane markers (DOM, no GeoJSON worker) ---------- */
+/* ---------- plane markers with smooth dead-reckoned motion ---------- */
 
-const markers = new Map(); // hex -> maplibregl.Marker
+const planes = new Map(); // hex -> { f, marker, anchorTs, prevDisp, easeStart, disp, cat }
 
-function planeElement() {
+function planeElement(cat) {
   const d = document.createElement("div");
   d.className = "plane";
+  const s = CAT_SIZE[cat];
   d.innerHTML =
-    '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">' +
-    '<path d="M12 2 L20 21 L12 16 L4 21 Z" fill="currentColor" ' +
-    'stroke="rgba(0,0,0,0.6)" stroke-width="1"/></svg>';
+    `<svg viewBox="0 0 32 32" width="${s}" height="${s}" aria-hidden="true">` +
+    `<path d="${SILHOUETTE[cat === "prop" ? "prop" : "jet"]}" fill="currentColor" ` +
+    `stroke="rgba(0,0,0,0.55)" stroke-width="1" stroke-linejoin="round"/></svg>`;
   return d;
 }
 
-function upsertMarker(f) {
-  let m = markers.get(f.hex);
-  if (!m) {
-    const elm = planeElement();
+function upsertPlane(f) {
+  const now = Date.now();
+  let p = planes.get(f.hex);
+  const cat = category(f.type);
+  if (!p) {
+    const elm = planeElement(cat);
     elm.addEventListener("click", (ev) => {
       ev.stopPropagation();
       selectFlight(f.hex);
     });
-    m = new maplibregl.Marker({ element: elm, rotationAlignment: "map" });
-    m.setLngLat([f.lon, f.lat]).addTo(map);
-    markers.set(f.hex, m);
-  } else {
-    m.setLngLat([f.lon, f.lat]);
+    const marker = new maplibregl.Marker({ element: elm, rotationAlignment: "map" })
+      .setLngLat([f.lon, f.lat])
+      .addTo(map);
+    p = { marker, cat, disp: [f.lat, f.lon] };
+    planes.set(f.hex, p);
+  } else if (cat !== p.cat) {
+    p.cat = cat;
+    const s = CAT_SIZE[cat];
+    const svg = p.marker.getElement().querySelector("svg");
+    svg.setAttribute("width", s);
+    svg.setAttribute("height", s);
+    svg.querySelector("path").setAttribute("d", SILHOUETTE[cat === "prop" ? "prop" : "jet"]);
   }
-  m.setRotation(f.track_deg == null ? 0 : f.track_deg);
-  const elm = m.getElement();
+  p.prevDisp = p.disp ? p.disp.slice() : null;
+  p.easeStart = now;
+  p.anchorTs = now;
+  p.f = f;
+  p.marker.setRotation(f.track_deg == null ? 0 : f.track_deg);
+  const elm = p.marker.getElement();
   elm.style.color = bandColor(f.alt_ft);
   elm.classList.toggle("sel", f.hex === state.selected);
 }
 
-/* ---------- trail overlay (canvas, no GeoJSON worker) ---------- */
-
-const trail = { coords: [], canvas: null, ctx: null };
-
-function initTrailOverlay() {
-  const c = document.createElement("canvas");
-  c.id = "trail-canvas";
-  el("map").appendChild(c);
-  trail.canvas = c;
-  trail.ctx = c.getContext("2d");
-  sizeTrail();
-  map.on("move", drawTrail);
-  map.on("resize", () => {
-    sizeTrail();
-    drawTrail();
-  });
+function deadReckon(f, ageSec) {
+  const gs = f.gs_kt || 0;
+  if (!gs || f.track_deg == null) return [f.lat, f.lon];
+  const trk = (f.track_deg * Math.PI) / 180;
+  const nm = (gs * ageSec) / 3600;
+  const dLat = (nm / 60) * Math.cos(trk);
+  const dLon = ((nm / 60) * Math.sin(trk)) / Math.cos((f.lat * Math.PI) / 180);
+  return [f.lat + dLat, f.lon + dLon];
 }
 
-function sizeTrail() {
+function tick() {
+  const now = Date.now();
+  for (const p of planes.values()) {
+    if (!p.f) continue;
+    const age = Math.min(25, (now - p.anchorTs) / 1000);
+    let [la, lo] = deadReckon(p.f, age);
+    if (p.prevDisp) {
+      const k = Math.min(1, (now - p.easeStart) / 700);
+      la = p.prevDisp[0] + (la - p.prevDisp[0]) * k;
+      lo = p.prevDisp[1] + (lo - p.prevDisp[1]) * k;
+      if (k >= 1) p.prevDisp = null;
+    }
+    p.disp = [la, lo];
+    p.marker.setLngLat([lo, la]);
+  }
+}
+// setInterval (not rAF) so motion keeps running even when the tab is backgrounded.
+setInterval(tick, 50); // 20 fps
+
+/* ---------- canvas overlay: airports + selected-flight trail ---------- */
+
+const overlay = { canvas: null, ctx: null };
+let airports = [];
+const trailCoords = { list: [] };
+
+function initOverlay() {
+  const c = document.createElement("canvas");
+  c.id = "overlay-canvas";
+  el("map").appendChild(c);
+  overlay.canvas = c;
+  overlay.ctx = c.getContext("2d");
+  sizeOverlay();
+  map.on("move", drawOverlay);
+  map.on("resize", () => {
+    sizeOverlay();
+    drawOverlay();
+  });
+  // container can start at 0x0 (hidden tab / late layout); keep the canvas in sync
+  if (window.ResizeObserver) {
+    new ResizeObserver(() => {
+      sizeOverlay();
+      drawOverlay();
+    }).observe(el("map"));
+  }
+}
+
+function sizeOverlay() {
   const r = el("map").getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
-  trail.canvas.width = r.width * dpr;
-  trail.canvas.height = r.height * dpr;
-  trail.canvas.style.width = r.width + "px";
-  trail.canvas.style.height = r.height + "px";
-  trail.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  overlay.canvas.width = r.width * dpr;
+  overlay.canvas.height = r.height * dpr;
+  overlay.canvas.style.width = r.width + "px";
+  overlay.canvas.style.height = r.height + "px";
+  overlay.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-function drawTrail() {
-  const ctx = trail.ctx;
+function drawOverlay() {
+  const ctx = overlay.ctx;
   if (!ctx) return;
   const r = el("map").getBoundingClientRect();
+  if (r.width === 0 || r.height === 0) return;
   ctx.clearRect(0, 0, r.width, r.height);
-  if (trail.coords.length < 2) return;
-  ctx.beginPath();
-  trail.coords.forEach((ll, i) => {
-    const p = map.project(ll);
-    i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
-  });
-  ctx.strokeStyle = "#38bdf8";
-  ctx.lineWidth = 2;
-  ctx.globalAlpha = 0.8;
-  ctx.stroke();
-  ctx.globalAlpha = 1;
+  const z = map.getZoom();
+  const dark = state.basemap !== "terrain";
+
+  // airports
+  const dot = dark ? "rgba(255,255,255,0.30)" : "rgba(20,30,50,0.45)";
+  ctx.fillStyle = dot;
+  for (const a of airports) {
+    const p = map.project([a.lon, a.lat]);
+    if (p.x < -30 || p.y < -30 || p.x > r.width + 30 || p.y > r.height + 30) continue;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, z >= 6 ? 3 : 2, 0, Math.PI * 2);
+    ctx.fill();
+    if (z >= 6.5) {
+      ctx.fillStyle = dark ? "rgba(226,232,246,0.65)" : "rgba(20,30,50,0.7)";
+      ctx.font = "10px ui-monospace, Consolas, monospace";
+      ctx.fillText(a.iata, p.x + 5, p.y + 3);
+      ctx.fillStyle = dot;
+    }
+  }
+
+  // selected-flight trail, fading toward the tail
+  const c = trailCoords.list;
+  if (c.length >= 2) {
+    for (let i = 1; i < c.length; i++) {
+      const p0 = map.project(c[i - 1]);
+      const p1 = map.project(c[i]);
+      const t = i / c.length;
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.strokeStyle = `rgba(56,189,248,${(0.08 + 0.85 * t).toFixed(3)})`;
+      ctx.lineWidth = 1.3 + 1.6 * t;
+      ctx.lineCap = "round";
+      ctx.stroke();
+    }
+  }
 }
+
+/* ---------- basemap switcher ---------- */
+
+function setBasemap(name) {
+  if (!STYLES[name] || name === state.basemap) return;
+  state.basemap = name;
+  map.setStyle(STYLES[name]);
+  document.querySelectorAll("#basemap button").forEach((b) =>
+    b.classList.toggle("active", b.dataset.style === name)
+  );
+  map.once("styledata", () => setTimeout(drawOverlay, 60));
+}
+
+document.querySelectorAll("#basemap button").forEach((b) => {
+  b.addEventListener("click", () => setBasemap(b.dataset.style));
+});
 
 /* ---------- init ---------- */
 
 let inited = false;
-
 function init() {
   if (inited) return;
-  if (!map.isStyleLoaded()) {
-    setTimeout(init, 120);
-    return;
-  }
   inited = true;
-  initTrailOverlay();
+  initOverlay();
   map.on("click", closeDetail);
   bootstrap();
 }
-
+// Markers, the canvas overlay and the data feed don't need the basemap style to
+// be loaded (map.project works from the initial transform), so don't block on it
+// -- flights still show if a tile host is slow or down.
 map.on("load", init);
-init();
+if (map.isStyleLoaded()) init();
+setTimeout(init, 600);
 map.on("error", (e) => console.warn("map error:", e && e.error));
 
 /* ---------- data ---------- */
 
 async function bootstrap() {
   try {
-    const r = await fetch("/api/flights");
-    const j = await r.json();
+    const a = await (await fetch("/api/airports")).json();
+    airports = a.airports || [];
+    drawOverlay();
+  } catch (err) {
+    console.warn("airports fetch failed", err);
+  }
+  try {
+    const j = await (await fetch("/api/flights")).json();
     onFlights(j.flights || []);
   } catch (err) {
-    console.warn("initial fetch failed", err);
+    console.warn("initial flights fetch failed", err);
   }
   connectWS();
 }
@@ -257,18 +386,16 @@ function passesFilters(f) {
 function render() {
   const shown = state.flights.filter(passesFilters);
   const seen = new Set();
-
   for (const f of shown) {
     seen.add(f.hex);
-    upsertMarker(f);
+    upsertPlane(f);
   }
-  for (const [hex, m] of markers) {
+  for (const [hex, p] of planes) {
     if (!seen.has(hex)) {
-      m.remove();
-      markers.delete(hex);
+      p.marker.remove();
+      planes.delete(hex);
     }
   }
-
   el("c-live").textContent = shown.length;
   el("c-air").textContent = shown.filter((f) => (f.alt_ft || 0) > 1000).length;
 }
@@ -279,21 +406,21 @@ el("detail-close").addEventListener("click", closeDetail);
 
 function closeDetail() {
   if (!state.selected) return;
-  const prev = markers.get(state.selected);
-  if (prev) prev.getElement().classList.remove("sel");
+  const prev = planes.get(state.selected);
+  if (prev) prev.marker.getElement().classList.remove("sel");
   state.selected = null;
   clearInterval(state.detailTimer);
   el("detail").classList.add("hidden");
-  trail.coords = [];
-  drawTrail();
+  trailCoords.list = [];
+  drawOverlay();
 }
 
 async function selectFlight(hex) {
-  if (state.selected && markers.get(state.selected)) {
-    markers.get(state.selected).getElement().classList.remove("sel");
+  if (state.selected && planes.get(state.selected)) {
+    planes.get(state.selected).marker.getElement().classList.remove("sel");
   }
   state.selected = hex;
-  if (markers.get(hex)) markers.get(hex).getElement().classList.add("sel");
+  if (planes.get(hex)) planes.get(hex).marker.getElement().classList.add("sel");
   el("detail").classList.remove("hidden");
   await refreshDetail();
   clearInterval(state.detailTimer);
@@ -335,8 +462,8 @@ async function refreshDetail() {
       row("Tracked", timeAgo(d.first_seen)) +
     `</div>`;
 
-  trail.coords = (d.track || []).map((p) => [p[2], p[1]]); // [lon, lat]
-  drawTrail();
+  trailCoords.list = (d.track || []).map((p) => [p[2], p[1]]); // [lon, lat]
+  drawOverlay();
 }
 
 function timeAgo(ts) {

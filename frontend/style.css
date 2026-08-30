@@ -23,19 +23,37 @@ body {
 
 #map { position: absolute; inset: 0; }
 
-#trail-canvas {
+#overlay-canvas {
   position: absolute; inset: 0;
   pointer-events: none; z-index: 2;
 }
 
 /* plane markers */
 .plane { color: #94a3b8; line-height: 0; will-change: transform; }
-.plane svg { display: block; overflow: visible; }
+.plane svg {
+  display: block; overflow: visible;
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.55));
+}
 .plane.sel svg {
-  filter: drop-shadow(0 0 4px #38bdf8);
+  filter: drop-shadow(0 0 5px #38bdf8) drop-shadow(0 0 2px #38bdf8);
 }
 .plane.sel svg path { stroke: #ffffff; stroke-width: 1.6; }
 .maplibregl-marker { cursor: pointer; }
+
+/* basemap switcher */
+#basemap {
+  position: absolute; left: 16px; bottom: 16px; z-index: 5;
+  display: flex; padding: 3px; gap: 2px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 10px; backdrop-filter: blur(8px);
+}
+#basemap button {
+  border: none; background: none; color: var(--muted);
+  font: 500 12px/1 system-ui, sans-serif;
+  padding: 7px 12px; border-radius: 7px; cursor: pointer;
+}
+#basemap button:hover { color: var(--text); }
+#basemap button.active { background: rgba(56, 189, 248, 0.16); color: var(--accent); }
 
 .mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; }
 .muted { color: var(--muted); }
