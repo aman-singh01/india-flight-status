@@ -91,14 +91,15 @@ def flight_number(cs: str | None, airline: dict | None) -> str | None:
 
 
 def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> dict | None:
-    """Decide whether an aircraft is currently operating a domestic Indian route.
+    """Decide whether an aircraft is currently flying a domestic Indian route.
 
-    Heuristic (India-specific): domestic point-to-point flying is legally reserved
-    for Indian-AOC carriers (cabotage), so:
-      * the callsign must belong to a known Indian scheduled operator, and
-      * the aircraft (and every track point we have) must be inside the India bbox, and
-      * it must not be near a reachable foreign airport (KTM/CMB/DAC/...).
-    Departure / arrival airports are inferred from low-altitude track endpoints.
+    1. Callsign must belong to a known Indian scheduled operator (cabotage:
+       domestic point-to-point flying is reserved for Indian-AOC carriers).
+    2. If a scheduled route is known (adsbdb), it is authoritative: domestic iff
+       BOTH endpoints are in India -- this also drops international flights that
+       Indian carriers operate (e.g. BOM-HND).
+    3. Otherwise fall back to a geometry heuristic: inside the India bbox, not near
+       a reachable foreign airport; origin/destination inferred from climb/descent.
 
     Returns a classification dict, or None if the flight is not domestic.
     """
@@ -108,7 +109,6 @@ def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> d
 
     is_indian_carrier = airline is not None
     is_vt = reg.startswith("VT")
-
     if not is_indian_carrier and not (settings.include_ga and is_vt):
         return None
 
@@ -116,18 +116,38 @@ def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> d
     if lat is None or lon is None or not in_bbox(lat, lon):
         return None
 
+    def result(dep, arr, dep_city=None, arr_city=None, src=None):
+        return {
+            "status": "domestic",
+            "airline": airline["name"] if airline else "General Aviation",
+            "airline_icao": airline["icao"] if airline else None,
+            "flight_no": flight_number(cs, airline),
+            "dep": dep,
+            "arr": arr,
+            "dep_city": dep_city,
+            "arr_city": arr_city,
+            "route_src": src,
+        }
+
+    # --- scheduled route known: authoritative ---
+    r = route_db.get(cs)
+    if r:
+        dc, acn = r.get("dep_country"), r.get("arr_country")
+        dep_in = dc == "IN" if dc else r.get("dep") in _INDIAN_IATA
+        arr_in = acn == "IN" if acn else r.get("arr") in _INDIAN_IATA
+        if not (dep_in and arr_in):
+            return None  # an endpoint is outside India -> not a domestic flight
+        return result(r.get("dep"), r.get("arr"), r.get("dep_city"), r.get("arr_city"), "schedule")
+
+    # --- no route yet: geometry heuristic ---
     for _ts, tlat, tlon, _alt in track:
         if not in_bbox(tlat, tlon):
-            return None  # this aircraft has crossed the border -> international
-
+            return None  # crossed the border -> international
     if nearest_foreign(lat, lon) is not None:
         return None
     if track and nearest_foreign(track[0][1], track[0][2]) is not None:
         return None
 
-    # Origin/destination from vertical state: a low, climbing aircraft is leaving
-    # the airport under it; a low, descending one is arriving at the airport under
-    # it. In cruise we can't tell without a schedule feed, so leave both blank.
     dep = arr = None
     alt = ac.get("alt_ft")
     vs = ac.get("vs_fpm") or 0
@@ -136,19 +156,5 @@ def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> d
             dep, _ = nearest_indian_airport(lat, lon, max_nm=45)
         elif vs < -250:
             arr, _ = nearest_indian_airport(lat, lon, max_nm=45)
-        if track and len(track) >= 6:
-            # if we've watched it climb out of somewhere, remember that as origin
-            t0 = track[0]
-            if t0[3] is not None and t0[3] < 8000:
-                d0, _ = nearest_indian_airport(t0[1], t0[2], max_nm=35)
-                if d0 and d0 != arr:
-                    dep = d0
 
-    return {
-        "status": "domestic",
-        "airline": airline["name"] if airline else "General Aviation",
-        "airline_icao": airline["icao"] if airline else None,
-        "flight_no": flight_number(cs, airline),
-        "dep": dep,
-        "arr": arr,
-    }
+    return result(dep, arr, src="inferred" if (dep or arr) else None)

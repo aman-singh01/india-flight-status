@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from . import db
+from . import route as route_db
 from .config import settings
 from .domestic import _airlines, _airports
 from .ingest import run_ingest
@@ -41,6 +42,7 @@ async def lifespan(app: FastAPI):
     tasks = [
         asyncio.create_task(run_ingest()),
         asyncio.create_task(push_loop(max(2.0, settings.poll_interval), payload)),
+        asyncio.create_task(route_db.resolver_loop()),
     ]
     log.info("started (sources=%s, poll=%ss)", settings.sources, settings.poll_interval)
     try:
@@ -68,6 +70,7 @@ async def health() -> dict:
         "tracked": len(store.all()),
         "domestic": len(domestic_flights()),
         "sources": settings.sources,
+        "routes": route_db.stats(),
     }
 
 

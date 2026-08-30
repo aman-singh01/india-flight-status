@@ -67,9 +67,18 @@ function boardRow(f) {
   const dep = f.dep || "•••";
   const arr = f.arr || "•••";
   const open = boardExpanded.has(f.hex);
+  const routeText =
+    f.dep_city && f.arr_city
+      ? `${f.dep_city} → ${f.arr_city}`
+      : f.route_src === "inferred"
+        ? `${dep} → ${arr} (inferred)`
+        : dep === "•••" && arr === "•••"
+          ? "unknown"
+          : `${dep} → ${arr}`;
   const exp = open
     ? `<div class="brow-exp">
          <div class="bx-grid">
+           ${bxCell("Route", routeText)}
            ${bxCell("Altitude", fmt(f.alt_ft, " ft"))}
            ${bxCell("Ground speed", fmt(f.gs_kt, " kt"))}
            ${bxCell("Vertical rate", fmt(f.vs_fpm, " fpm"))}

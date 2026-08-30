@@ -156,12 +156,15 @@ def lookup(query: str) -> dict:
         "near": nearest_place(hit.lat, hit.lon),
         "origin": k.get("dep"),
         "destination": k.get("arr"),
-        "route_inferred": True,
+        "origin_city": k.get("dep_city"),
+        "destination_city": k.get("arr_city"),
+        "route_src": k.get("route_src"),
         "tracked_since": round(hit.first_seen),
         "last_update": round(hit.last_seen),
         "source": hit.source,
         "note": (
-            "Position and phase are live from ADS-B. Scheduled and estimated times, "
-            "gates and the full route need a schedule provider, which is not connected."
+            "Position and phase are live from ADS-B; the route is from adsbdb's "
+            "community schedule data. Estimated times, gates and delay would need a "
+            "commercial schedule provider, which is not connected."
         ),
     }

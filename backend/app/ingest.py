@@ -4,6 +4,7 @@ import asyncio
 import logging
 
 from . import db
+from . import route as route_db
 from .config import settings
 from .domestic import classify
 from .sources import build_sources
@@ -28,6 +29,7 @@ async def _cycle(sources) -> None:
 
     domestic = 0
     for t in store.all():
+        route_db.enqueue(t.callsign)
         t.klass = classify(
             {
                 "callsign": t.callsign,
@@ -45,7 +47,11 @@ async def _cycle(sources) -> None:
     if settings.persist:
         await db.write_positions(store.all())
 
-    log.info("ingest: %d tracked, %d domestic", len(store.all()), domestic)
+    rs = route_db.stats()
+    log.info(
+        "ingest: %d tracked, %d domestic  (routes %d/%d, %d queued)",
+        len(store.all()), domestic, rs["resolved"], rs["resolved"] + rs["unknown"], rs["queued"],
+    )
 
 
 async def run_ingest() -> None:
