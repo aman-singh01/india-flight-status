@@ -44,9 +44,9 @@ async def _cycle(sources) -> None:
         )
         if t.klass:
             domestic += 1
-            # still no confirmed route? hand the flight number to the schedule API
-            if t.klass.get("route_src") != "schedule":
-                route_db.enqueue_schedule(t.callsign, t.klass.get("flight_no"))
+            # enqueue_schedule decides internally: route-gap fill, or (schedule_all)
+            # every flight for scheduled times / gate / delay
+            route_db.enqueue_schedule(t.callsign, t.klass.get("flight_no"))
 
     if settings.persist:
         await db.write_positions(store.all())

@@ -97,13 +97,19 @@ def enqueue(callsign: str | None) -> None:
 
 
 def enqueue_schedule(callsign: str | None, flight_no: str | None) -> None:
-    """Stage 2 -- only call for callsigns still unresolved after classify()."""
+    """Stage 2. By default only for callsigns adsbdb couldn't resolve; with
+    settings.schedule_all, for every flight (to keep times/delay fresh)."""
     cs = _norm(callsign)
-    if not cs or not flight_no or cs in _routes or cs in _sched_queued:
+    if not cs or not flight_no or cs in _sched_queued:
         return
+    if not settings.schedule_all and cs in _routes:
+        return  # route already known, not chasing times
     last = _sched_tried.get(cs)
-    if last is not None and (time.time() - last) < _SCHED_RETRY:
-        return
+    if last is not None:
+        # refresh flights we have times for often; back off hard on ones with none
+        window = settings.schedule_refresh if cs in _meta else _SCHED_RETRY
+        if (time.time() - last) < window:
+            return
     _sched_queued.add(cs)
     try:
         _sched_q.put_nowait((cs, flight_no))
@@ -219,7 +225,7 @@ async def schedule_loop() -> None:
         while True:
             cs, flight_no = await _sched_q.get()
             _sched_queued.discard(cs)
-            if cs in _routes:
+            if not settings.schedule_all and cs in _routes:
                 continue
             if not _quota_ok():
                 _sched_tried[cs] = time.time()  # try again after the retry window
@@ -235,16 +241,18 @@ async def schedule_loop() -> None:
             if res == "ratelimited":
                 await asyncio.sleep(30.0)
             elif res:
-                _routes[cs] = {
-                    k: res.get(k)
-                    for k in ("dep", "arr", "dep_city", "arr_city", "dep_country", "arr_country")
-                }
+                if cs not in _routes:  # keep the adsbdb route if we already have one
+                    _routes[cs] = {
+                        k: res.get(k)
+                        for k in ("dep", "arr", "dep_city", "arr_city", "dep_country", "arr_country")
+                    }
                 _meta[cs] = {
                     k: res.get(k)
                     for k in ("sched_dep", "sched_arr", "est_arr", "sched_status", "gate", "terminal")
                 }
                 _dirty = True
-                log.info("schedule: %s -> %s-%s", flight_no, res.get("dep"), res.get("arr"))
+                log.info("schedule: %s -> %s-%s d=%s", flight_no, res.get("dep"), res.get("arr"),
+                         res.get("sched_status"))
             if time.time() - last_save > 60:
                 _save_cache()
                 last_save = time.time()

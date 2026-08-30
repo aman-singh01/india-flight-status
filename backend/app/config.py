@@ -22,10 +22,15 @@ class Settings(BaseSettings):
     # lat_min, lat_max, lon_min, lon_max  -- covers mainland India + Andaman & Nicobar + Lakshadweep.
     india_bbox: tuple[float, float, float, float] = (6.0, 37.5, 67.0, 98.5)
 
-    # Optional keyed schedule API, tried only for callsigns adsbdb can't resolve.
+    # Optional keyed schedule API.
     #   schedule_provider="aerodatabox"  schedule_api_key="<RapidAPI key>"
     schedule_provider: str = ""
     schedule_api_key: str = ""
+    # False: query only callsigns adsbdb can't resolve (route gap fill).
+    # True:  query every domestic flight -> scheduled times / gate / delay for all,
+    #        refreshed every schedule_refresh seconds. Watch your monthly quota.
+    schedule_all: bool = False
+    schedule_refresh: float = 1200.0
     schedule_max_per_hour: int = 30
     schedule_max_per_day: int = 300
     schedule_spacing: float = 4.0
