@@ -4,7 +4,6 @@ import logging
 
 from .adsbfi import AdsbFiSource
 from .adsblol import AdsbLolSource
-from .airplaneslive import AirplanesLiveSource
 from .base import Source
 from .demo import DemoSource
 from .readsb import ReadsbSource
@@ -15,7 +14,6 @@ _SIMPLE = {
     "demo": DemoSource,
     "adsblol": AdsbLolSource,
     "adsbfi": AdsbFiSource,
-    "airplaneslive": AirplanesLiveSource,
 }
 
 
