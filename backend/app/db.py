@@ -15,11 +15,9 @@ async def init() -> None:
     if not settings.persist:
         return
     _db = await aiosqlite.connect(settings.db_path)
-    await _db.execute(
-        """CREATE TABLE IF NOT EXISTS positions(
+    await _db.execute("""CREATE TABLE IF NOT EXISTS positions(
                hex TEXT, callsign TEXT, ts REAL,
-               lat REAL, lon REAL, alt_ft INTEGER, status TEXT)"""
-    )
+               lat REAL, lon REAL, alt_ft INTEGER, status TEXT)""")
     await _db.execute("CREATE INDEX IF NOT EXISTS idx_pos_hex_ts ON positions(hex, ts)")
     await _db.commit()
 

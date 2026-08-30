@@ -19,8 +19,24 @@ for _icao, _info in _airlines.items():
     if _ia and _ia not in _IATA_TO_ICAO:
         _IATA_TO_ICAO[_ia] = _icao
 
-_COMPASS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-            "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+_COMPASS = [
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW",
+]
 
 
 def _norm(q: str) -> str:
@@ -141,7 +157,9 @@ def lookup(query: str) -> dict:
         "query": query,
         "found": True,
         "hex": hit.hex,
-        "flight_no": k.get("flight_no") or flight_number(hit.callsign, airline) or (hit.callsign or "").strip(),
+        "flight_no": k.get("flight_no")
+        or flight_number(hit.callsign, airline)
+        or (hit.callsign or "").strip(),
         "callsign": (hit.callsign or "").strip() or None,
         "airline": airline["name"] if airline else None,
         "registration": hit.registration,

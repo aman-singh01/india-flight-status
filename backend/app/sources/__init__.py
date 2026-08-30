@@ -39,9 +39,7 @@ def build_sources(spec: str) -> list[Source]:
                     continue
                 sources.append(ReadsbSource(arg))
             else:
-                log.warning(
-                    "unknown source %r (want: %s | readsb:<url>)", item, " | ".join(_SIMPLE)
-                )
+                log.warning("unknown source %r (want: %s | readsb:<url>)", item, " | ".join(_SIMPLE))
         except Exception:
             log.exception("failed to build source %r", item)
     if not sources:

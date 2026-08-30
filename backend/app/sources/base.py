@@ -66,7 +66,9 @@ class GridPollSource(Source):
             if i < len(grid) - 1:
                 await asyncio.sleep(self.spacing)
         if limited:
-            log.info("%s sweep: %d aircraft, %d/%d cells rate-limited", self.name, len(out), limited, len(grid))
+            log.info(
+                "%s sweep: %d aircraft, %d/%d cells rate-limited", self.name, len(out), limited, len(grid)
+            )
         return list(out.values())
 
     async def aclose(self) -> None:

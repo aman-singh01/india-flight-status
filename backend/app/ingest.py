@@ -55,7 +55,12 @@ async def _cycle(sources) -> None:
     rs = route_db.stats()
     log.info(
         "ingest: %d tracked, %d domestic  (routes %d, adsbdb-q %d, sched-q %d, sched calls %d/1h)",
-        len(store.all()), domestic, rs["resolved"], rs["queued"], rs["sched_queued"], rs["sched_calls_1h"],
+        len(store.all()),
+        domestic,
+        rs["resolved"],
+        rs["queued"],
+        rs["sched_queued"],
+        rs["sched_calls_1h"],
     )
 
 

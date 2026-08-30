@@ -15,6 +15,7 @@ A provider's `route(flight_no, callsign)` returns, or None (or "ratelimited"):
       "gate", "terminal",               or None
     }
 """
+
 from __future__ import annotations
 
 import datetime as _dt
@@ -38,7 +39,7 @@ def _parse_dt(node: dict | None) -> str | None:
     raw = raw.replace("Z", "").strip()
     for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S"):
         try:
-            return _dt.datetime.strptime(raw[:16], fmt).replace(tzinfo=_dt.timezone.utc).isoformat()
+            return _dt.datetime.strptime(raw[:16], fmt).replace(tzinfo=_dt.UTC).isoformat()
         except ValueError:
             continue
     return None
@@ -85,7 +86,8 @@ class AeroDataBoxProvider:
             log.warning(
                 "aerodatabox auth failed (%s) -- check the key is from the app subscribed "
                 "to AeroDataBox: %s",
-                r.status_code, r.text[:160],
+                r.status_code,
+                r.text[:160],
             )
             return None
         if r.status_code == 204:
@@ -105,11 +107,13 @@ class AeroDataBoxProvider:
         m = re.match(r"^([0-9A-Z]{2})", num)
         want_iata = m.group(1) if m else None
         if want_iata:
-            matched = [lg for lg in legs if ((lg.get("airline") or {}).get("iata") or "").upper() == want_iata]
+            matched = [
+                lg for lg in legs if ((lg.get("airline") or {}).get("iata") or "").upper() == want_iata
+            ]
             if matched:
                 legs = matched  # prefer the leg actually flown by this carrier
 
-        now = _dt.datetime.now(_dt.timezone.utc)
+        now = _dt.datetime.now(_dt.UTC)
         best, best_gap = None, 1e18
         for leg in legs:
             dep = leg.get("departure") or {}
@@ -182,8 +186,9 @@ class FlightAwareProvider:
             log.warning("flightaware rate-limited (429) for %s", ident)
             return "ratelimited"
         if r.status_code in (401, 403):
-            log.warning("flightaware auth failed (%s) -- check the AeroAPI key: %s",
-                        r.status_code, r.text[:160])
+            log.warning(
+                "flightaware auth failed (%s) -- check the AeroAPI key: %s", r.status_code, r.text[:160]
+            )
             return None
         if r.status_code in (400, 404):
             return None  # unknown ident / no data
@@ -197,7 +202,7 @@ class FlightAwareProvider:
         if not flights:
             return None
 
-        now = _dt.datetime.now(_dt.timezone.utc)
+        now = _dt.datetime.now(_dt.UTC)
 
         def gap(fl: dict) -> float:
             for k in ("scheduled_out", "scheduled_off", "estimated_out"):

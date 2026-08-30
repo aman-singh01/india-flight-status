@@ -22,15 +22,15 @@ INDIAN_AIRPORTS: list[tuple[str, str, float, float, str]] = [
 # without leaving the India bounding box. Used to reject short international hops
 # (e.g. DEL-KTM, MAA-CMB, CCU-DAC) that would otherwise look domestic.
 FOREIGN_NEAR: list[tuple[str, float, float]] = [
-    ("KTM", 27.6966, 85.3591),   # Kathmandu
-    ("CMB", 7.1808, 79.8841),    # Colombo
-    ("DAC", 23.8433, 90.3978),   # Dhaka
-    ("CGP", 22.2496, 91.8133),   # Chittagong
-    ("PBH", 27.4032, 89.4246),   # Paro
-    ("MLE", 4.1918, 73.5291),    # Male
-    ("LHE", 31.5216, 74.4036),   # Lahore
-    ("KHI", 24.9065, 67.1608),   # Karachi
-    ("ISB", 33.5490, 72.8258),   # Islamabad
+    ("KTM", 27.6966, 85.3591),  # Kathmandu
+    ("CMB", 7.1808, 79.8841),  # Colombo
+    ("DAC", 23.8433, 90.3978),  # Dhaka
+    ("CGP", 22.2496, 91.8133),  # Chittagong
+    ("PBH", 27.4032, 89.4246),  # Paro
+    ("MLE", 4.1918, 73.5291),  # Male
+    ("LHE", 31.5216, 74.4036),  # Lahore
+    ("KHI", 24.9065, 67.1608),  # Karachi
+    ("ISB", 33.5490, 72.8258),  # Islamabad
 ]
 
 _EARTH_NM = 3440.065
@@ -79,8 +79,27 @@ def _bearing_deg(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 # domestic flights are overwhelmingly to/from a metro, so a cruising flight's
 # heading is only trusted to point at one of these.
-_METRO_IATA = {"DEL", "BOM", "BLR", "MAA", "HYD", "CCU", "COK", "AMD", "PNQ",
-               "GOI", "GOX", "JAI", "LKO", "IXC", "PAT", "GAU", "BBI", "NAG", "VTZ"}
+_METRO_IATA = {
+    "DEL",
+    "BOM",
+    "BLR",
+    "MAA",
+    "HYD",
+    "CCU",
+    "COK",
+    "AMD",
+    "PNQ",
+    "GOI",
+    "GOX",
+    "JAI",
+    "LKO",
+    "IXC",
+    "PAT",
+    "GAU",
+    "BBI",
+    "NAG",
+    "VTZ",
+}
 
 
 def _airport_ahead(lat: float, lon: float, track_deg: float) -> str | None:

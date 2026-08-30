@@ -4,7 +4,7 @@ import math
 import random
 import time
 
-from ..domestic import INDIAN_AIRPORTS, _airlines
+from ..domestic import INDIAN_AIRPORTS
 from .base import Source, normalize_reapi
 
 _AIRLINE_KEYS = ["IGO", "IGO", "IGO", "AIC", "AIC", "SEJ", "SEJ", "AKJ", "LLR", "AXB"]
@@ -31,7 +31,7 @@ def _slerp(p1, p2, f):
     lat2, lon2 = map(math.radians, p2)
     v1 = (math.cos(lat1) * math.cos(lon1), math.cos(lat1) * math.sin(lon1), math.sin(lat1))
     v2 = (math.cos(lat2) * math.cos(lon2), math.cos(lat2) * math.sin(lon2), math.sin(lat2))
-    dot = max(-1.0, min(1.0, sum(a * b for a, b in zip(v1, v2))))
+    dot = max(-1.0, min(1.0, sum(a * b for a, b in zip(v1, v2, strict=True))))
     omega = math.acos(dot)
     if omega < 1e-6:
         x, y, z = v1

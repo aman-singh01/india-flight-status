@@ -7,6 +7,7 @@ don't re-spend the quota.
 
 `get(callsign)` -> route dict or None.  `meta(callsign)` -> schedule times dict or None.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -26,21 +27,21 @@ log = logging.getLogger("route")
 _ADSBDB = "https://api.adsbdb.com/v0/callsign/{cs}"
 _HEADERS = {"User-Agent": "india-domestic-flight-tracker/0.1"}
 
-_routes: dict[str, dict] = {}       # callsign -> {dep, arr, dep_city, arr_city, dep_country, arr_country}
-_meta: dict[str, dict] = {}         # callsign -> {sched_dep, sched_arr, est_arr, sched_status, gate, terminal}
-_noroute: dict[str, float] = {}     # callsign -> ts of last unsuccessful adsbdb lookup
-_sched_tried: dict[str, float] = {} # callsign -> ts of last schedule-API attempt
+_routes: dict[str, dict] = {}  # callsign -> {dep, arr, dep_city, arr_city, dep_country, arr_country}
+_meta: dict[str, dict] = {}  # callsign -> {sched_dep, sched_arr, est_arr, sched_status, gate, terminal}
+_noroute: dict[str, float] = {}  # callsign -> ts of last unsuccessful adsbdb lookup
+_sched_tried: dict[str, float] = {}  # callsign -> ts of last schedule-API attempt
 
 _queued: set[str] = set()
 _q: asyncio.Queue[str] = asyncio.Queue(maxsize=4000)
 _sched_queued: set[str] = set()
 _sched_q: asyncio.Queue[tuple[str, str]] = asyncio.Queue(maxsize=4000)
 
-_ADSBDB_RETRY = 1800.0    # retry an adsbdb miss after 30 min
-_SCHED_RETRY = 21600.0    # retry a schedule-API miss after 6 h
+_ADSBDB_RETRY = 1800.0  # retry an adsbdb miss after 30 min
+_SCHED_RETRY = 21600.0  # retry a schedule-API miss after 6 h
 _ADSBDB_SPACING = 0.4
 
-_sched_hits: list[float] = []   # timestamps of schedule-API calls, for the quota window
+_sched_hits: list[float] = []  # timestamps of schedule-API calls, for the quota window
 _CACHE = Path(settings.route_cache_path)
 _dirty = False
 
@@ -66,7 +67,9 @@ def schedule_summary(callsign: str | None) -> dict | None:
     if m.get("sched_arr") and m.get("est_arr"):
         try:
             delay = round(
-                (_dt.datetime.fromisoformat(m["est_arr"]) - _dt.datetime.fromisoformat(m["sched_arr"])).total_seconds()
+                (
+                    _dt.datetime.fromisoformat(m["est_arr"]) - _dt.datetime.fromisoformat(m["sched_arr"])
+                ).total_seconds()
                 / 60
             )
         except ValueError:
@@ -126,6 +129,7 @@ def _quota_ok() -> bool:
 
 # ---------- disk cache ----------
 
+
 def _load_cache() -> None:
     global _dirty
     try:
@@ -152,6 +156,7 @@ _load_cache()
 
 
 # ---------- stage 1: adsbdb ----------
+
 
 def _parse_adsbdb(payload: dict) -> dict | None:
     fr = (payload.get("response") or {}).get("flightroute")
@@ -213,6 +218,7 @@ async def resolver_loop() -> None:
 
 # ---------- stage 2: keyed schedule provider ----------
 
+
 async def schedule_loop() -> None:
     global _dirty
     provider = build_provider()
@@ -251,8 +257,13 @@ async def schedule_loop() -> None:
                     for k in ("sched_dep", "sched_arr", "est_arr", "sched_status", "gate", "terminal")
                 }
                 _dirty = True
-                log.info("schedule: %s -> %s-%s d=%s", flight_no, res.get("dep"), res.get("arr"),
-                         res.get("sched_status"))
+                log.info(
+                    "schedule: %s -> %s-%s d=%s",
+                    flight_no,
+                    res.get("dep"),
+                    res.get("arr"),
+                    res.get("sched_status"),
+                )
             if time.time() - last_save > 60:
                 _save_cache()
                 last_save = time.time()
