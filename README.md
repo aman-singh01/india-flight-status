@@ -1,95 +1,95 @@
 # India Flight Status
 
-Live status board for **domestic** flights over India — every tracked flight with its
-phase, route, altitude, speed, and (with a schedule key) scheduled times, gate and
-delay. Built on public ADS‑B data, no vendor lock‑in.
+A live status board for domestic flights over India, built on public ADS-B data. Each
+tracked flight is shown with its phase, route, altitude and speed; with an optional
+schedule-API key it also carries scheduled and estimated times, gate and delay.
 
-> **Live demo:** _add your deploy URL here_ · **Stack:** FastAPI · vanilla JS + MapLibre GL · SQLite
+**Stack:** Python, FastAPI, SQLite, WebSockets; vanilla JavaScript with MapLibre GL on
+the front end. No build step and no required API keys.
 
-<!-- add a screenshot at docs/board.png and uncomment -->
-<!-- ![status board](docs/board.png) -->
+<!-- Add a screenshot at docs/board.png and a live demo URL here once deployed. -->
+<!-- [![CI](https://github.com/<owner>/india-flight-status/actions/workflows/ci.yml/badge.svg)](https://github.com/<owner>/india-flight-status/actions/workflows/ci.yml) -->
 
----
+## Features
 
-## What it does
-
-- **Status board** (default view) — one row per live domestic flight: flight number,
-  airline, aircraft, phase badge (*On ground / Departed / En route / On approach*),
-  route, and a live line like *“descending through 1,875 ft · 34 km ESE of Mumbai”*.
-  Filter by flight/airline/airport/status; sort; click a row for full detail.
-- **Live map** — MapLibre GL, aircraft as heading‑rotated silhouettes coloured by
-  altitude, smooth **dead‑reckoned motion** between updates, selected‑flight trail.
-- **Historical playback** — a scrubber over the persisted position history: play at
-  60–900×, jump to any time, watch the sky redraw.
-- **Flight lookup** — `GET /api/status/{6E2416 | IGO2416 | VT‑IPZ | hex}` returns a
-  flight’s live status even if it’s filtered off the board.
-- **Ops** — `/metrics` (Prometheus) and a `/api/health` with resolver stats.
+- **Status board** - one row per live domestic flight: flight number, airline, aircraft
+  type, a phase badge (On ground / Departed / En route / On approach), origin and
+  destination, and a status line such as *"descending through 1,875 ft, 34 km ESE of
+  Mumbai"*. Filter by flight, airline, airport or phase; sort; expand a row for detail.
+- **Live map** - aircraft as heading-aligned silhouettes coloured by altitude, with
+  dead-reckoned motion between updates and a trail for the selected flight.
+- **Historical playback** - a scrubber over persisted position history; replay any
+  period at 60-900x.
+- **Flight lookup** - `GET /api/status/{ident}` resolves a flight by IATA or ICAO flight
+  number, registration or ICAO hex, even when it is filtered off the board.
+- **Operational endpoints** - Prometheus metrics at `/metrics`, resolver statistics at
+  `/api/health`.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  subgraph Sources["ADS-B sources (SOURCES env, unioned by ICAO hex)"]
+  subgraph Sources["ADS-B sources (SOURCES env, merged by ICAO hex)"]
     A[adsb.lol grid poll]
     B[adsb.fi grid poll]
-    C[readsb / your feeders]
-    D[demo - synthetic]
+    C["readsb (private feeder)"]
+    D["demo (synthetic)"]
   end
   A --> I
   B --> I
   C --> I
   D --> I
-  I[ingest loop: normalize + merge] --> S[(in-memory store + track deque)]
-  S --> K["classify() - domestic? + route"]
+  I[ingest loop: normalise + merge] --> S[(in-memory store + track history)]
+  S --> K["classify(): domestic? + route"]
   K -->|callsign| R[route resolver]
   R --> R1[adsbdb.com free routeset]
   R --> R2["schedule API - AeroDataBox / FlightAware (optional key)"]
   R --> RC[(route_cache.json)]
-  K --> M[flight_dict + phase + nearest place + schedule]
+  K --> M[flight record + phase + nearest place + schedule]
   M --> WS[WebSocket /ws]
   M --> API[REST /api/*]
   WS --> UI[status board + map]
   API --> UI
 ```
 
-## Engineering highlights
+Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECISIONS.md).
 
-- **Rate‑limit‑resilient ingest.** The free public feed (`adsb.lol`) 429s about half
-  of a 12‑point grid sweep. Sources are polled in shuffled order at ~1 req/3 s, a
-  starved cell is skipped (not retried into the wall), and `STALE_TTL` retains
-  aircraft across sweeps so the map stays populated. Multiple sources are *unioned*,
-  deduped by ICAO 24‑bit address.
-- **Graceful degradation, zero required keys.** adsbdb (free) resolves most routes;
-  a keyed schedule API is an optional second stage tried only for the gaps, behind a
-  per‑hour/per‑day quota guard, with an on‑disk cache so restarts don’t re‑spend
-  quota. No key → the app still runs, just without scheduled times.
-- **Two‑stage route resolution + a domain rule.** A known route is authoritative:
-  a flight is “domestic” only if *both* endpoints are in India — which also correctly
-  drops international flights Indian carriers operate (e.g. `AI` BOM–HND), leaning on
-  India’s cabotage rule (domestic point‑to‑point is reserved for Indian‑AOC carriers).
-- **Smooth motion from a slow feed.** The frontend dead‑reckons each aircraft from its
-  last report along its track at ground speed (20 fps), easing into each WebSocket
-  update — so ~35 s server sweeps still look live.
-- **Sandbox‑proof rendering.** Planes are DOM markers and the trail is a `<canvas>`
-  overlay projected via `map.project`, so nothing depends on MapLibre’s vector worker;
-  init never blocks on basemap tiles loading.
-- **Pluggable everything.** New ADS‑B source = one subclass of `GridPollSource`; new
-  schedule provider = one class implementing `route(flight_no, callsign)`.
+## Implementation notes
 
-## Run it
+- **Resilient ingestion.** Public ADS-B endpoints are polled over a shuffled 12-point
+  grid at roughly one request every three seconds. Rate-limited cells are skipped rather
+  than retried, aircraft are retained across sweeps for `STALE_TTL` seconds, and
+  multiple sources are merged and deduplicated by ICAO 24-bit address.
+- **Two-stage route resolution.** Origin and destination come first from the free adsbdb
+  routeset; an optional keyed schedule API (AeroDataBox or FlightAware) is queried only
+  for the remaining gaps, behind an hourly and daily quota guard and an on-disk cache
+  that survives restarts. Without a key the board still runs, showing route but no
+  scheduled times.
+- **Domain-aware classification.** A flight counts as domestic only when both endpoints
+  are Indian airports, which also excludes international flights operated by Indian
+  carriers. This follows India's cabotage rule: domestic point-to-point service is
+  reserved for Indian-AOC operators.
+- **Smooth motion from a slow feed.** The client advances each aircraft along its track
+  at ground speed at 20 fps and eases into each WebSocket update, so ~25 s server sweeps
+  still render as continuous movement.
+- **Extensible by design.** A new ADS-B source is one `GridPollSource` subclass; a new
+  schedule provider is one class implementing `route(flight_no, callsign)`.
 
-### Local (Python)
+## Getting started
+
+### Local
 
 ```bash
 cd backend
-python -m venv .venv && .venv\Scripts\activate      # macOS/Linux: source .venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-copy .env.example .env                                # optional; defaults are fine
+cp .env.example .env               # optional
 uvicorn app.main:app --reload
 ```
 
-Open <http://localhost:8000>. Out of the box `SOURCES=adsblol,adsbfi`; set
-`SOURCES=demo` for an offline synthetic feed.
+Served at <http://localhost:8000>. Set `SOURCES=demo` in `.env` for a synthetic feed
+that needs no network access.
 
 ### Docker
 
@@ -97,82 +97,65 @@ Open <http://localhost:8000>. Out of the box `SOURCES=adsblol,adsbfi`; set
 docker compose up --build
 ```
 
-### Deploy
+## Configuration
 
-- **Fly.io** — `fly launch --copy-config --no-deploy` then `fly deploy` (config in
-  [`fly.toml`](fly.toml), region `bom`). Schedule key: `fly secrets set SCHEDULE_API_KEY=…`.
-- **Render** — New → Blueprint → this repo ([`render.yaml`](render.yaml)).
+Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full list.
 
-## Configuration (`backend/.env`)
-
-| Var | Default | Notes |
+| Variable | Default | Purpose |
 |---|---|---|
-| `SOURCES` | `adsblol,adsbfi` | comma list, unioned: `adsblol` · `adsbfi` · `demo` · `readsb:<url>` |
-| `POLL_INTERVAL` | `5` | WebSocket push cadence (s); adsblol self‑paces its sweep |
-| `STALE_TTL` | `150` | drop an aircraft after this many s unseen |
+| `SOURCES` | `adsblol,adsbfi` | Comma-separated ingest sources, merged: `adsblol`, `adsbfi`, `demo`, `readsb:<url>` |
+| `POLL_INTERVAL` | `5` | WebSocket push interval (seconds) |
+| `STALE_TTL` | `150` | Drop an aircraft after this many seconds unseen |
 | `PERSIST` / `DB_PATH` | `true` / `flights.db` | SQLite position history |
-| `SCHEDULE_PROVIDER` | — | `aerodatabox` or `flightaware` (needs `SCHEDULE_API_KEY`) |
-| `SCHEDULE_ALL` | `false` | `true` → query the schedule API for *every* flight (times/gate/delay for all) — watch your quota |
-| `SCHEDULE_MAX_PER_HOUR` / `_PER_DAY` | `30` / `300` | hard caps; calls pause when hit |
-
-## How “domestic” + routes are decided
-
-`backend/app/domestic.py` → `classify()`:
-
-1. Callsign must belong to a known Indian scheduled operator (`data/airlines_in.json`).
-2. If a route is known (adsbdb or the schedule API), it’s authoritative — domestic
-   iff both endpoints are Indian airports.
-3. Otherwise: inside the India bbox, not near a reachable foreign airport
-   (KTM/CMB/DAC/…); origin/destination inferred from a watched climb‑out, a current
-   descent, or the metro the heading points at (`route_src: "inferred"`).
-
-Flights with no resolvable route are hidden from the board but still reachable via
-`/api/status/{number}`.
+| `SCHEDULE_PROVIDER` | _(none)_ | `aerodatabox` or `flightaware`; requires `SCHEDULE_API_KEY` |
+| `SCHEDULE_ALL` | `false` | Query the schedule API for every flight, not only unresolved ones |
+| `SCHEDULE_MAX_PER_HOUR` / `_PER_DAY` | `30` / `300` | Hard quota caps; calls pause when reached |
 
 ## API
 
-| Endpoint | Purpose |
+| Endpoint | Description |
 |---|---|
-| `GET /api/health` | counts, active sources, route‑resolver stats |
-| `GET /api/flights` | all current domestic flights (`dep`/`arr`/`phase`/`schedule`) |
-| `GET /api/flights/{hex}` | one flight + position trail |
-| `GET /api/status/{q}` | live status by flight no / registration / hex |
-| `GET /api/history/span` · `GET /api/history?at=` | replay data range / a snapshot of the sky at time `at` |
-| `GET /api/airports` · `GET /api/airlines` · `GET /api/stats` | bundled data / breakdown |
+| `GET /api/flights` | Current domestic flights with route, phase and schedule |
+| `GET /api/flights/{hex}` | One flight with its position trail |
+| `GET /api/status/{ident}` | Live status by flight number, registration or hex |
+| `GET /api/history/span` &middot; `GET /api/history?at=` | Playback data range and a snapshot at time `at` |
+| `GET /api/airports` &middot; `/api/airlines` &middot; `/api/stats` | Reference data and breakdowns |
+| `GET /api/health` | Counts, active sources, resolver statistics |
 | `GET /metrics` | Prometheus metrics |
-| `WS /ws` | pushes the full domestic list every poll |
+| `WS /ws` | Pushes the full domestic list every poll |
 
-Interactive schema at **`/docs`**.
+Interactive OpenAPI schema at `/docs`.
 
-## Testing
+## Tests and CI
 
 ```bash
 pip install -r backend/requirements-dev.txt
-pytest -q            # 47 tests on the pure logic
-ruff check backend/ && black --check backend/app backend/tests
+pytest -q
+ruff check backend/
+black --check backend/app backend/tests
 ```
 
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs lint + format + tests
-+ a Docker build on every push/PR.
+47 unit tests cover the classification, route-inference and provider-parsing logic.
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs linting, formatting,
+tests and a Docker build on every push and pull request.
+
+## Deployment
+
+- **Fly.io** - `fly launch --copy-config --no-deploy`, then `fly deploy`
+  ([`fly.toml`](fly.toml), region `bom`). Set the schedule key with
+  `fly secrets set SCHEDULE_API_KEY=...`.
+- **Render** - create a new Blueprint from this repository
+  ([`render.yaml`](render.yaml)).
 
 ## Limitations
 
-- The free public feed surfaces only ~90–130 domestic flights (real peak traffic is
-  ~350+). Only your own `readsb:` feeders or a paid aggregator lift that ceiling.
-- adsb.fi has near‑zero India coverage today; it’s wired in for when that changes.
-- Track‑history origin inference needs a feed that catches departures — it’s dormant
-  on the public feed, active with feeders.
-- Scheduled times need a keyed provider; without one the board shows route only.
+- Public feeds surface roughly 90-130 domestic flights against a real peak of 350+.
+  Full coverage requires a private `readsb` feeder or a paid aggregator.
+- Scheduled times, gate and delay require a keyed schedule provider.
+- Track-history origin inference needs a feed that captures departures and is inactive
+  on the public feed.
 
-## Roadmap
+## License
 
-- Airport pages (live arrival/departure boards per Indian airport)
-- Alerts (“VT‑XXX just departed BLR”)
-- Postgres + PostGIS + TimescaleDB option for real history
-- Explicit filter/label for state aircraft (IAF/BSF/VIP)
-
-## Notes
-
-- Respect each source’s terms (adsb.lol / adsb.fi are community, non‑abusive use).
-- Do not publish military or state aircraft positions.
-- Times are UTC internally, shown in IST in the UI.
+MIT - see [LICENSE](LICENSE). ADS-B data is used under each provider's community terms;
+military and state aircraft positions are not published.
