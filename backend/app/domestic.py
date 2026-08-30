@@ -69,6 +69,65 @@ def nearest_foreign(lat: float, lon: float, max_nm: float = 40.0) -> str | None:
     return None
 
 
+def _bearing_deg(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dl = math.radians(lon2 - lon1)
+    y = math.sin(dl) * math.cos(p2)
+    x = math.cos(p1) * math.sin(p2) - math.sin(p1) * math.cos(p2) * math.cos(dl)
+    return (math.degrees(math.atan2(y, x)) + 360) % 360
+
+
+# domestic flights are overwhelmingly to/from a metro, so a cruising flight's
+# heading is only trusted to point at one of these.
+_METRO_IATA = {"DEL", "BOM", "BLR", "MAA", "HYD", "CCU", "COK", "AMD", "PNQ",
+               "GOI", "GOX", "JAI", "LKO", "IXC", "PAT", "GAU", "BBI", "NAG", "VTZ"}
+
+
+def _airport_ahead(lat: float, lon: float, track_deg: float) -> str | None:
+    """The metro the current heading points at (120-850 nm ahead, bearing within
+    14 deg of track). Best guess for a cruising flight's destination."""
+    best = None
+    best_score = 1e9
+    for iata, _icao, alat, alon, _city in INDIAN_AIRPORTS:
+        if iata not in _METRO_IATA:
+            continue
+        d = _haversine_nm(lat, lon, alat, alon)
+        if not (120.0 <= d <= 850.0):
+            continue
+        err = abs((_bearing_deg(lat, lon, alat, alon) - track_deg + 180) % 360 - 180)
+        if err <= 14.0:
+            score = err + d / 800.0
+            if score < best_score:
+                best_score, best = score, iata
+    return best
+
+
+def infer_route(track, lat, lon, alt, vs, track_deg):
+    """Best-effort (dep, arr) from track history + heading, when no route DB has it.
+    dep = airport we actually watched it climb out of (>= 15000 ft gain since the
+    first track point, so a flight first seen on approach isn't mislabelled);
+    arr = airport it's descending into, else the metro its heading points at."""
+    dep = arr = None
+    if track and len(track) >= 2:
+        t0lat, t0lon, t0alt = track[0][1], track[0][2], track[0][3]
+        alts = [p[3] for p in track if p[3] is not None]
+        gained = (max(alts) - t0alt) if (alts and t0alt is not None) else 0
+        moved_nm = _haversine_nm(t0lat, t0lon, lat, lon)
+        # first seen low near an airport, has since climbed >=6000 ft, and is now
+        # airborne away from that spot -> that airport was the departure
+        if t0alt is not None and t0alt < 12000 and gained > 6000 and moved_nm > 25:
+            dep, _ = nearest_indian_airport(t0lat, t0lon, max_nm=40)
+
+    if alt is not None and alt < 13000 and (vs or 0) < -400:
+        arr, _ = nearest_indian_airport(lat, lon, max_nm=45)
+    elif alt is not None and alt > 15000 and track_deg is not None and abs(vs or 0) < 800:
+        arr = _airport_ahead(lat, lon, track_deg)
+
+    if dep and dep == arr:
+        dep = arr = None
+    return dep, arr
+
+
 def airline_from_callsign(cs: str | None) -> dict | None:
     if not cs or len(cs) < 3:
         return None
@@ -148,13 +207,8 @@ def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> d
     if track and nearest_foreign(track[0][1], track[0][2]) is not None:
         return None
 
-    dep = arr = None
     alt = ac.get("alt_ft")
     vs = ac.get("vs_fpm") or 0
-    if alt is not None and alt < 11000:
-        if vs > 250:
-            dep, _ = nearest_indian_airport(lat, lon, max_nm=45)
-        elif vs < -250:
-            arr, _ = nearest_indian_airport(lat, lon, max_nm=45)
+    dep, arr = infer_route(track, lat, lon, alt, vs, ac.get("track_deg"))
 
     return result(dep, arr, src="inferred" if (dep or arr) else None)

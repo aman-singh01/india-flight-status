@@ -39,6 +39,7 @@ async def _cycle(sources) -> None:
                 "lon": t.lon,
                 "alt_ft": t.alt_ft,
                 "vs_fpm": t.vs_fpm,
+                "track_deg": t.track_deg,
             },
             list(t.track),
         )
