@@ -29,7 +29,11 @@ log = logging.getLogger("app")
 
 
 def domestic_flights() -> list[dict]:
-    return [f for f in (flight_dict(t) for t in store.all()) if f]
+    # only surface flights we can name a full route for; the rest (odd ferry
+    # callsigns no provider has a route for) are hidden from the board / feed but
+    # still reachable via /api/status/{flight_no}.
+    out = (flight_dict(t) for t in store.all())
+    return [f for f in out if f and f["dep"] and f["arr"]]
 
 
 def payload() -> dict:
