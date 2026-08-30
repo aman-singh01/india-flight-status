@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import datetime as _dt
 import logging
+import re
 
 import httpx
 
@@ -70,7 +71,17 @@ class AeroDataBoxProvider:
         if r.status_code == 429:
             log.warning("aerodatabox rate-limited (429) for %s", num)
             return "ratelimited"  # signal to back off
+        if r.status_code in (401, 403):
+            log.warning(
+                "aerodatabox auth failed (%s) -- check the key is from the app subscribed "
+                "to AeroDataBox: %s",
+                r.status_code, r.text[:160],
+            )
+            return None
+        if r.status_code == 204:
+            return None  # AeroDataBox has no data for this flight number right now
         if r.status_code != 200:
+            log.warning("aerodatabox %s -> HTTP %s: %s", num, r.status_code, r.text[:120])
             return None
         try:
             legs = r.json()
@@ -78,6 +89,15 @@ class AeroDataBoxProvider:
             return None
         if not isinstance(legs, list) or not legs:
             return None
+
+        # a bare number (S5623, 6E544) can belong to a different carrier elsewhere
+        # in the world -- keep only legs flown by the expected airline
+        m = re.match(r"^([0-9A-Z]{2})", num)
+        want_iata = m.group(1) if m else None
+        if want_iata:
+            matched = [lg for lg in legs if ((lg.get("airline") or {}).get("iata") or "").upper() == want_iata]
+            if matched:
+                legs = matched  # prefer the leg actually flown by this carrier
 
         now = _dt.datetime.now(_dt.timezone.utc)
         best, best_gap = None, 1e18
