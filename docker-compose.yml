@@ -1,0 +1,22 @@
+services:
+  tracker:
+    build: .
+    image: india-flight-status
+    ports:
+      - "8000:8000"
+    environment:
+      SOURCES: adsblol,adsbfi
+      POLL_INTERVAL: "5"
+      STALE_TTL: "150"
+      DB_PATH: data/flights.db
+      ROUTE_CACHE_PATH: data/route_cache.json
+      # Optional keyed schedule API -- export these in your shell, or set here:
+      # SCHEDULE_PROVIDER: aerodatabox      # or: flightaware
+      # SCHEDULE_API_KEY: ${SCHEDULE_API_KEY}
+      # SCHEDULE_ALL: "false"
+    volumes:
+      - tracker-data:/app/backend/data   # keeps flights.db + route_cache.json across restarts
+    restart: unless-stopped
+
+volumes:
+  tracker-data:

@@ -1,0 +1,13 @@
+.git
+.github
+.claude
+**/.venv
+**/__pycache__
+**/*.pyc
+backend/.env
+backend/tests
+*.db
+*.db-journal
+*.sqlite
+route_cache.json
+*.log

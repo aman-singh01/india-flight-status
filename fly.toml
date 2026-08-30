@@ -1,0 +1,29 @@
+# fly.toml -- `fly launch --copy-config --no-deploy` then `fly deploy`
+# Optional schedule key:  fly secrets set SCHEDULE_API_KEY=...  (+ set SCHEDULE_PROVIDER in [env])
+app = "india-flight-status"
+primary_region = "bom"   # Mumbai -- close to the data source and users
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  SOURCES = "adsblol,adsbfi"
+  POLL_INTERVAL = "5"
+  STALE_TTL = "150"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+# Optional: persist flights.db + the route cache across full restarts.
+# fly volumes create tracker_data --region bom --size 1
+# [mounts]
+#   source = "tracker_data"
+#   destination = "/app/backend/data"

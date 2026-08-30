@@ -12,6 +12,7 @@ env/
 *.sqlite
 backend/.env
 backend/route_cache.json
+backend/data/
 *.log
 
 # Editors / OS
