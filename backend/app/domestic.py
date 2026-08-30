@@ -4,12 +4,14 @@ import json
 import math
 from pathlib import Path
 
+from . import route as route_db
 from .config import settings
 
 _DATA = Path(__file__).resolve().parent.parent / "data"
 
 _airports: list[dict] = json.loads((_DATA / "airports_in.json").read_text(encoding="utf-8"))
 _airlines: dict[str, dict] = json.loads((_DATA / "airlines_in.json").read_text(encoding="utf-8"))
+_INDIAN_IATA: set[str] = {a["iata"] for a in _airports}
 
 # (iata, icao, lat, lon, city)
 INDIAN_AIRPORTS: list[tuple[str, str, float, float, str]] = [
