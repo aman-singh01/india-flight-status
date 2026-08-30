@@ -4,7 +4,7 @@ Used only as a second stage, for callsigns the free adsbdb routeset doesn't know
 `build_provider()` returns None unless `SCHEDULE_PROVIDER` + `SCHEDULE_API_KEY` are
 set, so the app runs fine without any key.
 
-A provider's `route(flight_no)` returns, or None:
+A provider's `route(flight_no, callsign)` returns, or None (or "ratelimited"):
     {
       "dep", "arr",                      IATA codes
       "dep_city", "arr_city",
@@ -44,6 +44,16 @@ def _parse_dt(node: dict | None) -> str | None:
     return None
 
 
+def _iso(s: str | None) -> str | None:
+    """ISO8601 string (FlightAware style, may end in Z) -> normalized UTC ISO."""
+    if not s:
+        return None
+    try:
+        return _dt.datetime.fromisoformat(s.replace("Z", "+00:00")).isoformat()
+    except ValueError:
+        return None
+
+
 class AeroDataBoxProvider:
     """AeroDataBox via RapidAPI (has a modest free tier). Flight-number lookup."""
 
@@ -60,7 +70,7 @@ class AeroDataBoxProvider:
             },
         )
 
-    async def route(self, flight_no: str) -> dict | None:
+    async def route(self, flight_no: str, callsign: str | None = None) -> dict | None:
         num = flight_no.replace(" ", "").upper()
         url = f"https://{self._HOST}/flights/number/{num}"
         try:
@@ -142,7 +152,104 @@ class AeroDataBoxProvider:
         await self._client.aclose()
 
 
-_PROVIDERS = {"aerodatabox": AeroDataBoxProvider}
+class FlightAwareProvider:
+    """FlightAware AeroAPI (aeroapi.flightaware.com). Pay-per-query; the key goes
+    in SCHEDULE_API_KEY. Excellent coverage, ISO timestamps, gate/terminal/delay."""
+
+    name = "flightaware"
+    _BASE = "https://aeroapi.flightaware.com/aeroapi"
+    _IN_ICAO = ("VA", "VE", "VI", "VO")  # India's airport ICAO prefixes
+    _ACTIVE = {"en route", "taxiing", "departed", "airborne", "in flight", "arrived"}
+
+    def __init__(self, key: str) -> None:
+        self._client = httpx.AsyncClient(
+            timeout=15.0,
+            headers={"x-apikey": key, "Accept": "application/json"},
+        )
+
+    async def route(self, flight_no: str, callsign: str | None = None) -> dict | None:
+        # AeroAPI takes ICAO or IATA idents; the ICAO callsign is the safer key.
+        ident = (callsign or flight_no or "").replace(" ", "").upper()
+        if not ident:
+            return None
+        url = f"{self._BASE}/flights/{ident}"
+        try:
+            r = await self._client.get(url, params={"max_pages": 1})
+        except httpx.HTTPError as e:
+            log.debug("flightaware %s: %s", ident, e)
+            return None
+        if r.status_code == 429:
+            log.warning("flightaware rate-limited (429) for %s", ident)
+            return "ratelimited"
+        if r.status_code in (401, 403):
+            log.warning("flightaware auth failed (%s) -- check the AeroAPI key: %s",
+                        r.status_code, r.text[:160])
+            return None
+        if r.status_code in (400, 404):
+            return None  # unknown ident / no data
+        if r.status_code != 200:
+            log.warning("flightaware %s -> HTTP %s: %s", ident, r.status_code, r.text[:120])
+            return None
+        try:
+            flights = r.json().get("flights") or []
+        except ValueError:
+            return None
+        if not flights:
+            return None
+
+        now = _dt.datetime.now(_dt.timezone.utc)
+
+        def gap(fl: dict) -> float:
+            for k in ("scheduled_out", "scheduled_off", "estimated_out"):
+                iso = _iso(fl.get(k))
+                if iso:
+                    try:
+                        return abs((_dt.datetime.fromisoformat(iso) - now).total_seconds())
+                    except ValueError:
+                        pass
+            return 1e17
+
+        active = [f for f in flights if (f.get("status") or "").lower() in self._ACTIVE]
+        best = min(active or flights, key=gap)
+
+        o = best.get("origin") or {}
+        d = best.get("destination") or {}
+        dep = (o.get("code_iata") or o.get("code_icao") or "").upper() or None
+        arr = (d.get("code_iata") or d.get("code_icao") or "").upper() or None
+        if not dep or not arr:
+            return None
+
+        def country(node: dict) -> str | None:
+            return "IN" if (node.get("code_icao") or "").upper()[:2] in self._IN_ICAO else None
+
+        return {
+            "dep": dep,
+            "arr": arr,
+            "dep_city": o.get("city"),
+            "arr_city": d.get("city"),
+            "dep_country": country(o),
+            "arr_country": country(d),
+            "sched_dep": _iso(best.get("scheduled_out") or best.get("scheduled_off")),
+            "sched_arr": _iso(best.get("scheduled_in") or best.get("scheduled_on")),
+            "est_arr": _iso(
+                best.get("estimated_in")
+                or best.get("actual_in")
+                or best.get("estimated_on")
+                or best.get("actual_on")
+            ),
+            "sched_status": best.get("status"),
+            "gate": best.get("gate_destination"),
+            "terminal": best.get("terminal_destination"),
+        }
+
+    async def aclose(self) -> None:
+        await self._client.aclose()
+
+
+_PROVIDERS = {
+    "aerodatabox": AeroDataBoxProvider,
+    "flightaware": FlightAwareProvider,
+}
 
 
 def build_provider():

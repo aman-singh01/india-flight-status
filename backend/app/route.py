@@ -234,7 +234,7 @@ async def schedule_loop() -> None:
             _sched_hits.append(time.time())
             _sched_tried[cs] = time.time()
             try:
-                res = await provider.route(flight_no)
+                res = await provider.route(flight_no, cs)
             except Exception as e:  # noqa: BLE001
                 log.debug("schedule provider error for %s: %s", flight_no, e)
                 res = None
