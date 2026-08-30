@@ -60,16 +60,20 @@ function bandColor(alt) {
   return c;
 }
 
-// Top-down silhouettes, nose pointing north (rotated to heading by the marker).
+// Top-down silhouettes in a 32x32 box, nose north, symmetric about x=16
+// (the marker rotates them to the aircraft's heading).
 const SILHOUETTE = {
   jet:
-    "M16 2 L17.5 6 L17.5 12 L29 19 L29 21 L17.5 18 L17.5 25 L20 28 L20 29.5 " +
-    "L16 28 L12 29.5 L12 28 L14.5 25 L14.5 18 L3 21 L3 19 L14.5 12 L14.5 6 Z",
+    "M16 1.5 C17 1.7 17.6 3.3 17.7 5.6 L17.9 12.8 L30.6 19.2 L31 20.6 L18 18.8 " +
+    "L18.1 25.4 L21.8 28.4 L22.1 29.5 L17.2 29.4 L16 30.8 L14.8 29.4 L9.9 29.5 " +
+    "L10.2 28.4 L13.9 25.4 L14 18.8 L1 20.6 L1.4 19.2 L14.1 12.8 L14.3 5.6 " +
+    "C14.4 3.3 15 1.7 16 1.5 Z",
   prop:
-    "M16 3 L17.2 7 L17.2 13 L28 16.5 L28 18.5 L17.2 17 L17.2 24 L19.4 27 L19.4 28.5 " +
-    "L16 27.6 L12.6 28.5 L12.6 27 L14.8 24 L14.8 17 L4 18.5 L4 16.5 L14.8 13 L14.8 7 Z",
+    "M16 3 C16.8 3.2 17.3 4.4 17.4 6.2 L17.5 13 L29 14.6 L29.3 16 L17.5 16.2 " +
+    "L17.6 24.2 L20.9 27 L21.1 28.1 L16 27.7 L10.9 28.1 L11.1 27 L14.4 24.2 " +
+    "L14.5 16.2 L2.7 16 L3 14.6 L14.5 13 L14.6 6.2 C14.7 4.4 15.2 3.2 16 3 Z",
 };
-const CAT_SIZE = { prop: 20, jet: 26, heavy: 32 };
+const CAT_SIZE = { prop: 22, jet: 27, heavy: 33 };
 
 function category(type) {
   const t = (type || "").toUpperCase();
@@ -110,7 +114,8 @@ function planeElement(cat) {
   d.innerHTML =
     `<svg viewBox="0 0 32 32" width="${s}" height="${s}" aria-hidden="true">` +
     `<path d="${SILHOUETTE[cat === "prop" ? "prop" : "jet"]}" fill="currentColor" ` +
-    `stroke="rgba(0,0,0,0.55)" stroke-width="1" stroke-linejoin="round"/></svg>`;
+    `stroke="#fff" stroke-opacity="0.92" stroke-width="1.15" ` +
+    `stroke-linejoin="round" stroke-linecap="round"/></svg>`;
   return d;
 }
 

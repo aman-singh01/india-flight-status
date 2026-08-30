@@ -32,12 +32,14 @@ body {
 .plane { color: #94a3b8; line-height: 0; will-change: transform; }
 .plane svg {
   display: block; overflow: visible;
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+  transition: filter 0.15s ease;
 }
+.plane:hover svg { filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.55)); }
 .plane.sel svg {
-  filter: drop-shadow(0 0 5px #38bdf8) drop-shadow(0 0 2px #38bdf8);
+  filter: drop-shadow(0 0 6px var(--accent)) drop-shadow(0 0 2px var(--accent));
 }
-.plane.sel svg path { stroke: #ffffff; stroke-width: 1.6; }
+.plane.sel svg path { stroke: #ffffff; stroke-width: 1.7; }
 .maplibregl-marker { cursor: pointer; }
 
 /* basemap switcher */
