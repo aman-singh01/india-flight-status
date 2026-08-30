@@ -2,6 +2,11 @@
 "use strict";
 
 const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services";
+const STADIA = "https://tiles.stadiamaps.com/tiles";
+const OMT_ATTR =
+  '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> ' +
+  '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> ' +
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 function rasterStyle(layers, bg) {
   const sources = {};
@@ -10,34 +15,32 @@ function rasterStyle(layers, bg) {
     sources["s" + i] = {
       type: "raster",
       tiles: [l.url],
-      tileSize: 256,
+      tileSize: l.tileSize || 256,
       maxzoom: l.maxzoom || 19,
-      attribution: "Tiles &copy; Esri, Maxar, Earthstar Geographics",
+      attribution: l.attribution || "",
     };
     lyrs.push({ id: "s" + i, type: "raster", source: "s" + i });
   });
   return { version: 8, sources, layers: lyrs };
 }
 
-// No-key basemaps. `dark` is the default; the switcher offers realism options.
+// No-key basemaps. Stadia's Alidade Smooth is a clean modern vector-baked raster
+// (keyless from localhost); Esri imagery for satellite.
 const STYLES = {
   dark: rasterStyle(
-    [
-      { url: ESRI + "/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", maxzoom: 16 },
-      { url: ESRI + "/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", maxzoom: 16 },
-    ],
-    "#0b1020"
+    [{ url: STADIA + "/alidade_smooth_dark/{z}/{x}/{y}@2x.png", tileSize: 256, maxzoom: 20, attribution: OMT_ATTR }],
+    "#0a0c12"
+  ),
+  light: rasterStyle(
+    [{ url: STADIA + "/alidade_smooth/{z}/{x}/{y}@2x.png", tileSize: 256, maxzoom: 20, attribution: OMT_ATTR }],
+    "#eceff3"
   ),
   satellite: rasterStyle(
     [
-      { url: ESRI + "/World_Imagery/MapServer/tile/{z}/{y}/{x}", maxzoom: 19 },
+      { url: ESRI + "/World_Imagery/MapServer/tile/{z}/{y}/{x}", maxzoom: 19, attribution: "Imagery &copy; Esri, Maxar, Earthstar Geographics" },
       { url: ESRI + "/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", maxzoom: 19 },
     ],
-    "#0b1020"
-  ),
-  terrain: rasterStyle(
-    [{ url: ESRI + "/World_Topo_Map/MapServer/tile/{z}/{y}/{x}", maxzoom: 19 }],
-    "#e8e5df"
+    "#0a0c12"
   ),
 };
 
@@ -217,7 +220,7 @@ function drawOverlay() {
   if (r.width === 0 || r.height === 0) return;
   ctx.clearRect(0, 0, r.width, r.height);
   const z = map.getZoom();
-  const dark = state.basemap !== "terrain";
+  const dark = state.basemap !== "light";
 
   // airports
   const dot = dark ? "rgba(255,255,255,0.30)" : "rgba(20,30,50,0.45)";
