@@ -6,11 +6,11 @@ import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from . import db, schemas
+from . import db, metrics, schemas
 from . import route as route_db
 from .config import settings
 from .domestic import _airlines, _airports
@@ -167,6 +167,12 @@ async def ws_endpoint(websocket: WebSocket) -> None:
         manager.disconnect(websocket)
     except Exception:
         manager.disconnect(websocket)
+
+
+@app.get("/metrics", include_in_schema=False)
+async def prometheus_metrics():
+    body, content_type = metrics.render()
+    return Response(body, media_type=content_type)
 
 
 _frontend = Path(__file__).resolve().parent.parent.parent / "frontend"

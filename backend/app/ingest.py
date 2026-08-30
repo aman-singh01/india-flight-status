@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 
-from . import db
+from . import db, metrics
 from . import route as route_db
 from .config import settings
 from .domestic import airline_from_callsign, classify
@@ -21,6 +21,7 @@ async def _cycle(sources) -> None:
         except Exception as e:  # noqa: BLE001 - one bad source shouldn't kill ingest
             log.warning("source %s failed: %s", src.name, e)
             continue
+        metrics.source_aircraft.labels(source=src.name).set(len(items))
         for it in items:
             merged[it["hex"]] = it  # later source in SOURCES wins on conflict
 
@@ -53,6 +54,11 @@ async def _cycle(sources) -> None:
         await db.write_positions(store.all())
 
     rs = route_db.stats()
+    metrics.ingest_cycles.inc()
+    metrics.aircraft_tracked.set(len(store.all()))
+    metrics.flights_domestic.set(domestic)
+    metrics.routes_resolved.set(rs["resolved"])
+    metrics.schedule_calls_24h.set(rs["sched_calls_24h"])
     log.info(
         "ingest: %d tracked, %d domestic  (routes %d, adsbdb-q %d, sched-q %d, sched calls %d/1h)",
         len(store.all()),

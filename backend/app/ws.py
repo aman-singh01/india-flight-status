@@ -6,6 +6,8 @@ from collections.abc import Callable
 
 from fastapi import WebSocket
 
+from . import metrics
+
 
 class WSManager:
     def __init__(self) -> None:
@@ -14,9 +16,11 @@ class WSManager:
     async def connect(self, ws: WebSocket) -> None:
         await ws.accept()
         self.active.add(ws)
+        metrics.ws_clients.set(len(self.active))
 
     def disconnect(self, ws: WebSocket) -> None:
         self.active.discard(ws)
+        metrics.ws_clients.set(len(self.active))
 
     async def broadcast(self, payload: dict) -> None:
         data = json.dumps(payload, separators=(",", ":"))
