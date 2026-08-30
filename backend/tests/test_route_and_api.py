@@ -128,3 +128,34 @@ async def test_airports_and_airlines_handlers():
     assert ap["count"] > 50 and any(a["iata"] == "DEL" for a in ap["airports"])
     al = await main.airlines()
     assert "IGO" in al and al["IGO"]["name"] == "IndiGo"
+
+
+# ---- response schemas match the actual payloads ----
+
+
+def test_schemas_validate_real_payloads():
+    from app import schemas
+
+    t = _tracked(
+        klass={
+            "status": "domestic",
+            "airline": "IndiGo",
+            "airline_icao": "IGO",
+            "flight_no": "6E2416",
+            "dep": "DEL",
+            "arr": "BOM",
+            "dep_city": "New Delhi",
+            "arr_city": "Mumbai",
+            "route_src": "schedule",
+        }
+    )
+    d = flight_dict(t)
+    schemas.Flight(**d)  # /api/flights row
+    schemas.FlightDetail(**{**d, "track": [[1.0, 21.0, 78.0, 36000.0]]})
+    schemas.FlightsResponse(count=1, flights=[d])
+    schemas.Health(ok=True, tracked=1, domestic=1, sources="demo", routes=route.stats())
+    schemas.AirportsResponse(
+        count=1,
+        airports=[{"iata": "DEL", "icao": "VIDP", "name": "x", "city": "Delhi", "lat": 1.0, "lon": 2.0}],
+    )
+    schemas.FlightStatus(query="6E1", found=False, reason="none")

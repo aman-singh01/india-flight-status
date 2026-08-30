@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from . import db
+from . import db, schemas
 from . import route as route_db
 from .config import settings
 from .domestic import _airlines, _airports
@@ -59,7 +59,23 @@ async def lifespan(app: FastAPI):
         await db.close()
 
 
-app = FastAPI(title="India Domestic Flight Tracker", version="0.1.0", lifespan=lifespan)
+app = FastAPI(
+    title="India Flight Status",
+    version="0.1.0",
+    summary="Live status of domestic flights over India, from public ADS-B data.",
+    description=(
+        "Every response is served straight from an in-memory store fed by a pluggable "
+        "set of ADS-B sources. Routes come from the free adsbdb routeset, or a keyed "
+        "schedule API when configured. See the repo README for architecture."
+    ),
+    lifespan=lifespan,
+    openapi_tags=[
+        {"name": "flights", "description": "The live domestic-flight feed."},
+        {"name": "status", "description": "Look up one flight by number / registration / hex."},
+        {"name": "reference", "description": "Bundled airport & airline data, aggregate stats."},
+        {"name": "ops", "description": "Health and ingest/resolver stats."},
+    ],
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[o.strip() for o in settings.cors_origins.split(",")],
@@ -68,8 +84,9 @@ app.add_middleware(
 )
 
 
-@app.get("/api/health")
-async def health() -> dict:
+@app.get("/api/health", response_model=schemas.Health, tags=["ops"])
+async def health():
+    """Service health plus tracked/domestic counts and route-resolver progress."""
     return {
         "ok": True,
         "tracked": len(store.all()),
@@ -79,20 +96,26 @@ async def health() -> dict:
     }
 
 
-@app.get("/api/flights")
-async def flights() -> dict:
+@app.get("/api/flights", response_model=schemas.FlightsResponse, tags=["flights"])
+async def flights():
+    """Every domestic flight currently in coverage with a resolvable origin & destination."""
     fl = domestic_flights()
     return {"count": len(fl), "flights": fl}
 
 
-@app.get("/api/status/{query}")
-async def flight_status(query: str) -> dict:
-    """Live status for a flight number (6E203 / AI2984 / IGO203), registration or hex."""
+@app.get("/api/status/{query}", response_model=schemas.FlightStatus, tags=["status"])
+async def flight_status(query: str):
+    """Live status for a flight number (`6E203` / `AI2984` / `IGO203`), registration or ICAO hex.
+
+    Works even for flights hidden from `/api/flights` (no resolvable route). Returns
+    `found: false` with a reason when nothing in coverage matches.
+    """
     return status_lookup(query)
 
 
-@app.get("/api/flights/{hexid}")
-async def flight_detail(hexid: str) -> dict:
+@app.get("/api/flights/{hexid}", response_model=schemas.FlightDetail, tags=["flights"])
+async def flight_detail(hexid: str):
+    """One flight by ICAO hex, with its recent position trail."""
     t = store.get(hexid.lower())
     if t is None or not t.klass:
         raise HTTPException(status_code=404, detail="not a tracked domestic flight")
@@ -104,18 +127,21 @@ async def flight_detail(hexid: str) -> dict:
     return d
 
 
-@app.get("/api/airports")
-async def airports() -> dict:
+@app.get("/api/airports", response_model=schemas.AirportsResponse, tags=["reference"])
+async def airports():
+    """The bundled Indian airport list used for route inference and place names."""
     return {"count": len(_airports), "airports": _airports}
 
 
-@app.get("/api/airlines")
-async def airlines() -> dict:
+@app.get("/api/airlines", response_model=dict[str, schemas.AirlineInfo], tags=["reference"])
+async def airlines():
+    """Indian scheduled operators, keyed by ICAO callsign prefix."""
     return _airlines
 
 
-@app.get("/api/stats")
-async def stats() -> dict:
+@app.get("/api/stats", response_model=schemas.Stats, tags=["reference"])
+async def stats():
+    """Totals and a by-airline breakdown of the current domestic feed."""
     fl = domestic_flights()
     by_airline: dict[str, int] = {}
     airborne = 0
