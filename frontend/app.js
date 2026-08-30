@@ -3,6 +3,16 @@
 
 const el = (id) => document.getElementById(id);
 
+let _toastTimer = null;
+function toast(msg, ms = 3500) {
+  const t = el("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.classList.remove("show"), ms);
+}
+
 /* ================================================================
  *  STATUS BOARD  (default screen: live status of every domestic flight)
  * ================================================================ */
@@ -527,7 +537,7 @@ async function connectFeed() {
   connectWS();
 }
 
-let ws, wsPing;
+let ws, wsPing, wsDropped = false;
 function connectWS() {
   const proto = location.protocol === "https:" ? "wss" : "ws";
   ws = new WebSocket(`${proto}://${location.host}/ws`);
@@ -535,6 +545,8 @@ function connectWS() {
     feedLive = true;
     setStatus("live", "ok");
     renderBoard();
+    if (wsDropped) toast("Reconnected");
+    wsDropped = false;
     clearInterval(wsPing);
     wsPing = setInterval(() => ws.readyState === 1 && ws.send("ping"), 25000);
   };
@@ -543,7 +555,9 @@ function connectWS() {
     if (m.type === "flights") onFlights(m.flights || []);
   };
   ws.onclose = () => {
+    if (feedLive) toast("Connection lost — reconnecting…", 6000);
     feedLive = false;
+    wsDropped = true;
     setStatus("reconnecting…", "bad");
     renderBoard();
     clearInterval(wsPing);
