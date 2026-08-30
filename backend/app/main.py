@@ -15,6 +15,7 @@ from .config import settings
 from .domestic import _airlines, _airports
 from .ingest import run_ingest
 from .models import flight_dict
+from .status import lookup as status_lookup
 from .store import store
 from .ws import manager, push_loop
 
@@ -74,6 +75,12 @@ async def health() -> dict:
 async def flights() -> dict:
     fl = domestic_flights()
     return {"count": len(fl), "flights": fl}
+
+
+@app.get("/api/status/{query}")
+async def flight_status(query: str) -> dict:
+    """Live status for a flight number (6E203 / AI2984 / IGO203), registration or hex."""
+    return status_lookup(query)
 
 
 @app.get("/api/flights/{hexid}")

@@ -3,60 +3,80 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>India Domestic Flight Tracker</title>
+  <title>India Flight Status</title>
   <link rel="preconnect" href="https://unpkg.com" />
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
   <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-  <div id="map"></div>
+  <!-- ===== STATUS VIEW (default) ===== -->
+  <section id="status-view" class="view">
+    <div class="sv-box">
+      <h1 class="sv-title"><span class="dot"></span> India Flight Status</h1>
+      <p class="sv-tag">Live status of any Indian domestic flight, straight from ADS&#8209;B.</p>
 
-  <header id="topbar">
-    <div class="brand">
-      <span class="dot"></span>
-      <strong>India Domestic</strong> Flight Tracker
-    </div>
-    <div id="counts">
-      <span id="c-live">0</span> flights
-      <span class="sep">·</span>
-      <span id="c-air">0</span> airborne
-      <span class="sep">·</span>
-      <span id="c-status" class="muted">connecting…</span>
-    </div>
-  </header>
+      <form id="sv-form" autocomplete="off">
+        <input id="sv-q" type="text" inputmode="text" spellcheck="false"
+               placeholder="Flight number   e.g.  6E2416   AI2984   QP1401" />
+        <button type="submit">Check status</button>
+      </form>
 
-  <section id="filters">
-    <label>
-      Airline
-      <select id="f-airline"><option value="">All airlines</option></select>
-    </label>
-    <label>
-      Min altitude <span id="f-alt-val" class="mono">0 ft</span>
-      <input id="f-alt" type="range" min="0" max="40000" step="1000" value="0" />
-    </label>
-    <label>
-      Search
-      <input id="f-search" type="text" placeholder="6E203, VT-…, callsign" autocomplete="off" />
-    </label>
-    <ul id="legend">
-      <li><i style="background:#94a3b8"></i>&lt;3k</li>
-      <li><i style="background:#f87171"></i>3k</li>
-      <li><i style="background:#fb923c"></i>10k</li>
-      <li><i style="background:#fbbf24"></i>20k</li>
-      <li><i style="background:#4ade80"></i>30k</li>
-      <li><i style="background:#38bdf8"></i>38k+</li>
-    </ul>
+      <div id="sv-examples" class="sv-examples" aria-label="live examples"></div>
+      <div id="sv-result" aria-live="polite"></div>
+    </div>
+    <button class="view-switch" data-goto="map">Live map &rarr;</button>
   </section>
 
-  <aside id="detail" class="hidden">
-    <button id="detail-close" aria-label="close">×</button>
-    <div id="detail-body"></div>
-  </aside>
+  <!-- ===== MAP VIEW (secondary) ===== -->
+  <div id="map-view" class="view hidden">
+    <div id="map"></div>
 
-  <div id="basemap">
-    <button data-style="dark" class="active">Dark</button>
-    <button data-style="light">Light</button>
-    <button data-style="satellite">Satellite</button>
+    <header id="topbar">
+      <div class="brand"><span class="dot"></span> <strong>India Domestic</strong> Flight Tracker</div>
+      <div id="counts">
+        <span id="c-live">0</span> flights
+        <span class="sep">·</span>
+        <span id="c-air">0</span> airborne
+        <span class="sep">·</span>
+        <span id="c-status" class="muted">connecting…</span>
+      </div>
+    </header>
+
+    <section id="filters">
+      <label>
+        Airline
+        <select id="f-airline"><option value="">All airlines</option></select>
+      </label>
+      <label>
+        Min altitude <span id="f-alt-val" class="mono">0 ft</span>
+        <input id="f-alt" type="range" min="0" max="40000" step="1000" value="0" />
+      </label>
+      <label>
+        Search
+        <input id="f-search" type="text" placeholder="6E203, VT-…, callsign" autocomplete="off" />
+      </label>
+      <ul id="legend">
+        <li><i style="background:#94a3b8"></i>&lt;3k</li>
+        <li><i style="background:#f87171"></i>3k</li>
+        <li><i style="background:#fb923c"></i>10k</li>
+        <li><i style="background:#fbbf24"></i>20k</li>
+        <li><i style="background:#4ade80"></i>30k</li>
+        <li><i style="background:#38bdf8"></i>38k+</li>
+      </ul>
+    </section>
+
+    <aside id="detail" class="hidden">
+      <button id="detail-close" aria-label="close">×</button>
+      <div id="detail-body"></div>
+    </aside>
+
+    <div id="basemap">
+      <button data-style="dark" class="active">Dark</button>
+      <button data-style="light">Light</button>
+      <button data-style="satellite">Satellite</button>
+    </div>
+
+    <button class="view-switch" data-goto="status">&larr; Flight status</button>
   </div>
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>

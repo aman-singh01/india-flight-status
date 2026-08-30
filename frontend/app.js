@@ -1,5 +1,200 @@
-/* India Domestic Flight Tracker - frontend */
+/* India Flight Status + live map */
 "use strict";
+
+const el = (id) => document.getElementById(id);
+
+/* ================================================================
+ *  STATUS VIEW  (default screen: type a flight number, get status)
+ * ================================================================ */
+
+const STATUS_COLORS = {
+  "On ground": "#94a3b8",
+  Departed: "#fb923c",
+  "On approach": "#38bdf8",
+  "En route": "#4ade80",
+  Airborne: "#4ade80",
+};
+
+let svTimer = null;
+let svLastQuery = "";
+
+el("sv-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  runStatus(el("sv-q").value);
+});
+
+async function loadExamples() {
+  try {
+    const j = await (await fetch("/api/flights")).json();
+    const nums = [...new Set((j.flights || []).map((f) => f.flight_no).filter((n) => n && /^[0-9A-Z]{2}\d/.test(n)))];
+    // prefer plain numeric flight numbers for the chips
+    nums.sort((a, b) => (/\d$/.test(a) ? 0 : 1) - (/\d$/.test(b) ? 0 : 1));
+    const wrap = el("sv-examples");
+    wrap.innerHTML = "<span>Try:</span>";
+    for (const n of nums.slice(0, 4)) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = n;
+      b.addEventListener("click", () => {
+        el("sv-q").value = n;
+        runStatus(n);
+      });
+      wrap.appendChild(b);
+    }
+  } catch {
+    /* no chips if the feed isn't up yet */
+  }
+}
+
+async function runStatus(query) {
+  query = (query || "").trim();
+  if (!query) return;
+  svLastQuery = query;
+  clearInterval(svTimer);
+
+  const box = el("sv-result");
+  box.className = "loading";
+  box.textContent = "Checking…";
+
+  let d;
+  try {
+    d = await (await fetch("/api/status/" + encodeURIComponent(query))).json();
+  } catch {
+    box.className = "";
+    box.innerHTML = `<div class="sv-card err"><p>Couldn't reach the server. Is it running?</p></div>`;
+    return;
+  }
+  if (svLastQuery !== query) return; // superseded
+
+  box.className = "";
+  box.innerHTML = d.found ? cardFound(d) : cardMissing(d);
+
+  if (d.found) {
+    const btn = box.querySelector("[data-track]");
+    if (btn) btn.addEventListener("click", () => trackOnMap(d.hex));
+    svTimer = setInterval(() => {
+      if (svLastQuery === query) refreshStatus(query);
+    }, 15000);
+  }
+}
+
+async function refreshStatus(query) {
+  try {
+    const d = await (await fetch("/api/status/" + encodeURIComponent(query))).json();
+    if (svLastQuery !== query) return;
+    const box = el("sv-result");
+    box.innerHTML = d.found ? cardFound(d) : cardMissing(d);
+    const btn = box.querySelector("[data-track]");
+    if (btn) btn.addEventListener("click", () => trackOnMap(d.hex));
+  } catch {
+    /* keep the last card on a transient error */
+  }
+}
+
+function fmt(n, suffix = "") {
+  return n == null ? "—" : Number(n).toLocaleString() + suffix;
+}
+
+function ago(ts) {
+  if (!ts) return "—";
+  const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
+  if (s < 60) return s + "s ago";
+  if (s < 3600) return Math.round(s / 60) + " min ago";
+  return Math.round(s / 3600) + " h ago";
+}
+
+function since(ts) {
+  if (!ts) return "—";
+  const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
+  if (s < 3600) return Math.round(s / 60) + " min";
+  const h = Math.floor(s / 3600);
+  return h + " h " + Math.round((s % 3600) / 60) + " min";
+}
+
+function cardFound(d) {
+  const color = STATUS_COLORS[d.status] || "#4ade80";
+  const dep = d.origin || "•••";
+  const arr = d.destination || "•••";
+  const row = (k, v) => `<div><span class="k">${k}</span><span class="v mono">${v}</span></div>`;
+
+  return `
+  <div class="sv-card">
+    <div class="sv-card-top">
+      <div>
+        <div class="sv-flightno">${d.flight_no || d.callsign}</div>
+        <div class="sv-airline">${[d.airline, d.aircraft_type, d.registration].filter(Boolean).join(" · ") || "—"}</div>
+      </div>
+      <span class="sv-badge" style="--c:${color}">${d.status}</span>
+    </div>
+
+    <div class="sv-route">
+      <span class="ap">${dep}</span>
+      <span class="line"><span class="plane">✈</span></span>
+      <span class="ap">${arr}</span>
+    </div>
+    <div class="sv-detail">${d.detail}${d.near ? " · " + d.near : ""}</div>
+
+    <div class="sv-grid">
+      ${row("Altitude", fmt(d.altitude_ft, " ft"))}
+      ${row("Ground speed", fmt(d.ground_speed_kt, " kt"))}
+      ${row("Vertical rate", fmt(d.vertical_rate_fpm, " fpm"))}
+      ${row("Heading", d.heading_deg == null ? "—" : d.heading_deg + "°")}
+      ${row("Position", d.lat != null ? d.lat + ", " + d.lon : "—")}
+      ${row("Callsign", d.callsign || "—")}
+      ${row("Tracked for", since(d.tracked_since))}
+      ${row("Updated", ago(d.last_update))}
+    </div>
+
+    <div class="sv-foot">
+      <button data-track class="sv-track">Track on map →</button>
+      <p class="sv-note">${d.note}</p>
+    </div>
+  </div>`;
+}
+
+function cardMissing(d) {
+  return `
+  <div class="sv-card err">
+    <div class="sv-flightno">${d.query}</div>
+    <p class="sv-miss">${d.reason}</p>
+    ${
+      d.tried && d.tried.length
+        ? `<p class="sv-note">Looked for callsign${d.tried.length > 1 ? "s" : ""}: ${d.tried.join(", ")}</p>`
+        : ""
+    }
+    <button class="sv-track" onclick="showView('map')">Browse the live map →</button>
+  </div>`;
+}
+
+/* view switching */
+function showView(name) {
+  const status = name !== "map";
+  el("status-view").classList.toggle("hidden", !status);
+  el("map-view").classList.toggle("hidden", status);
+  if (!status) {
+    ensureMap();
+    if (map) setTimeout(() => map.resize(), 40);
+  }
+}
+document.querySelectorAll(".view-switch").forEach((b) =>
+  b.addEventListener("click", () => showView(b.dataset.goto))
+);
+
+async function trackOnMap(hex) {
+  showView("map");
+  ensureMap();
+  // wait until the live feed has this aircraft, then select + fly to it
+  for (let i = 0; i < 40 && !(planes && planes.get(hex)); i++) {
+    await new Promise((r) => setTimeout(r, 250));
+  }
+  if (planes && planes.get(hex)) selectFlight(hex);
+}
+
+loadExamples();
+
+/* ================================================================
+ *  MAP VIEW  (lazy: only built the first time it is shown)
+ * ================================================================ */
 
 const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services";
 const STADIA = "https://tiles.stadiamaps.com/tiles";
@@ -24,8 +219,6 @@ function rasterStyle(layers, bg) {
   return { version: 8, sources, layers: lyrs };
 }
 
-// No-key basemaps. Stadia's Alidade Smooth is a clean modern vector-baked raster
-// (keyless from localhost); Esri imagery for satellite.
 const STYLES = {
   dark: rasterStyle(
     [{ url: STADIA + "/alidade_smooth_dark/{z}/{x}/{y}@2x.png", tileSize: 256, maxzoom: 20, attribution: OMT_ATTR }],
@@ -37,31 +230,23 @@ const STYLES = {
   ),
   satellite: rasterStyle(
     [
-      { url: ESRI + "/World_Imagery/MapServer/tile/{z}/{y}/{x}", maxzoom: 19, attribution: "Imagery &copy; Esri, Maxar, Earthstar Geographics" },
+      { url: ESRI + "/World_Imagery/MapServer/tile/{z}/{y}/{x}", maxzoom: 19, attribution: "Imagery &copy; Esri" },
       { url: ESRI + "/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", maxzoom: 19 },
     ],
     "#0a0c12"
   ),
 };
 
-// Altitude bands (ft) -> colour. Matches the legend in index.html.
 const ALT_BANDS = [
-  [0, "#94a3b8"],
-  [3000, "#f87171"],
-  [10000, "#fb923c"],
-  [20000, "#fbbf24"],
-  [30000, "#4ade80"],
-  [38000, "#38bdf8"],
+  [0, "#94a3b8"], [3000, "#f87171"], [10000, "#fb923c"],
+  [20000, "#fbbf24"], [30000, "#4ade80"], [38000, "#38bdf8"],
 ];
-
 function bandColor(alt) {
   let c = ALT_BANDS[0][1];
   for (const [floor, col] of ALT_BANDS) if ((alt || 0) >= floor) c = col;
   return c;
 }
 
-// Top-down silhouettes in a 32x32 box, nose north, symmetric about x=16
-// (the marker rotates them to the aircraft's heading).
 const SILHOUETTE = {
   jet:
     "M16 1.5 C17 1.7 17.6 3.3 17.7 5.6 L17.9 12.8 L30.6 19.2 L31 20.6 L18 18.8 " +
@@ -74,7 +259,6 @@ const SILHOUETTE = {
     "L14.5 16.2 L2.7 16 L3 14.6 L14.5 13 L14.6 6.2 C14.7 4.4 15.2 3.2 16 3 Z",
 };
 const CAT_SIZE = { prop: 22, jet: 27, heavy: 33 };
-
 function category(type) {
   const t = (type || "").toUpperCase();
   if (/^(AT[0-9]|AT4|AT7|DH8|SF3|J41|E12|E19|B19|C208|D22|L410|BE[0-9])/.test(t)) return "prop";
@@ -82,30 +266,46 @@ function category(type) {
   return "jet";
 }
 
-const state = {
-  flights: [],
-  selected: null,
-  detailTimer: null,
-  airlineKeys: "",
-  basemap: "dark",
-};
+const state = { flights: [], selected: null, detailTimer: null, airlineKeys: "", basemap: "dark" };
+const planes = new Map();
+let map = null;
+let mapReady = false;
+let mapInited = false;
 
-const el = (id) => document.getElementById(id);
+function ensureMap() {
+  if (mapReady) return;
+  mapReady = true;
 
-const map = new maplibregl.Map({
-  container: "map",
-  style: STYLES.dark,
-  center: [80.9, 22.6],
-  zoom: 4.4,
-  minZoom: 3,
-  maxBounds: [[58, 2], [102, 40]],
-  attributionControl: { compact: true },
-});
-map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+  map = new maplibregl.Map({
+    container: "map",
+    style: STYLES.dark,
+    center: [80.9, 22.6],
+    zoom: 4.4,
+    minZoom: 3,
+    maxBounds: [[58, 2], [102, 40]],
+    attributionControl: { compact: true },
+  });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+  map.on("error", (e) => console.warn("map error:", e && e.error));
 
-/* ---------- plane markers with smooth dead-reckoned motion ---------- */
+  document.querySelectorAll("#basemap button").forEach((b) =>
+    b.addEventListener("click", () => setBasemap(b.dataset.style))
+  );
 
-const planes = new Map(); // hex -> { f, marker, anchorTs, prevDisp, easeStart, disp, cat }
+  const start = () => {
+    if (mapInited) return;
+    mapInited = true;
+    initOverlay();
+    map.on("click", closeDetail);
+    bootstrap();
+  };
+  // don't gate on the basemap style loading -- markers, the overlay and the feed
+  // work from the map's initial transform alone.
+  map.on("load", start);
+  setTimeout(start, 400);
+}
+
+/* ---- plane markers with smooth dead-reckoned motion ---- */
 
 function planeElement(cat) {
   const d = document.createElement("div");
@@ -163,6 +363,7 @@ function deadReckon(f, ageSec) {
 }
 
 function tick() {
+  if (!map) return;
   const now = Date.now();
   for (const p of planes.values()) {
     if (!p.f) continue;
@@ -178,10 +379,9 @@ function tick() {
     p.marker.setLngLat([lo, la]);
   }
 }
-// setInterval (not rAF) so motion keeps running even when the tab is backgrounded.
-setInterval(tick, 50); // 20 fps
+setInterval(tick, 50);
 
-/* ---------- canvas overlay: airports + selected-flight trail ---------- */
+/* ---- canvas overlay: airports + selected-flight trail ---- */
 
 const overlay = { canvas: null, ctx: null };
 let airports = [];
@@ -199,7 +399,6 @@ function initOverlay() {
     sizeOverlay();
     drawOverlay();
   });
-  // container can start at 0x0 (hidden tab / late layout); keep the canvas in sync
   if (window.ResizeObserver) {
     new ResizeObserver(() => {
       sizeOverlay();
@@ -227,7 +426,6 @@ function drawOverlay() {
   const z = map.getZoom();
   const dark = state.basemap !== "light";
 
-  // airports
   const dot = dark ? "rgba(255,255,255,0.30)" : "rgba(20,30,50,0.45)";
   ctx.fillStyle = dot;
   for (const a of airports) {
@@ -244,7 +442,6 @@ function drawOverlay() {
     }
   }
 
-  // selected-flight trail, fading toward the tail
   const c = trailCoords.list;
   if (c.length >= 2) {
     for (let i = 1; i < c.length; i++) {
@@ -262,8 +459,7 @@ function drawOverlay() {
   }
 }
 
-/* ---------- basemap switcher ---------- */
-
+/* ---- basemap switcher ---- */
 function setBasemap(name) {
   if (!STYLES[name] || name === state.basemap) return;
   state.basemap = name;
@@ -274,49 +470,22 @@ function setBasemap(name) {
   map.once("styledata", () => setTimeout(drawOverlay, 60));
 }
 
-document.querySelectorAll("#basemap button").forEach((b) => {
-  b.addEventListener("click", () => setBasemap(b.dataset.style));
-});
-
-/* ---------- init ---------- */
-
-let inited = false;
-function init() {
-  if (inited) return;
-  inited = true;
-  initOverlay();
-  map.on("click", closeDetail);
-  bootstrap();
-}
-// Markers, the canvas overlay and the data feed don't need the basemap style to
-// be loaded (map.project works from the initial transform), so don't block on it
-// -- flights still show if a tile host is slow or down.
-map.on("load", init);
-if (map.isStyleLoaded()) init();
-setTimeout(init, 600);
-map.on("error", (e) => console.warn("map error:", e && e.error));
-
-/* ---------- data ---------- */
+/* ---- live feed ---- */
 
 async function bootstrap() {
   try {
     const a = await (await fetch("/api/airports")).json();
     airports = a.airports || [];
     drawOverlay();
-  } catch (err) {
-    console.warn("airports fetch failed", err);
-  }
+  } catch {}
   try {
     const j = await (await fetch("/api/flights")).json();
     onFlights(j.flights || []);
-  } catch (err) {
-    console.warn("initial flights fetch failed", err);
-  }
+  } catch {}
   connectWS();
 }
 
-let ws;
-let wsPing;
+let ws, wsPing;
 function connectWS() {
   const proto = location.protocol === "https:" ? "wss" : "ws";
   ws = new WebSocket(`${proto}://${location.host}/ws`);
@@ -326,8 +495,8 @@ function connectWS() {
     wsPing = setInterval(() => ws.readyState === 1 && ws.send("ping"), 25000);
   };
   ws.onmessage = (ev) => {
-    const msg = JSON.parse(ev.data);
-    if (msg.type === "flights") onFlights(msg.flights || []);
+    const m = JSON.parse(ev.data);
+    if (m.type === "flights") onFlights(m.flights || []);
   };
   ws.onclose = () => {
     setStatus("reconnecting…", "bad");
@@ -336,11 +505,12 @@ function connectWS() {
   };
   ws.onerror = () => ws.close();
 }
-
 function setStatus(text, cls) {
   const s = el("c-status");
-  s.textContent = text;
-  s.className = cls || "";
+  if (s) {
+    s.textContent = text;
+    s.className = cls || "";
+  }
 }
 
 function onFlights(list) {
@@ -349,13 +519,11 @@ function onFlights(list) {
   render();
 }
 
-/* ---------- filters ---------- */
-
+/* ---- filters ---- */
 const fAirline = el("f-airline");
 const fAlt = el("f-alt");
 const fAltVal = el("f-alt-val");
 const fSearch = el("f-search");
-
 fAirline.addEventListener("change", render);
 fSearch.addEventListener("input", render);
 fAlt.addEventListener("input", () => {
@@ -389,9 +557,9 @@ function passesFilters(f) {
   return true;
 }
 
-/* ---------- render ---------- */
-
+/* ---- render ---- */
 function render() {
+  if (!map) return;
   const shown = state.flights.filter(passesFilters);
   const seen = new Set();
   for (const f of shown) {
@@ -404,12 +572,13 @@ function render() {
       planes.delete(hex);
     }
   }
-  el("c-live").textContent = shown.length;
-  el("c-air").textContent = shown.filter((f) => (f.alt_ft || 0) > 1000).length;
+  const cl = el("c-live");
+  if (cl) cl.textContent = shown.length;
+  const ca = el("c-air");
+  if (ca) ca.textContent = shown.filter((f) => (f.alt_ft || 0) > 1000).length;
 }
 
-/* ---------- detail ---------- */
-
+/* ---- detail panel ---- */
 el("detail-close").addEventListener("click", closeDetail);
 
 function closeDetail() {
@@ -428,7 +597,11 @@ async function selectFlight(hex) {
     planes.get(state.selected).marker.getElement().classList.remove("sel");
   }
   state.selected = hex;
-  if (planes.get(hex)) planes.get(hex).marker.getElement().classList.add("sel");
+  const p = planes.get(hex);
+  if (p) {
+    p.marker.getElement().classList.add("sel");
+    map.flyTo({ center: p.marker.getLngLat(), zoom: Math.max(map.getZoom(), 6.5), duration: 900 });
+  }
   el("detail").classList.remove("hidden");
   await refreshDetail();
   clearInterval(state.detailTimer);
@@ -447,37 +620,26 @@ async function refreshDetail() {
     clearInterval(state.detailTimer);
     return;
   }
-
   const route =
     `<span>${d.dep || '<span class="unk">???</span>'}</span>` +
     `<span class="arrow">&rarr;</span>` +
     `<span>${d.arr || '<span class="unk">???</span>'}</span>`;
   const row = (k, v) => `<div><div class="k">${k}</div><div class="v mono">${v}</div></div>`;
-  const fmt = (n, s = "") => (n == null ? "&mdash;" : Number(n).toLocaleString() + s);
-
+  const f2 = (n, s = "") => (n == null ? "&mdash;" : Number(n).toLocaleString() + s);
   el("detail-body").innerHTML =
     `<div class="d-head"><span class="d-flightno">${d.flight_no || d.callsign || d.hex}</span></div>` +
     `<div class="d-airline">${d.airline || ""} &middot; ${d.type || "?"} &middot; ${d.registration || "?"}</div>` +
     `<div class="d-route">${route}</div>` +
     `<div class="d-grid">` +
-      row("Altitude", fmt(d.alt_ft, " ft")) +
-      row("Ground speed", fmt(d.gs_kt, " kt")) +
-      row("Heading", fmt(d.track_deg, "&deg;")) +
-      row("Vert. rate", fmt(d.vs_fpm, " fpm")) +
+      row("Altitude", f2(d.alt_ft, " ft")) +
+      row("Ground speed", f2(d.gs_kt, " kt")) +
+      row("Heading", f2(d.track_deg, "&deg;")) +
+      row("Vert. rate", f2(d.vs_fpm, " fpm")) +
       row("Callsign", d.callsign || "&mdash;") +
       row("ICAO hex", d.hex) +
       row("Source", d.source || "&mdash;") +
-      row("Tracked", timeAgo(d.first_seen)) +
+      row("Tracked", ago(d.first_seen)) +
     `</div>`;
-
-  trailCoords.list = (d.track || []).map((p) => [p[2], p[1]]); // [lon, lat]
+  trailCoords.list = (d.track || []).map((p) => [p[2], p[1]]);
   drawOverlay();
-}
-
-function timeAgo(ts) {
-  if (!ts) return "&mdash;";
-  const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
-  if (s < 90) return s + "s ago";
-  if (s < 5400) return Math.round(s / 60) + "m ago";
-  return Math.round(s / 3600) + "h ago";
 }
