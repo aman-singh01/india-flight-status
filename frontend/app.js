@@ -663,6 +663,8 @@ async function connectFeed() {
   try {
     const j = await (await fetch("/api/flights")).json();
     onFlights(j.flights || []);
+    feedLive = true; // the REST snapshot is current; the socket only keeps it fresh
+    renderBoard();
   } catch {}
   connectWS();
 }
