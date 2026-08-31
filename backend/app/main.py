@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException, Response, WebSocket, WebSocketDiscon
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from . import db, metrics, schemas
+from . import board, db, metrics, schemas
 from . import route as route_db
 from .config import settings
 from .domestic import _airlines, _airports
@@ -29,11 +29,12 @@ log = logging.getLogger("app")
 
 
 def domestic_flights() -> list[dict]:
-    # only surface flights we can name a full route for; the rest (odd ferry
-    # callsigns no provider has a route for) are hidden from the board / feed but
-    # still reachable via /api/status/{flight_no}.
+    # ADS-B flights we can name a full route for, unioned with the scheduled board
+    # (airport FIDS) so grounded / boarding / delayed / cancelled flights show too.
+    # Routeless ADS-B ferry callsigns stay hidden but reachable via /api/status.
     out = (flight_dict(t) for t in store.all())
-    return [f for f in out if f and f["dep"] and f["arr"]]
+    adsb = [f for f in out if f and f["dep"] and f["arr"]]
+    return board.merge(adsb)
 
 
 def payload() -> dict:
@@ -48,6 +49,7 @@ async def lifespan(app: FastAPI):
         asyncio.create_task(push_loop(max(2.0, settings.poll_interval), payload)),
         asyncio.create_task(route_db.resolver_loop()),
         asyncio.create_task(route_db.schedule_loop()),
+        asyncio.create_task(board.refresh_loop()),
     ]
     log.info("started (sources=%s, poll=%ss)", settings.sources, settings.poll_interval)
     try:
@@ -94,6 +96,7 @@ async def health():
         "domestic": len(domestic_flights()),
         "sources": settings.sources,
         "routes": route_db.stats(),
+        "board": board.stats(),
     }
 
 

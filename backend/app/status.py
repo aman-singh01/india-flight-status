@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 
+from . import board
 from . import route as route_db
 from .domestic import (
     INDIAN_AIRPORTS,
@@ -139,14 +140,35 @@ def _match(query: str):
 def lookup(query: str) -> dict:
     hit, cands = _match(query)
     if hit is None:
+        sched = board.find(query)
+        if sched is not None:
+            s = sched.get("schedule") or {}
+            return {
+                "query": query,
+                "found": True,
+                "flight_no": sched["flight_no"],
+                "airline": sched.get("airline"),
+                "status": sched["phase"],
+                "detail": sched["phase_detail"],
+                "origin": sched.get("dep"),
+                "destination": sched.get("arr"),
+                "origin_city": sched.get("dep_city"),
+                "destination_city": sched.get("arr_city"),
+                "route_src": "fids",
+                "schedule": s,
+                "note": (
+                    "Not in ADS-B coverage right now; this is the airport's scheduled "
+                    "information (Delhi FIDS)."
+                ),
+            }
         return {
             "query": query,
             "found": False,
             "tried": cands,
             "reason": (
-                "No aircraft is transmitting this flight's callsign in coverage right now. "
-                "It may not have departed yet, may already be parked, or may be outside "
-                "ADS-B range (this feed covers Indian airspace)."
+                "No aircraft is transmitting this flight's callsign in coverage right now, "
+                "and it's not on the Delhi schedule board. It may not have departed yet, "
+                "may already be parked, or may be outside ADS-B range."
             ),
         }
 

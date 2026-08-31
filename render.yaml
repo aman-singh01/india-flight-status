@@ -17,6 +17,8 @@ services:
         value: "5"
       - key: STALE_TTL
         value: "210"
+      - key: FIDS_SOURCES
+        value: del
       # - key: SCHEDULE_PROVIDER
       #   value: aerodatabox
       # - key: SCHEDULE_API_KEY

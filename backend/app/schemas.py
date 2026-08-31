@@ -27,14 +27,19 @@ class Flight(BaseModel):
     arr: str | None = Field(None, description="destination IATA")
     dep_city: str | None = None
     arr_city: str | None = None
-    route_src: str | None = Field(None, description='"schedule" | "inferred" | null')
+    route_src: str | None = Field(None, description='"schedule" | "inferred" | "fids" | null')
     schedule: Schedule | None = None
     status: str = "domestic"
-    phase: str = Field(description="On ground | Departed | En route | On approach | Airborne")
+    phase: str = Field(
+        description="On ground | Departed | En route | On approach | Airborne | "
+        "Scheduled | Boarding | Landed | Delayed | Cancelled | Diverted"
+    )
     phase_detail: str
     near: str | None = Field(None, description='e.g. "34 km ESE of Mumbai"')
-    lat: float
-    lon: float
+    position: bool = Field(True, description="false = scheduled-only row (no live transponder)")
+    scheduled_status: str | None = Field(None, description="raw airport FIDS status, when matched")
+    lat: float | None = None
+    lon: float | None = None
     alt_ft: int | None = None
     gs_kt: int | None = None
     track_deg: int | None = None
@@ -64,12 +69,19 @@ class RouteStats(BaseModel):
     sched_calls_24h: int
 
 
+class BoardStats(BaseModel):
+    rows: int
+    in_window: int
+    last_ok_age_s: int
+
+
 class Health(BaseModel):
     ok: bool
     tracked: int
     domestic: int
     sources: str
     routes: RouteStats
+    board: BoardStats
 
 
 class Airport(BaseModel):

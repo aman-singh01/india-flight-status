@@ -23,8 +23,26 @@ const PHASE_COLORS = {
   "On approach": "#38bdf8",
   "En route": "#4ade80",
   Airborne: "#4ade80",
+  Scheduled: "#a3a3a3",
+  Boarding: "#c084fc",
+  Delayed: "#f59e0b",
+  Landed: "#64748b",
+  Cancelled: "#ef4444",
+  Diverted: "#ef4444",
 };
-const PHASE_ORDER = { "On approach": 0, Departed: 1, "En route": 2, Airborne: 2, "On ground": 3 };
+const PHASE_ORDER = {
+  Boarding: 0,
+  "On approach": 1,
+  Departed: 2,
+  Delayed: 2,
+  "En route": 3,
+  Airborne: 3,
+  Scheduled: 4,
+  "On ground": 5,
+  Landed: 6,
+  Cancelled: 7,
+  Diverted: 7,
+};
 
 const boardExpanded = new Set();
 let feedTs = 0;
@@ -120,21 +138,25 @@ function boardRow(f) {
     s && s.delay_min != null && s.delay_min >= 10
       ? ` <span class="bdelay">+${s.delay_min}m</span>`
       : "";
+  const hasPos = f.lat != null;
+  const liveCells = hasPos
+    ? bxCell("Altitude", fmt(f.alt_ft, " ft")) +
+      bxCell("Ground speed", fmt(f.gs_kt, " kt")) +
+      bxCell("Vertical rate", fmt(f.vs_fpm, " fpm")) +
+      bxCell("Heading", f.track_deg == null ? "—" : f.track_deg + "°") +
+      bxCell("Position", f.lat + ", " + f.lon)
+    : bxCell("Source", "airport schedule (no transponder in view)");
   const exp = open
     ? `<div class="brow-exp">
          <div class="bx-grid">
            ${bxCell("Route", routeText)}
-           ${bxCell("Altitude", fmt(f.alt_ft, " ft"))}
-           ${bxCell("Ground speed", fmt(f.gs_kt, " kt"))}
-           ${bxCell("Vertical rate", fmt(f.vs_fpm, " fpm"))}
-           ${bxCell("Heading", f.track_deg == null ? "—" : f.track_deg + "°")}
-           ${bxCell("Position", f.lat != null ? f.lat + ", " + f.lon : "—")}
+           ${liveCells}
            ${bxCell("Callsign", f.callsign || "—")}
            ${bxCell("Registration", f.registration || "—")}
-           ${bxCell("Tracked for", since(f.first_seen))}
+           ${hasPos ? bxCell("Tracked for", since(f.first_seen)) : ""}
            ${schedCells}
          </div>
-         <button class="sv-track" data-track="${f.hex}">Track on map →</button>
+         ${hasPos ? `<button class="sv-track" data-track="${f.hex}">Track on map →</button>` : ""}
        </div>`
     : "";
   return `<div class="brow${open ? " x" : ""}" data-hex="${f.hex}">
@@ -780,6 +802,7 @@ function render() {
   const shown = state.flights.filter(passesFilters);
   const seen = new Set();
   for (const f of shown) {
+    if (f.lat == null) continue; // schedule-only board rows have no position to plot
     seen.add(f.hex);
     upsertPlane(f);
   }

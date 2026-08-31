@@ -1,6 +1,6 @@
 import time
 
-from app import main, route
+from app import board, main, route
 from app.models import flight_dict
 from app.store import Tracked
 
@@ -169,7 +169,7 @@ def test_schemas_validate_real_payloads():
     schemas.Flight(**d)  # /api/flights row
     schemas.FlightDetail(**{**d, "track": [[1.0, 21.0, 78.0, 36000.0]]})
     schemas.FlightsResponse(count=1, flights=[d])
-    schemas.Health(ok=True, tracked=1, domestic=1, sources="demo", routes=route.stats())
+    schemas.Health(ok=True, tracked=1, domestic=1, sources="demo", routes=route.stats(), board=board.stats())
     schemas.AirportsResponse(
         count=1,
         airports=[{"iata": "DEL", "icao": "VIDP", "name": "x", "city": "Delhi", "lat": 1.0, "lon": 2.0}],

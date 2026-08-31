@@ -11,8 +11,7 @@ env/
 *.db-journal
 *.sqlite
 backend/.env
-backend/route_cache.json
-backend/data/route_cache.json
+route_cache.json
 backend/data/*.db*
 *.log
 

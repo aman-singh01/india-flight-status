@@ -139,3 +139,28 @@ bot-wall that blocks server-side clients.
 positions can be up to 300 s stale (the client still shows them, dead-reckoned).
 Unit conversions (m→ft, m/s→kt/fpm) are one more place for an off-by-a-factor bug,
 covered by a normaliser test.
+
+---
+
+## 8. A schedule board from Delhi FIDS, unioned with the feed
+
+**Decision.** `board.py` polls a scraper for Delhi's `dial-api` (its open FIDS
+JSON), turns every leg into a schedule row, keeps the ones within a time window of
+now, and `merge()`s them with the ADS-B domestic list: a flight-number match
+enriches the live row, unmatched rows are appended position-less. `Flight.lat` /
+`lon` became optional and a `position` flag was added; the frontend skips
+plotting a null-position row and hides its "track on map" button.
+
+**Why.** ADS-B can only ever show airborne aircraft in range — never a flight
+that's boarding, delayed on the ground, or cancelled. The airport already
+publishes all of that. Delhi is the only big Indian airport whose site isn't
+behind Akamai / edge bot protection, and it's the largest by movements, so one
+scraper roughly quadruples what the board shows for flights touching Delhi.
+Building it as a *union* (not a replacement) keeps the live map and dead-reckoning
+working unchanged for the ADS-B half.
+
+**Cost.** Delhi-only, and dependent on one undocumented endpoint that can change
+or block. A reused flight number on an unrelated sector could mis-enrich, so the
+match is gated to flights that touch Delhi (or have no known route yet). ~4% of
+FIDS destinations don't resolve to an IATA code in the bundled table. No revised
+*times* are exposed by the endpoint, only a revised date and a status string.

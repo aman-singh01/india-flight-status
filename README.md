@@ -16,10 +16,12 @@ the first request after an idle period takes ~40 s to wake.
 
 ## Features
 
-- **Status board** - one row per live domestic flight: flight number, airline, aircraft
-  type, a phase badge (On ground / Departed / En route / On approach), origin and
-  destination, and a status line such as *"descending through 1,875 ft, 34 km ESE of
-  Mumbai"*. Filter by flight, airline, airport or phase; sort; expand a row for detail.
+- **Status board** - one row per domestic flight: number, airline, aircraft type, a
+  phase badge (En route / On approach / Boarding / Scheduled / Landed / Delayed /
+  Cancelled …), origin, destination, and a status line such as *"descending through
+  1,875 ft, 34 km ESE of Mumbai"* or *"boarding at Delhi · gate D22"*. Live ADS-B
+  flights are unioned with the **Delhi airport schedule** (FIDS), so grounded, boarding
+  and cancelled flights show too. Filter, sort, expand a row for detail.
 - **Live map** - aircraft as heading-aligned silhouettes coloured by altitude, with
   dead-reckoned motion between updates and a trail for the selected flight.
 - **Historical playback** - a scrubber over persisted position history; replay any
@@ -55,8 +57,11 @@ flowchart LR
   R --> R2["schedule API - AeroDataBox / FlightAware (optional key)"]
   R --> RC[(route_cache.json - live)]
   K --> M[flight record + phase + nearest place + schedule]
-  M --> WS[WebSocket /ws]
-  M --> API[REST /api/*]
+  F["Delhi FIDS scraper"] --> B["schedule board (windowed)"]
+  M --> MG[merge: ADS-B ∪ schedule board]
+  B --> MG
+  MG --> WS[WebSocket /ws]
+  MG --> API[REST /api/*]
   WS --> UI[status board + map]
   API --> UI
 ```
@@ -81,6 +86,12 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   are Indian airports, which also excludes international flights operated by Indian
   carriers. This follows India's cabotage rule: domestic point-to-point service is
   reserved for Indian-AOC operators.
+- **Schedule board, not just transponders.** A scraper for Delhi's open `dial-api`
+  turns its FIDS into scheduled-flight rows (windowed to a few hours around now), which
+  are unioned with the ADS-B feed: a number match enriches the live row, the rest show
+  position-less with their airport status. This surfaces grounded / boarding / delayed /
+  cancelled flights that no ADS-B feed can. The other big Indian airports sit behind
+  Akamai / edge bot protection, so only Delhi is wired.
 - **Smooth motion from a slow feed.** The client advances each aircraft along its track
   at ground speed at 20 fps and eases into each WebSocket update, so ~25 s server sweeps
   still render as continuous movement.
@@ -117,6 +128,7 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 |---|---|---|
 | `SOURCES` | `adsblol,adsbfi,opensky` | Comma-separated ingest sources, merged: `adsblol`, `adsbfi`, `opensky`, `demo`, `readsb:<url>` |
 | `OPENSKY_USER` / `OPENSKY_PASS` | _(none)_ | Optional free OpenSky account -> 10 s poll instead of 300 s anonymous |
+| `FIDS_SOURCES` | `del` | Airport FIDS scrapers for the schedule board; only `del` implemented, empty to disable |
 | `POLL_INTERVAL` | `5` | WebSocket push interval (seconds) |
 | `STALE_TTL` | `210` | Drop an aircraft after this many seconds unseen |
 | `PERSIST` / `DB_PATH` | `true` / `flights.db` | SQLite position history |
@@ -162,10 +174,11 @@ linting, formatting, tests and a Docker build on every push and pull request.
 
 ## Limitations
 
-- Free feeds surface roughly 110-160 domestic flights at peak (measured with
-  `adsblol,adsbfi,opensky`), against ~250-300 actually airborne — DGCA reports ~2,800
-  domestic movements/day. Closing that gap needs a private `readsb` feeder or a paid
-  aggregator; ADS-B alone can never see grounded, delayed or cancelled flights.
+- Coverage is ~110-160 airborne flights from the free ADS-B feeds, plus the full Delhi
+  schedule (~350 flights in a typical window) from FIDS. Everywhere except Delhi is
+  still ADS-B-only, because the other airport sites are bot-walled; closing that gap
+  needs a private `readsb` feeder or a paid aggregator. About 4% of Delhi rows have a
+  destination the bundled airport table can't map to an IATA code (shown by city name).
 - Scheduled times, gate and delay require a keyed schedule provider.
 - Air India files many domestic legs under opaque ATC callsigns (`AIC2CE`) that
   don't encode the marketed flight number. A FlightAware key resolves these

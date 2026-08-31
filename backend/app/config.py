@@ -44,5 +44,12 @@ class Settings(BaseSettings):
     schedule_spacing: float = 4.0
     route_cache_path: str = "route_cache.json"
 
+    # Airport FIDS scrapers -> scheduled flights on the board even with no transponder
+    # in view (grounded / boarding / delayed / cancelled). Only "del" is implemented.
+    fids_sources: str = "del"
+    fids_refresh: float = 200.0  # seconds between FIDS polls
+    fids_window_behind: float = 2.0  # hours: keep flights scheduled up to this long ago
+    fids_window_ahead: float = 10.0  # hours: keep flights scheduled up to this far ahead
+
 
 settings = Settings()
