@@ -1,0 +1,7982 @@
+{
+"_source": "Snapshot of routes resolved from adsbdb.com (community routeset, ODbL). Seeds the resolver so a cold start is not empty. Regenerate from route_cache.json.",
+"_generated": "2026-08-31",
+"routes": {
+"AIC132": {
+"dep": "LHR",
+"arr": "BLR",
+"dep_city": "London",
+"arr_city": "Bangalore",
+"dep_country": "GB",
+"arr_country": "IN"
+},
+"AIC170": {
+"dep": "LGW",
+"arr": "ATQ",
+"dep_city": "London",
+"arr_city": "Amritsar",
+"dep_country": "GB",
+"arr_country": "IN"
+},
+"AIC1704": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1748": {
+"dep": "DEL",
+"arr": "MAA",
+"dep_city": "New Delhi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1805": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1845": {
+"dep": "MAA",
+"arr": "DEL",
+"dep_city": "Chennai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC188": {
+"dep": "YYZ",
+"arr": "DEL",
+"dep_city": "Toronto",
+"arr_city": "New Delhi",
+"dep_country": "CA",
+"arr_country": "IN"
+},
+"AIC191": {
+"dep": "BOM",
+"arr": "EWR",
+"dep_city": "Mumbai",
+"arr_city": "New York",
+"dep_country": "IN",
+"arr_country": "US"
+},
+"AIC1BA": {
+"dep": "DEL",
+"arr": "TRV",
+"dep_city": "New Delhi",
+"arr_city": "Thiruvananthapuram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1BG": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1DQ": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1DZ": {
+"dep": "COK",
+"arr": "DEL",
+"dep_city": "Kochi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1EY": {
+"dep": "JGA",
+"arr": "BOM",
+"dep_city": "Jamnagar",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1FN": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1LU": {
+"dep": "BBI",
+"arr": "DEL",
+"dep_city": "Bhubaneswar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1MK": {
+"dep": "DEL",
+"arr": "JDH",
+"dep_city": "New Delhi",
+"arr_city": "Jodhpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1MU": {
+"dep": "COK",
+"arr": "DEL",
+"dep_city": "Kochi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1RG": {
+"dep": "ATQ",
+"arr": "BOM",
+"dep_city": "Amritsar",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1RH": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1TA": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1TT": {
+"dep": "DEL",
+"arr": "VNS",
+"dep_city": "New Delhi",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1WW": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1XE": {
+"dep": "CJB",
+"arr": "DEL",
+"dep_city": "Coimbatore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1XK": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC1YA": {
+"dep": "GOI",
+"arr": "BOM",
+"dep_city": "Vasco da Gama",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2105": {
+"dep": "BOM",
+"arr": "SIN",
+"dep_city": "Mumbai",
+"arr_city": "Singapore",
+"dep_country": "IN",
+"arr_country": "SG"
+},
+"AIC2145": {
+"dep": "DEL",
+"arr": "DPS",
+"dep_city": "New Delhi",
+"arr_city": "Denpasar-Bali Island",
+"dep_country": "IN",
+"arr_country": "ID"
+},
+"AIC2148": {
+"dep": "DPS",
+"arr": "DEL",
+"dep_city": "Denpasar-Bali Island",
+"arr_city": "New Delhi",
+"dep_country": "ID",
+"arr_country": "IN"
+},
+"AIC220": {
+"dep": "KTM",
+"arr": "DEL",
+"dep_city": "Kathmandu",
+"arr_city": "New Delhi",
+"dep_country": "NP",
+"arr_country": "IN"
+},
+"AIC2214": {
+"dep": "RUH",
+"arr": "BOM",
+"dep_city": "Riyadh",
+"arr_city": "Mumbai",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"AIC223": {
+"dep": "DEL",
+"arr": "KTM",
+"dep_city": "New Delhi",
+"arr_city": "Kathmandu",
+"dep_country": "IN",
+"arr_country": "NP"
+},
+"AIC2245": {
+"dep": "BOM",
+"arr": "JED",
+"dep_city": "Mumbai",
+"arr_city": "Jeddah",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AIC2275": {
+"dep": "CMB",
+"arr": "BOM",
+"dep_city": "Colombo",
+"arr_city": "Mumbai",
+"dep_country": "LK",
+"arr_country": "IN"
+},
+"AIC2276": {
+"dep": "BOM",
+"arr": "CMB",
+"dep_city": "Mumbai",
+"arr_city": "Colombo",
+"dep_country": "IN",
+"arr_country": "LK"
+},
+"AIC2283": {
+"dep": "DEL",
+"arr": "DOH",
+"dep_city": "New Delhi",
+"arr_city": "Doha",
+"dep_country": "IN",
+"arr_country": "QA"
+},
+"AIC2289": {
+"dep": "BOM",
+"arr": "DOH",
+"dep_city": "Mumbai",
+"arr_city": "Doha",
+"dep_country": "IN",
+"arr_country": "QA"
+},
+"AIC2303": {
+"dep": "BKK",
+"arr": "DEL",
+"dep_city": "Bangkok",
+"arr_city": "New Delhi",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"AIC2335": {
+"dep": "BKK",
+"arr": "DEL",
+"dep_city": "Bangkok",
+"arr_city": "New Delhi",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"AIC2362": {
+"dep": "DEL",
+"arr": "MNL",
+"dep_city": "New Delhi",
+"arr_city": "Manila",
+"dep_country": "IN",
+"arr_country": "PH"
+},
+"AIC2376": {
+"dep": "DEL",
+"arr": "HKT",
+"dep_city": "New Delhi",
+"arr_city": "Phuket",
+"dep_country": "IN",
+"arr_country": "TH"
+},
+"AIC2377": {
+"dep": "HKT",
+"arr": "DEL",
+"dep_city": "Phuket",
+"arr_city": "New Delhi",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"AIC2380": {
+"dep": "DEL",
+"arr": "SIN",
+"dep_city": "New Delhi",
+"arr_city": "Singapore",
+"dep_country": "IN",
+"arr_country": "SG"
+},
+"AIC2386": {
+"dep": "DEL",
+"arr": "KUL",
+"dep_city": "New Delhi",
+"arr_city": "Kuala Lumpur",
+"dep_country": "IN",
+"arr_country": "MY"
+},
+"AIC2388": {
+"dep": "DEL",
+"arr": "SGN",
+"dep_city": "New Delhi",
+"arr_city": "Ho Chi Minh City",
+"dep_country": "IN",
+"arr_country": "VN"
+},
+"AIC2389": {
+"dep": "SGN",
+"arr": "DEL",
+"dep_city": "Ho Chi Minh City",
+"arr_city": "New Delhi",
+"dep_country": "VN",
+"arr_country": "IN"
+},
+"AIC278": {
+"dep": "CMB",
+"arr": "DEL",
+"dep_city": "Colombo",
+"arr_city": "New Delhi",
+"dep_country": "LK",
+"arr_country": "IN"
+},
+"AIC2AL": {
+"dep": "TIR",
+"arr": "HYD",
+"dep_city": "Tirupati",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2BB": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2BZ": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2CE": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2CN": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2CX": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2DF": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2FR": {
+"dep": "BOM",
+"arr": "HYD",
+"dep_city": "Mumbai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2GE": {
+"dep": "DEL",
+"arr": "LKO",
+"dep_city": "New Delhi",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2GW": {
+"dep": "CJB",
+"arr": "BOM",
+"dep_city": "Coimbatore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2HG": {
+"dep": "PNQ",
+"arr": "DEL",
+"dep_city": "Pune",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2JM": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2KR": {
+"dep": "PAT",
+"arr": "DEL",
+"dep_city": "Patna",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2MP": {
+"dep": "BOM",
+"arr": "CJB",
+"dep_city": "Mumbai",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2MT": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2PL": {
+"dep": "NAG",
+"arr": "BOM",
+"dep_city": "Nagpur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2SW": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2UQ": {
+"dep": "TRV",
+"arr": "DEL",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2UX": {
+"dep": "BOM",
+"arr": "COK",
+"dep_city": "Mumbai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2UY": {
+"dep": "BOM",
+"arr": "BHJ",
+"dep_city": "Mumbai",
+"arr_city": "Bhuj",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2VX": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC2YB": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3032": {
+"dep": "CHS",
+"arr": "DEL",
+"dep_city": "Charleston",
+"arr_city": "New Delhi",
+"dep_country": "US",
+"arr_country": "IN"
+},
+"AIC3108": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC314": {
+"dep": "DEL",
+"arr": "HKG",
+"dep_city": "New Delhi",
+"arr_city": "Kowloon City, Kowloon",
+"dep_country": "IN",
+"arr_country": "HK"
+},
+"AIC31A": {
+"dep": "BOM",
+"arr": "LHR",
+"dep_city": "Mumbai",
+"arr_city": "London",
+"dep_country": "IN",
+"arr_country": "GB"
+},
+"AIC355": {
+"dep": "HND",
+"arr": "BOM",
+"dep_city": "Tokyo",
+"arr_city": "Mumbai",
+"dep_country": "JP",
+"arr_country": "IN"
+},
+"AIC356": {
+"dep": "BOM",
+"arr": "HND",
+"dep_city": "Mumbai",
+"arr_city": "Tokyo",
+"dep_country": "IN",
+"arr_country": "JP"
+},
+"AIC358": {
+"dep": "MAA",
+"arr": "SIN",
+"dep_city": "Chennai",
+"arr_city": "Singapore",
+"dep_country": "IN",
+"arr_country": "SG"
+},
+"AIC3DA": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3DJ": {
+"dep": "DEL",
+"arr": "COK",
+"dep_city": "New Delhi",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3ES": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3KA": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3KR": {
+"dep": "IXC",
+"arr": "BOM",
+"dep_city": "Chandigarh",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3MM": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3MS": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3NG": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3PG": {
+"dep": "BOM",
+"arr": "GOI",
+"dep_city": "Mumbai",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3PK": {
+"dep": "UDR",
+"arr": "BOM",
+"dep_city": "Udaipur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3QT": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3SG": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3SQ": {
+"dep": "AMD",
+"arr": "BOM",
+"dep_city": "Ahmedabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3TL": {
+"dep": "MAA",
+"arr": "DEL",
+"dep_city": "Chennai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3VP": {
+"dep": "BOM",
+"arr": "AMD",
+"dep_city": "Mumbai",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3WF": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3XY": {
+"dep": "BOM",
+"arr": "CCU",
+"dep_city": "Mumbai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3ZC": {
+"dep": "LKO",
+"arr": "DEL",
+"dep_city": "Lucknow",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC3ZM": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4174": {
+"dep": "SFO",
+"arr": "CCU",
+"dep_city": "San Francisco",
+"arr_city": "Kolkata",
+"dep_country": "US",
+"arr_country": "IN"
+},
+"AIC4210": {
+"dep": "DXB",
+"arr": "DEL",
+"dep_city": "Dubai",
+"arr_city": "New Delhi",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AIC4216": {
+"dep": "DXB",
+"arr": "BOM",
+"dep_city": "Dubai",
+"arr_city": "Mumbai",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AIC4218": {
+"dep": "DXB",
+"arr": "BOM",
+"dep_city": "Dubai",
+"arr_city": "Mumbai",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AIC4BK": {
+"dep": "DEL",
+"arr": "IXC",
+"dep_city": "New Delhi",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4DE": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4DM": {
+"dep": "DEL",
+"arr": "BBI",
+"dep_city": "New Delhi",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4DV": {
+"dep": "AMD",
+"arr": "BOM",
+"dep_city": "Ahmedabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4GA": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4HN": {
+"dep": "IDR",
+"arr": "BOM",
+"dep_city": "Indore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4JC": {
+"dep": "GOI",
+"arr": "BOM",
+"dep_city": "Vasco da Gama",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4KM": {
+"dep": "BOM",
+"arr": "COK",
+"dep_city": "Mumbai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4MV": {
+"dep": "DEL",
+"arr": "CJB",
+"dep_city": "New Delhi",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4MW": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4MY": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4PF": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4PN": {
+"dep": "DEL",
+"arr": "MAA",
+"dep_city": "New Delhi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4QF": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4RU": {
+"dep": "DEL",
+"arr": "PNQ",
+"dep_city": "New Delhi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4SC": {
+"dep": "MAA",
+"arr": "DEL",
+"dep_city": "Chennai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4SQ": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4SW": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4TE": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4TK": {
+"dep": "DEL",
+"arr": "LKO",
+"dep_city": "New Delhi",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4TU": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4UV": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4VT": {
+"dep": "ATQ",
+"arr": "DEL",
+"dep_city": "Amritsar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4WS": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4XA": {
+"dep": "PAT",
+"arr": "DEL",
+"dep_city": "Patna",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4YQ": {
+"dep": "IXC",
+"arr": "DEL",
+"dep_city": "Chandigarh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC4ZX": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5BE": {
+"dep": "BBI",
+"arr": "DEL",
+"dep_city": "Bhubaneswar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5BL": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5DM": {
+"dep": "DEL",
+"arr": "CJB",
+"dep_city": "New Delhi",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5DT": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5EG": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5FC": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5FN": {
+"dep": "DEL",
+"arr": "COK",
+"dep_city": "New Delhi",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC5YZ": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6HW": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6LB": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6LT": {
+"dep": "BOM",
+"arr": "TRV",
+"dep_city": "Mumbai",
+"arr_city": "Thiruvananthapuram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6MF": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6MK": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6NR": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6NZ": {
+"dep": "DEL",
+"arr": "AMD",
+"dep_city": "New Delhi",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6PE": {
+"dep": "DEL",
+"arr": "VGA",
+"dep_city": "New Delhi",
+"arr_city": "Gannavaram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6PK": {
+"dep": "BOM",
+"arr": "NAG",
+"dep_city": "Mumbai",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6PQ": {
+"dep": "COK",
+"arr": "BOM",
+"dep_city": "Kochi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6QW": {
+"dep": "COK",
+"arr": "BOM",
+"dep_city": "Kochi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6SM": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6TF": {
+"dep": "DEL",
+"arr": "LKO",
+"dep_city": "New Delhi",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6TL": {
+"dep": "AMD",
+"arr": "DEL",
+"dep_city": "Ahmedabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6TQ": {
+"dep": "DED",
+"arr": "DEL",
+"dep_city": "Dehradun",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6UM": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6WG": {
+"dep": "TRV",
+"arr": "DEL",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC6ZJ": {
+"dep": "BOM",
+"arr": "AMD",
+"dep_city": "Mumbai",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7BM": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7DK": {
+"dep": "TRV",
+"arr": "DEL",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7EN": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7GH": {
+"dep": "ATQ",
+"arr": "DEL",
+"dep_city": "Amritsar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7LU": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7ME": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7QQ": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7RL": {
+"dep": "BHJ",
+"arr": "DEL",
+"dep_city": "Bhuj",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7SJ": {
+"dep": "HSR",
+"arr": "DEL",
+"dep_city": "Rajkot",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7TN": {
+"dep": "NAG",
+"arr": "DEL",
+"dep_city": "Nagpur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7VS": {
+"dep": "DEL",
+"arr": "BHO",
+"dep_city": "New Delhi",
+"arr_city": "Bhopal",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7WT": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7WV": {
+"dep": "COK",
+"arr": "BOM",
+"dep_city": "Kochi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7XQ": {
+"dep": "DEL",
+"arr": "PAT",
+"dep_city": "New Delhi",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC7XZ": {
+"dep": "BOM",
+"arr": "HYD",
+"dep_city": "Mumbai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8AG": {
+"dep": "BOM",
+"arr": "AMD",
+"dep_city": "Mumbai",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8CH": {
+"dep": "GOI",
+"arr": "BOM",
+"dep_city": "Vasco da Gama",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8DN": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8GE": {
+"dep": "JGA",
+"arr": "BOM",
+"dep_city": "Jamnagar",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8GQ": {
+"dep": "COK",
+"arr": "DEL",
+"dep_city": "Kochi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8GR": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8HU": {
+"dep": "VGA",
+"arr": "BOM",
+"dep_city": "Gannavaram",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8JK": {
+"dep": "GAU",
+"arr": "DEL",
+"dep_city": "Guwahati",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8JT": {
+"dep": "PNQ",
+"arr": "DEL",
+"dep_city": "Pune",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8LM": {
+"dep": "IXC",
+"arr": "DEL",
+"dep_city": "Chandigarh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8NP": {
+"dep": "BOM",
+"arr": "COK",
+"dep_city": "Mumbai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8PA": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8SY": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8US": {
+"dep": "BOM",
+"arr": "CCU",
+"dep_city": "Mumbai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8UU": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8VE": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8VR": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8WH": {
+"dep": "GOI",
+"arr": "DEL",
+"dep_city": "Vasco da Gama",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8XF": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8YK": {
+"dep": "DEL",
+"arr": "MAA",
+"dep_city": "New Delhi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC8ZY": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9BS": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9BU": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9DK": {
+"dep": "TRV",
+"arr": "BOM",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9FH": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9FP": {
+"dep": "PNQ",
+"arr": "DEL",
+"dep_city": "Pune",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9GJ": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9HT": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9NV": {
+"dep": "IXC",
+"arr": "DEL",
+"dep_city": "Chandigarh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9SZ": {
+"dep": "TRV",
+"arr": "DEL",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9TR": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9UW": {
+"dep": "AMD",
+"arr": "DEL",
+"dep_city": "Ahmedabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AIC9XM": {
+"dep": "DEL",
+"arr": "IXU",
+"dep_city": "New Delhi",
+"arr_city": "Aurangabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1107": {
+"dep": "BOM",
+"arr": "GOX",
+"dep_city": "Mumbai",
+"arr_city": "Mopa",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1108": {
+"dep": "AMD",
+"arr": "BOM",
+"dep_city": "Ahmedabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1126": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1130": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1133": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1142": {
+"dep": "GOX",
+"arr": "PNQ",
+"dep_city": "Mopa",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1146": {
+"dep": "IXZ",
+"arr": "MAA",
+"dep_city": "Port Blair",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1195": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1314": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1324": {
+"dep": "GAU",
+"arr": "BLR",
+"dep_city": "Guwahati",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1382": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1409": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1429": {
+"dep": "BOM",
+"arr": "VNS",
+"dep_city": "Mumbai",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1503": {
+"dep": "BOM",
+"arr": "GAU",
+"dep_city": "Mumbai",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1504": {
+"dep": "GAU",
+"arr": "BOM",
+"dep_city": "Guwahati",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1518": {
+"dep": "BOM",
+"arr": "COK",
+"dep_city": "Mumbai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1563": {
+"dep": "PNQ",
+"arr": "CCU",
+"dep_city": "Pune",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1564": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1743": {
+"dep": "BLR",
+"arr": "CCJ",
+"dep_city": "Bangalore",
+"arr_city": "Calicut",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1744": {
+"dep": "CCJ",
+"arr": "BLR",
+"dep_city": "Calicut",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1803": {
+"dep": "SXR",
+"arr": "DEL",
+"dep_city": "Srinagar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1804": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1807": {
+"dep": "DEL",
+"arr": "IXB",
+"dep_city": "New Delhi",
+"arr_city": "Siliguri",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1812": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1814": {
+"dep": "GOX",
+"arr": "DEL",
+"dep_city": "Mopa",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1816": {
+"dep": "GOX",
+"arr": "DEL",
+"dep_city": "Mopa",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1821": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1824": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1825": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1872": {
+"dep": "PNQ",
+"arr": "DEL",
+"dep_city": "Pune",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1906": {
+"dep": "BLR",
+"arr": "AMD",
+"dep_city": "Bangalore",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1916": {
+"dep": "PNQ",
+"arr": "AMD",
+"dep_city": "Pune",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1918": {
+"dep": "PNQ",
+"arr": "AMD",
+"dep_city": "Pune",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ193Q": {
+"dep": "LKO",
+"arr": "BOM",
+"dep_city": "Lucknow",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ1941": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ225F": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ236C": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ274Q": {
+"dep": "IXB",
+"arr": "DEL",
+"dep_city": "Siliguri",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ381V": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ523": {
+"dep": "COK",
+"arr": "RUH",
+"dep_city": "Kochi",
+"arr_city": "Riyadh",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AKJ550": {
+"dep": "COK",
+"arr": "JED",
+"dep_city": "Kochi",
+"arr_city": "Jeddah",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AKJ552": {
+"dep": "BOM",
+"arr": "JED",
+"dep_city": "Mumbai",
+"arr_city": "Jeddah",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AKJ552F": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ576": {
+"dep": "BLR",
+"arr": "JED",
+"dep_city": "Bangalore",
+"arr_city": "Jeddah",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AKJ584": {
+"dep": "BOM",
+"arr": "AUH",
+"dep_city": "Mumbai",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AKJ585": {
+"dep": "AUH",
+"arr": "BOM",
+"dep_city": "Abu Dhabi",
+"arr_city": "Mumbai",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AKJ587": {
+"dep": "AUH",
+"arr": "MAA",
+"dep_city": "Abu Dhabi",
+"arr_city": "Chennai",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AKJ710Q": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ787Z": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ887P": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AKJ924P": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1003": {
+"dep": "DEL",
+"arr": "IXB",
+"dep_city": "New Delhi",
+"arr_city": "Siliguri",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1004": {
+"dep": "BBI",
+"arr": "DEL",
+"dep_city": "Bhubaneswar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1036": {
+"dep": "GAU",
+"arr": "DEL",
+"dep_city": "Guwahati",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1041": {
+"dep": "SXR",
+"arr": "DEL",
+"dep_city": "Srinagar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1042": {
+"dep": "GAU",
+"arr": "DEL",
+"dep_city": "Guwahati",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1063": {
+"dep": "BBI",
+"arr": "DEL",
+"dep_city": "Bhubaneswar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1064": {
+"dep": "DEL",
+"arr": "BBI",
+"dep_city": "New Delhi",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1068": {
+"dep": "GAU",
+"arr": "DEL",
+"dep_city": "Guwahati",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1069": {
+"dep": "DEL",
+"arr": "GAU",
+"dep_city": "New Delhi",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1070": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1081": {
+"dep": "DEL",
+"arr": "IXB",
+"dep_city": "New Delhi",
+"arr_city": "Siliguri",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1085": {
+"dep": "BLR",
+"arr": "PNQ",
+"dep_city": "Bangalore",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1087": {
+"dep": "VNS",
+"arr": "BLR",
+"dep_city": "Varanasi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1089": {
+"dep": "BLR",
+"arr": "IXC",
+"dep_city": "Bangalore",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1098": {
+"dep": "PNQ",
+"arr": "BBI",
+"dep_city": "Pune",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1168": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1176": {
+"dep": "BOM",
+"arr": "IXB",
+"dep_city": "Mumbai",
+"arr_city": "Siliguri",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1180": {
+"dep": "IXB",
+"arr": "DEL",
+"dep_city": "Siliguri",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1197": {
+"dep": "DEL",
+"arr": "PAT",
+"dep_city": "New Delhi",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1218": {
+"dep": "TRZ",
+"arr": "BLR",
+"dep_city": "Tiruchirappalli",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1219": {
+"dep": "JAI",
+"arr": "BOM",
+"dep_city": "Jaipur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1231": {
+"dep": "BLR",
+"arr": "GOX",
+"dep_city": "Bangalore",
+"arr_city": "Mopa",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1241": {
+"dep": "GOI",
+"arr": "BOM",
+"dep_city": "Vasco da Gama",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1250": {
+"dep": "BLR",
+"arr": "HYD",
+"dep_city": "Bangalore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1254": {
+"dep": "CCU",
+"arr": "MAA",
+"dep_city": "Kolkata",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1257": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB12P": {
+"dep": "BHO",
+"arr": "DEL",
+"dep_city": "Bhopal",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1345": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1369": {
+"dep": "JAI",
+"arr": "GAU",
+"dep_city": "Jaipur",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1378": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB138": {
+"dep": "SHJ",
+"arr": "ATQ",
+"dep_city": "Sharjah",
+"arr_city": "Amritsar",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AXB1380": {
+"dep": "VGA",
+"arr": "HYD",
+"dep_city": "Gannavaram",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1383": {
+"dep": "GOI",
+"arr": "BLR",
+"dep_city": "Vasco da Gama",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1386": {
+"dep": "BLR",
+"arr": "GOI",
+"dep_city": "Bangalore",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1391": {
+"dep": "IXJ",
+"arr": "DEL",
+"dep_city": "Jammu",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1395": {
+"dep": "DEL",
+"arr": "LKO",
+"dep_city": "New Delhi",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB139W": {
+"dep": "PAT",
+"arr": "DEL",
+"dep_city": "Patna",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB13K": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB13V": {
+"dep": "IXR",
+"arr": "DEL",
+"dep_city": "Ranchi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1408": {
+"dep": "IXB",
+"arr": "BLR",
+"dep_city": "Siliguri",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1453": {
+"dep": "BLR",
+"arr": "GOI",
+"dep_city": "Bangalore",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1490": {
+"dep": "GOX",
+"arr": "DEL",
+"dep_city": "Mopa",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1494": {
+"dep": "BLR",
+"arr": "JAI",
+"dep_city": "Bangalore",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1495": {
+"dep": "BLR",
+"arr": "IXB",
+"dep_city": "Bangalore",
+"arr_city": "Siliguri",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB14G": {
+"dep": "DEL",
+"arr": "GOX",
+"dep_city": "New Delhi",
+"arr_city": "Mopa",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1506": {
+"dep": "VGA",
+"arr": "BLR",
+"dep_city": "Gannavaram",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1510": {
+"dep": "DEL",
+"arr": "PAT",
+"dep_city": "New Delhi",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1513": {
+"dep": "BLR",
+"arr": "CNN",
+"dep_city": "Bangalore",
+"arr_city": "Kannur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1532": {
+"dep": "BLR",
+"arr": "IXR",
+"dep_city": "Bangalore",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1543": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1547": {
+"dep": "DIB",
+"arr": "IXB",
+"dep_city": "Dibrugarh",
+"arr_city": "Siliguri",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1562": {
+"dep": "DIB",
+"arr": "DEL",
+"dep_city": "Dibrugarh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1563": {
+"dep": "DEL",
+"arr": "DIB",
+"dep_city": "New Delhi",
+"arr_city": "Dibrugarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1576": {
+"dep": "HYD",
+"arr": "JAI",
+"dep_city": "Hyderabad",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1577": {
+"dep": "MAA",
+"arr": "CCU",
+"dep_city": "Chennai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1800": {
+"dep": "COK",
+"arr": "BOM",
+"dep_city": "Kochi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1801": {
+"dep": "BOM",
+"arr": "COK",
+"dep_city": "Mumbai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1802": {
+"dep": "COK",
+"arr": "BOM",
+"dep_city": "Kochi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1814": {
+"dep": "COK",
+"arr": "DEL",
+"dep_city": "Kochi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1815": {
+"dep": "DEL",
+"arr": "COK",
+"dep_city": "New Delhi",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1816": {
+"dep": "COK",
+"arr": "DEL",
+"dep_city": "Kochi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1817": {
+"dep": "DEL",
+"arr": "GOX",
+"dep_city": "New Delhi",
+"arr_city": "Mopa",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB183": {
+"dep": "VNS",
+"arr": "SHJ",
+"dep_city": "Varanasi",
+"arr_city": "Sharjah",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB184L": {
+"dep": "BLR",
+"arr": "LKO",
+"dep_city": "Bangalore",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1871": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1896": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1971": {
+"dep": "VIDX",
+"arr": "BLR",
+"dep_city": "Ghaziabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1982": {
+"dep": "DEL",
+"arr": "SXR",
+"dep_city": "New Delhi",
+"arr_city": "Srinagar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB1996": {
+"dep": "IXA",
+"arr": "CCU",
+"dep_city": "Agartala",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2007": {
+"dep": "GAU",
+"arr": "MAA",
+"dep_city": "Guwahati",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2014": {
+"dep": "AMD",
+"arr": "BLR",
+"dep_city": "Ahmedabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2017": {
+"dep": "PAT",
+"arr": "BLR",
+"dep_city": "Patna",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2069": {
+"dep": "JAI",
+"arr": "BLR",
+"dep_city": "Jaipur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2116": {
+"dep": "BLR",
+"arr": "LKO",
+"dep_city": "Bangalore",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB235": {
+"dep": "BOM",
+"arr": "MCT",
+"dep_city": "Mumbai",
+"arr_city": "Muscat",
+"dep_country": "IN",
+"arr_country": "OM"
+},
+"AXB2410": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2458": {
+"dep": "JAI",
+"arr": "BLR",
+"dep_city": "Jaipur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB252": {
+"dep": "SHJ",
+"arr": "BOM",
+"dep_city": "Sharjah",
+"arr_city": "Mumbai",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AXB2547": {
+"dep": "VNS",
+"arr": "BOM",
+"dep_city": "Varanasi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB261": {
+"dep": "BOM",
+"arr": "AUH",
+"dep_city": "Mumbai",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB2661": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2662": {
+"dep": "MAA",
+"arr": "BLR",
+"dep_city": "Chennai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB26H": {
+"dep": "BLR",
+"arr": "HYD",
+"dep_city": "Bangalore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2717": {
+"dep": "BBI",
+"arr": "PNQ",
+"dep_city": "Bhubaneswar",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2720": {
+"dep": "COK",
+"arr": "PNQ",
+"dep_city": "Kochi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2743": {
+"dep": "HYD",
+"arr": "VGA",
+"dep_city": "Hyderabad",
+"arr_city": "Gannavaram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2746": {
+"dep": "GOX",
+"arr": "HYD",
+"dep_city": "Mopa",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2782": {
+"dep": "CCU",
+"arr": "IXZ",
+"dep_city": "Kolkata",
+"arr_city": "Port Blair",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2787": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2816": {
+"dep": "BLR",
+"arr": "PAT",
+"dep_city": "Bangalore",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2817": {
+"dep": "PAT",
+"arr": "BLR",
+"dep_city": "Patna",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2820": {
+"dep": "DEL",
+"arr": "GOX",
+"dep_city": "New Delhi",
+"arr_city": "Mopa",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2839": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2874": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2882": {
+"dep": "GAU",
+"arr": "BLR",
+"dep_city": "Guwahati",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2892": {
+"dep": "IXZ",
+"arr": "BLR",
+"dep_city": "Port Blair",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2893": {
+"dep": "IXB",
+"arr": "HYD",
+"dep_city": "Siliguri",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2913": {
+"dep": "BLR",
+"arr": "PNQ",
+"dep_city": "Bangalore",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2924": {
+"dep": "GOI",
+"arr": "BLR",
+"dep_city": "Vasco da Gama",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2945": {
+"dep": "BLR",
+"arr": "GAU",
+"dep_city": "Bangalore",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2959": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB2963": {
+"dep": "IXB",
+"arr": "BLR",
+"dep_city": "Siliguri",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB321": {
+"dep": "CCJ",
+"arr": "RUH",
+"dep_city": "Calicut",
+"arr_city": "Riyadh",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AXB324": {
+"dep": "RUH",
+"arr": "CCJ",
+"dep_city": "Riyadh",
+"arr_city": "Calicut",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"AXB347": {
+"dep": "CCJ",
+"arr": "AUH",
+"dep_city": "Calicut",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB35E": {
+"dep": "IXR",
+"arr": "BLR",
+"dep_city": "Ranchi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB374": {
+"dep": "DOH",
+"arr": "TRV",
+"dep_city": "Doha",
+"arr_city": "Thiruvananthapuram",
+"dep_country": "QA",
+"arr_country": "IN"
+},
+"AXB398": {
+"dep": "CCJ",
+"arr": "KWI",
+"dep_city": "Calicut",
+"arr_city": "Kuwait City",
+"dep_country": "IN",
+"arr_country": "KW"
+},
+"AXB39L": {
+"dep": "BLR",
+"arr": "IXR",
+"dep_city": "Bangalore",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB412": {
+"dep": "SHJ",
+"arr": "COK",
+"dep_city": "Sharjah",
+"arr_city": "Kochi",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AXB415": {
+"dep": "COK",
+"arr": "AUH",
+"dep_city": "Kochi",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB42C": {
+"dep": "CCJ",
+"arr": "BLR",
+"dep_city": "Calicut",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB432": {
+"dep": "MCT",
+"arr": "COK",
+"dep_city": "Muscat",
+"arr_city": "Kochi",
+"dep_country": "OM",
+"arr_country": "IN"
+},
+"AXB441": {
+"dep": "COK",
+"arr": "MCT",
+"dep_city": "Kochi",
+"arr_city": "Muscat",
+"dep_country": "IN",
+"arr_country": "OM"
+},
+"AXB478": {
+"dep": "DOH",
+"arr": "COK",
+"dep_city": "Doha",
+"arr_city": "Kochi",
+"dep_country": "QA",
+"arr_country": "IN"
+},
+"AXB521": {
+"dep": "TRV",
+"arr": "RUH",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Riyadh",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AXB529": {
+"dep": "TRV",
+"arr": "DXB",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB52K": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB5313": {
+"dep": "BLR",
+"arr": "CCJ",
+"dep_city": "Bangalore",
+"arr_city": "Calicut",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB53V": {
+"dep": "BLR",
+"arr": "IXR",
+"dep_city": "Bangalore",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB541": {
+"dep": "TRV",
+"arr": "AUH",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB542": {
+"dep": "AUH",
+"arr": "TRV",
+"dep_city": "Abu Dhabi",
+"arr_city": "Thiruvananthapuram",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AXB549": {
+"dep": "TRV",
+"arr": "MCT",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Muscat",
+"dep_country": "IN",
+"arr_country": "OM"
+},
+"AXB54E": {
+"dep": "DEL",
+"arr": "IXR",
+"dep_city": "New Delhi",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB55C": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB5701": {
+"dep": "LKO",
+"arr": "CCU",
+"dep_city": "Lucknow",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB586": {
+"dep": "TRV",
+"arr": "DXB",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB5979": {
+"dep": "TRV",
+"arr": "CNN",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Kannur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB5EV": {
+"dep": "DEL",
+"arr": "IXR",
+"dep_city": "New Delhi",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB5LH": {
+"dep": "BLR",
+"arr": "HYD",
+"dep_city": "Bangalore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB619": {
+"dep": "TRZ",
+"arr": "MCT",
+"dep_city": "Tiruchirappalli",
+"arr_city": "Muscat",
+"dep_country": "IN",
+"arr_country": "OM"
+},
+"AXB670": {
+"dep": "SHJ",
+"arr": "TRZ",
+"dep_city": "Sharjah",
+"arr_city": "Tiruchirappalli",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AXB711": {
+"dep": "CNN",
+"arr": "MCT",
+"dep_city": "Kannur",
+"arr_city": "Muscat",
+"dep_country": "IN",
+"arr_country": "OM"
+},
+"AXB71H": {
+"dep": "BLR",
+"arr": "TRV",
+"dep_city": "Bangalore",
+"arr_city": "Thiruvananthapuram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB73L": {
+"dep": "LKO",
+"arr": "DEL",
+"dep_city": "Lucknow",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB748": {
+"dep": "DXB",
+"arr": "CNN",
+"dep_city": "Dubai",
+"arr_city": "Kannur",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AXB790": {
+"dep": "RUH",
+"arr": "CNN",
+"dep_city": "Riyadh",
+"arr_city": "Kannur",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"AXB81P": {
+"dep": "AMD",
+"arr": "BLR",
+"dep_city": "Ahmedabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB82H": {
+"dep": "BLR",
+"arr": "HYD",
+"dep_city": "Bangalore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB850": {
+"dep": "DMM",
+"arr": "IXE",
+"dep_city": "Ad Dammam",
+"arr_city": "Mangalore",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"AXB865": {
+"dep": "BLR",
+"arr": "AUH",
+"dep_city": "Bangalore",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB86K": {
+"dep": "LKO",
+"arr": "DEL",
+"dep_city": "Lucknow",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB883": {
+"dep": "KTM",
+"arr": "BLR",
+"dep_city": "Kathmandu",
+"arr_city": "Bangalore",
+"dep_country": "NP",
+"arr_country": "IN"
+},
+"AXB896": {
+"dep": "RUH",
+"arr": "BLR",
+"dep_city": "Riyadh",
+"arr_city": "Bangalore",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"AXB903": {
+"dep": "HKT",
+"arr": "BLR",
+"dep_city": "Phuket",
+"arr_city": "Bangalore",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"AXB91H": {
+"dep": "BHO",
+"arr": "DEL",
+"dep_city": "Bhopal",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB91L": {
+"dep": "NAG",
+"arr": "BLR",
+"dep_city": "Nagpur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"AXB920": {
+"dep": "DXB",
+"arr": "BLR",
+"dep_city": "Dubai",
+"arr_city": "Bangalore",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"AXB921": {
+"dep": "BLR",
+"arr": "DXB",
+"dep_city": "Bangalore",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"AXB931": {
+"dep": "BLR",
+"arr": "DOH",
+"dep_city": "Bangalore",
+"arr_city": "Doha",
+"dep_country": "IN",
+"arr_country": "QA"
+},
+"AXB941": {
+"dep": "BLR",
+"arr": "JED",
+"dep_city": "Bangalore",
+"arr_city": "Jeddah",
+"dep_country": "IN",
+"arr_country": "SA"
+},
+"AXB951": {
+"dep": "HYD",
+"arr": "DXB",
+"dep_city": "Hyderabad",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO066": {
+"dep": "JED",
+"arr": "CCJ",
+"dep_city": "Jeddah",
+"arr_city": "Calicut",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"IGO074": {
+"dep": "RUH",
+"arr": "BOM",
+"dep_city": "Riyadh",
+"arr_city": "Mumbai",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"IGO082": {
+"dep": "DMM",
+"arr": "BOM",
+"dep_city": "Ad Dammam",
+"arr_city": "Mumbai",
+"dep_country": "SA",
+"arr_country": "IN"
+},
+"IGO1001": {
+"dep": "MAA",
+"arr": "SIN",
+"dep_city": "Chennai",
+"arr_city": "Singapore",
+"dep_country": "IN",
+"arr_country": "SG"
+},
+"IGO1014": {
+"dep": "SIN",
+"arr": "DEL",
+"dep_city": "Singapore",
+"arr_city": "New Delhi",
+"dep_country": "SG",
+"arr_country": "IN"
+},
+"IGO103": {
+"dep": "PNQ",
+"arr": "HYD",
+"dep_city": "Pune",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1031": {
+"dep": "MAA",
+"arr": "KUL",
+"dep_city": "Chennai",
+"arr_city": "Kuala Lumpur",
+"dep_country": "IN",
+"arr_country": "MY"
+},
+"IGO1032": {
+"dep": "KUL",
+"arr": "MAA",
+"dep_city": "Kuala Lumpur",
+"arr_city": "Chennai",
+"dep_country": "MY",
+"arr_country": "IN"
+},
+"IGO1037": {
+"dep": "BLR",
+"arr": "KUL",
+"dep_city": "Bangalore",
+"arr_city": "Kuala Lumpur",
+"dep_country": "IN",
+"arr_country": "MY"
+},
+"IGO1038": {
+"dep": "KUL",
+"arr": "BLR",
+"dep_city": "Kuala Lumpur",
+"arr_city": "Bangalore",
+"dep_country": "MY",
+"arr_country": "IN"
+},
+"IGO104J": {
+"dep": "BOM",
+"arr": "NAG",
+"dep_city": "Mumbai",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO105": {
+"dep": "BLR",
+"arr": "PNQ",
+"dep_city": "Bangalore",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1053": {
+"dep": "DEL",
+"arr": "BKK",
+"dep_city": "New Delhi",
+"arr_city": "Bangkok",
+"dep_country": "IN",
+"arr_country": "TH"
+},
+"IGO1054": {
+"dep": "BKK",
+"arr": "DEL",
+"dep_city": "Bangkok",
+"arr_city": "New Delhi",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"IGO1057": {
+"dep": "CCU",
+"arr": "BKK",
+"dep_city": "Kolkata",
+"arr_city": "Bangkok",
+"dep_country": "IN",
+"arr_country": "TH"
+},
+"IGO1059": {
+"dep": "BOM",
+"arr": "BKK",
+"dep_city": "Mumbai",
+"arr_city": "Bangkok",
+"dep_country": "IN",
+"arr_country": "TH"
+},
+"IGO1060": {
+"dep": "BKK",
+"arr": "BOM",
+"dep_city": "Bangkok",
+"arr_city": "Mumbai",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"IGO1064": {
+"dep": "BKK",
+"arr": "DEL",
+"dep_city": "Bangkok",
+"arr_city": "New Delhi",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"IGO107": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1072": {
+"dep": "HKT",
+"arr": "BOM",
+"dep_city": "Phuket",
+"arr_city": "Mumbai",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"IGO1073": {
+"dep": "DEL",
+"arr": "HKT",
+"dep_city": "New Delhi",
+"arr_city": "Phuket",
+"dep_country": "IN",
+"arr_country": "TH"
+},
+"IGO1076": {
+"dep": "HKT",
+"arr": "BLR",
+"dep_city": "Phuket",
+"arr_city": "Bangalore",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"IGO1077": {
+"dep": "BLR",
+"arr": "HKT",
+"dep_city": "Bangalore",
+"arr_city": "Phuket",
+"dep_country": "IN",
+"arr_country": "TH"
+},
+"IGO107C": {
+"dep": "MAA",
+"arr": "DEL",
+"dep_city": "Chennai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO108": {
+"dep": "HYD",
+"arr": "IXC",
+"dep_city": "Hyderabad",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1104": {
+"dep": "DAC",
+"arr": "DEL",
+"dep_city": "Dhaka",
+"arr_city": "New Delhi",
+"dep_country": "BD",
+"arr_country": "IN"
+},
+"IGO115": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1155": {
+"dep": "DEL",
+"arr": "KTM",
+"dep_city": "New Delhi",
+"arr_city": "Kathmandu",
+"dep_country": "IN",
+"arr_country": "NP"
+},
+"IGO1156": {
+"dep": "KTM",
+"arr": "DEL",
+"dep_city": "Kathmandu",
+"arr_city": "New Delhi",
+"dep_country": "NP",
+"arr_country": "IN"
+},
+"IGO116": {
+"dep": "BLR",
+"arr": "PNQ",
+"dep_city": "Bangalore",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1161": {
+"dep": "DEL",
+"arr": "KTM",
+"dep_city": "New Delhi",
+"arr_city": "Kathmandu",
+"dep_country": "IN",
+"arr_country": "NP"
+},
+"IGO1162": {
+"dep": "KTM",
+"arr": "DEL",
+"dep_city": "Kathmandu",
+"arr_city": "New Delhi",
+"dep_country": "NP",
+"arr_country": "IN"
+},
+"IGO1164": {
+"dep": "SIN",
+"arr": "BOM",
+"dep_city": "Singapore",
+"arr_city": "Mumbai",
+"dep_country": "SG",
+"arr_country": "IN"
+},
+"IGO116H": {
+"dep": "BLR",
+"arr": "PAT",
+"dep_city": "Bangalore",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO117": {
+"dep": "GOI",
+"arr": "HYD",
+"dep_city": "Vasco da Gama",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1173": {
+"dep": "MAA",
+"arr": "CMB",
+"dep_city": "Chennai",
+"arr_city": "Colombo",
+"dep_country": "IN",
+"arr_country": "LK"
+},
+"IGO1176": {
+"dep": "CMB",
+"arr": "MAA",
+"dep_city": "Colombo",
+"arr_city": "Chennai",
+"dep_country": "LK",
+"arr_country": "IN"
+},
+"IGO1186": {
+"dep": "CMB",
+"arr": "BOM",
+"dep_city": "Colombo",
+"arr_city": "Mumbai",
+"dep_country": "LK",
+"arr_country": "IN"
+},
+"IGO1201": {
+"dep": "BOM",
+"arr": "BAH",
+"dep_city": "Mumbai",
+"arr_city": "Manama",
+"dep_country": "IN",
+"arr_country": "BH"
+},
+"IGO121J": {
+"dep": "BHO",
+"arr": "BOM",
+"dep_city": "Bhopal",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1235": {
+"dep": "BOM",
+"arr": "KWI",
+"dep_city": "Mumbai",
+"arr_city": "Kuwait City",
+"dep_country": "IN",
+"arr_country": "KW"
+},
+"IGO1247": {
+"dep": "BLR",
+"arr": "SIN",
+"dep_city": "Bangalore",
+"arr_city": "Singapore",
+"dep_country": "IN",
+"arr_country": "SG"
+},
+"IGO1248": {
+"dep": "SIN",
+"arr": "BLR",
+"dep_city": "Singapore",
+"arr_city": "Bangalore",
+"dep_country": "SG",
+"arr_country": "IN"
+},
+"IGO1273": {
+"dep": "HYD",
+"arr": "MCT",
+"dep_city": "Hyderabad",
+"arr_city": "Muscat",
+"dep_country": "IN",
+"arr_country": "OM"
+},
+"IGO12HC": {
+"dep": "COK",
+"arr": "HYD",
+"dep_city": "Kochi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1344": {
+"dep": "SIN",
+"arr": "MAA",
+"dep_city": "Singapore",
+"arr_city": "Chennai",
+"dep_country": "SG",
+"arr_country": "IN"
+},
+"IGO137": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO137P": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1401": {
+"dep": "BOM",
+"arr": "AUH",
+"dep_city": "Mumbai",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO1404": {
+"dep": "AUH",
+"arr": "COK",
+"dep_city": "Abu Dhabi",
+"arr_city": "Kochi",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"IGO1407": {
+"dep": "HYD",
+"arr": "AUH",
+"dep_city": "Hyderabad",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO1421": {
+"dep": "HYD",
+"arr": "SHJ",
+"dep_city": "Hyderabad",
+"arr_city": "Sharjah",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO1435": {
+"dep": "CCJ",
+"arr": "AUH",
+"dep_city": "Calicut",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO144": {
+"dep": "BLR",
+"arr": "COK",
+"dep_city": "Bangalore",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1449": {
+"dep": "AUH",
+"arr": "HYD",
+"dep_city": "Abu Dhabi",
+"arr_city": "Hyderabad",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"IGO145": {
+"dep": "BBI",
+"arr": "MAA",
+"dep_city": "Bhubaneswar",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1458": {
+"dep": "SIN",
+"arr": "BLR",
+"dep_city": "Singapore",
+"arr_city": "Bangalore",
+"dep_country": "SG",
+"arr_country": "IN"
+},
+"IGO145F": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1463": {
+"dep": "DEL",
+"arr": "DXB",
+"dep_city": "New Delhi",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO1475": {
+"dep": "COK",
+"arr": "DXB",
+"dep_city": "Kochi",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO149K": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1514": {
+"dep": "AUH",
+"arr": "IXM",
+"dep_city": "Abu Dhabi",
+"arr_city": "Madurai",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"IGO1517": {
+"dep": "COK",
+"arr": "RKT",
+"dep_city": "Kochi",
+"arr_city": "Ras Al Khaimah",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO152": {
+"dep": "BLR",
+"arr": "CCJ",
+"dep_city": "Bangalore",
+"arr_city": "Calicut",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO157H": {
+"dep": "BLR",
+"arr": "IXE",
+"dep_city": "Bangalore",
+"arr_city": "Mangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO15AL": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1602": {
+"dep": "CGK",
+"arr": "BOM",
+"dep_city": "Jakarta",
+"arr_city": "Mumbai",
+"dep_country": "ID",
+"arr_country": "IN"
+},
+"IGO1606": {
+"dep": "DPS",
+"arr": "BLR",
+"dep_city": "Denpasar-Bali Island",
+"arr_city": "Bangalore",
+"dep_country": "ID",
+"arr_country": "IN"
+},
+"IGO1634": {
+"dep": "HAN",
+"arr": "DEL",
+"dep_city": "Soc Son, Hanoi",
+"arr_city": "New Delhi",
+"dep_country": "VN",
+"arr_country": "IN"
+},
+"IGO168M": {
+"dep": "GOI",
+"arr": "BLR",
+"dep_city": "Vasco da Gama",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO16V": {
+"dep": "BOM",
+"arr": "DOH",
+"dep_city": "Mumbai",
+"arr_city": "Doha",
+"dep_country": "IN",
+"arr_country": "QA"
+},
+"IGO1701": {
+"dep": "DEL",
+"arr": "DOH",
+"dep_city": "New Delhi",
+"arr_city": "Doha",
+"dep_country": "IN",
+"arr_country": "QA"
+},
+"IGO172": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO174": {
+"dep": "MAA",
+"arr": "BBI",
+"dep_city": "Chennai",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO176": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO182E": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1856": {
+"dep": "SEZ",
+"arr": "BOM",
+"dep_city": "Mahe Island",
+"arr_city": "Mumbai",
+"dep_country": "SC",
+"arr_country": "IN"
+},
+"IGO1904": {
+"dep": "ATH",
+"arr": "BOM",
+"dep_city": "Athens",
+"arr_city": "Mumbai",
+"dep_country": "GR",
+"arr_country": "IN"
+},
+"IGO192P": {
+"dep": "PNQ",
+"arr": "BLR",
+"dep_city": "Pune",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO195H": {
+"dep": "UDR",
+"arr": "DEL",
+"dep_city": "Udaipur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO19M": {
+"dep": "DOH",
+"arr": "HYD",
+"dep_city": "Doha",
+"arr_city": "Hyderabad",
+"dep_country": "QA",
+"arr_country": "IN"
+},
+"IGO1CP": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO1VP": {
+"dep": "BLR",
+"arr": "IXG",
+"dep_city": "Bangalore",
+"arr_city": "Belgaum",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2018": {
+"dep": "DEL",
+"arr": "DED",
+"dep_city": "New Delhi",
+"arr_city": "Dehradun",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2020": {
+"dep": "GOP",
+"arr": "HYD",
+"dep_city": "Gorakhpur",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO202V": {
+"dep": "BOM",
+"arr": "CNN",
+"dep_city": "Mumbai",
+"arr_city": "Kannur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2039": {
+"dep": "GAU",
+"arr": "DEL",
+"dep_city": "Guwahati",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO203M": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO207W": {
+"dep": "BBI",
+"arr": "DEL",
+"dep_city": "Bhubaneswar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO209": {
+"dep": "IXR",
+"arr": "MAA",
+"dep_city": "Ranchi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2094": {
+"dep": "DEL",
+"arr": "RPR",
+"dep_city": "New Delhi",
+"arr_city": "Raipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2096": {
+"dep": "RDP",
+"arr": "DEL",
+"dep_city": "Durgapur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO209H": {
+"dep": "BOM",
+"arr": "TRZ",
+"dep_city": "Mumbai",
+"arr_city": "Tiruchirappalli",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2100": {
+"dep": "BOM",
+"arr": "HSR",
+"dep_city": "Mumbai",
+"arr_city": "Rajkot",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2115": {
+"dep": "HBX",
+"arr": "DEL",
+"dep_city": "Hubli",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2126": {
+"dep": "PNQ",
+"arr": "DEL",
+"dep_city": "Pune",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO212M": {
+"dep": "DEL",
+"arr": "IXR",
+"dep_city": "New Delhi",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO213": {
+"dep": "GAU",
+"arr": "CCU",
+"dep_city": "Guwahati",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2133": {
+"dep": "GOX",
+"arr": "BOM",
+"dep_city": "Mopa",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2139": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2145": {
+"dep": "DEL",
+"arr": "CCJ",
+"dep_city": "New Delhi",
+"arr_city": "Calicut",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO214C": {
+"dep": "GOI",
+"arr": "DEL",
+"dep_city": "Vasco da Gama",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2151": {
+"dep": "ATQ",
+"arr": "DEL",
+"dep_city": "Amritsar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO216": {
+"dep": "VTZ",
+"arr": "HYD",
+"dep_city": "Visakhapatnam",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2169": {
+"dep": "DEL",
+"arr": "IDR",
+"dep_city": "New Delhi",
+"arr_city": "Indore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2185": {
+"dep": "PAT",
+"arr": "DEL",
+"dep_city": "Patna",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO221": {
+"dep": "BLR",
+"arr": "IXR",
+"dep_city": "Bangalore",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2232": {
+"dep": "VNS",
+"arr": "DEL",
+"dep_city": "Varanasi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2234": {
+"dep": "DEL",
+"arr": "ATQ",
+"dep_city": "New Delhi",
+"arr_city": "Amritsar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2237": {
+"dep": "BOM",
+"arr": "AMD",
+"dep_city": "Mumbai",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO225K": {
+"dep": "DEL",
+"arr": "PNQ",
+"dep_city": "New Delhi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2263": {
+"dep": "AMD",
+"arr": "DEL",
+"dep_city": "Ahmedabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2275": {
+"dep": "DEL",
+"arr": "CJB",
+"dep_city": "New Delhi",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO230": {
+"dep": "MAA",
+"arr": "DEL",
+"dep_city": "Chennai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO232": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO234": {
+"dep": "CCU",
+"arr": "MAA",
+"dep_city": "Kolkata",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2346": {
+"dep": "DEL",
+"arr": "CJB",
+"dep_city": "New Delhi",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO234W": {
+"dep": "AMD",
+"arr": "DEL",
+"dep_city": "Ahmedabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO235": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2356": {
+"dep": "DEL",
+"arr": "SXR",
+"dep_city": "New Delhi",
+"arr_city": "Srinagar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2364": {
+"dep": "DEL",
+"arr": "IXM",
+"dep_city": "New Delhi",
+"arr_city": "Madurai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2371": {
+"dep": "BOM",
+"arr": "RPR",
+"dep_city": "Mumbai",
+"arr_city": "Raipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2376": {
+"dep": "JAI",
+"arr": "DEL",
+"dep_city": "Jaipur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2379": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO23EC": {
+"dep": "AMD",
+"arr": "BLR",
+"dep_city": "Ahmedabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2403": {
+"dep": "IXL",
+"arr": "DEL",
+"dep_city": "Leh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2409": {
+"dep": "CJB",
+"arr": "DEL",
+"dep_city": "Coimbatore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO240M": {
+"dep": "AMD",
+"arr": "BLR",
+"dep_city": "Ahmedabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO244F": {
+"dep": "IXC",
+"arr": "BLR",
+"dep_city": "Chandigarh",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2453": {
+"dep": "DEL",
+"arr": "PAT",
+"dep_city": "New Delhi",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO246C": {
+"dep": "DEL",
+"arr": "ATQ",
+"dep_city": "New Delhi",
+"arr_city": "Amritsar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO248F": {
+"dep": "AMD",
+"arr": "DEL",
+"dep_city": "Ahmedabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO251P": {
+"dep": "IDR",
+"arr": "HYD",
+"dep_city": "Indore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO253F": {
+"dep": "IXR",
+"arr": "DEL",
+"dep_city": "Ranchi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO254J": {
+"dep": "BLR",
+"arr": "VNS",
+"dep_city": "Bangalore",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO255K": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO257M": {
+"dep": "BOM",
+"arr": "COK",
+"dep_city": "Mumbai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO257P": {
+"dep": "BLR",
+"arr": "TRV",
+"dep_city": "Bangalore",
+"arr_city": "Thiruvananthapuram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO264E": {
+"dep": "DEL",
+"arr": "PNQ",
+"dep_city": "New Delhi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO266K": {
+"dep": "CCU",
+"arr": "GAU",
+"dep_city": "Kolkata",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO272": {
+"dep": "BOM",
+"arr": "ATQ",
+"dep_city": "Mumbai",
+"arr_city": "Amritsar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO273W": {
+"dep": "CCU",
+"arr": "IXA",
+"dep_city": "Kolkata",
+"arr_city": "Agartala",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO276": {
+"dep": "RJA",
+"arr": "BOM",
+"dep_city": "Rajahmundry",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO276P": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2772": {
+"dep": "VTZ",
+"arr": "BLR",
+"dep_city": "Visakhapatnam",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO279V": {
+"dep": "AMD",
+"arr": "BOM",
+"dep_city": "Ahmedabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO28AV": {
+"dep": "VNS",
+"arr": "DEL",
+"dep_city": "Varanasi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO297E": {
+"dep": "IXL",
+"arr": "DEL",
+"dep_city": "Leh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO29TY": {
+"dep": "JAI",
+"arr": "CCU",
+"dep_city": "Jaipur",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO2KC": {
+"dep": "BLR",
+"arr": "IXG",
+"dep_city": "Bangalore",
+"arr_city": "Belgaum",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO301P": {
+"dep": "DEL",
+"arr": "IXA",
+"dep_city": "New Delhi",
+"arr_city": "Agartala",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO303C": {
+"dep": "BBI",
+"arr": "BLR",
+"dep_city": "Bhubaneswar",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO305": {
+"dep": "DED",
+"arr": "LKO",
+"dep_city": "Dehradun",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO309H": {
+"dep": "PNQ",
+"arr": "NAG",
+"dep_city": "Pune",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO3102": {
+"dep": "IXC",
+"arr": "IXL",
+"dep_city": "Chandigarh",
+"arr_city": "Leh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO311E": {
+"dep": "IXL",
+"arr": "DEL",
+"dep_city": "Leh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO312F": {
+"dep": "CCU",
+"arr": "IDR",
+"dep_city": "Kolkata",
+"arr_city": "Indore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO315": {
+"dep": "DEL",
+"arr": "COK",
+"dep_city": "New Delhi",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO316": {
+"dep": "GAU",
+"arr": "BLR",
+"dep_city": "Guwahati",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO319": {
+"dep": "AMD",
+"arr": "CCU",
+"dep_city": "Ahmedabad",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO321F": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO322": {
+"dep": "CJB",
+"arr": "GOX",
+"dep_city": "Coimbatore",
+"arr_city": "Mopa",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO324E": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO324P": {
+"dep": "VNS",
+"arr": "CCU",
+"dep_city": "Varanasi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO328C": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO331M": {
+"dep": "RPR",
+"arr": "CCU",
+"dep_city": "Raipur",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO334V": {
+"dep": "HYD",
+"arr": "BHO",
+"dep_city": "Hyderabad",
+"arr_city": "Bhopal",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO335": {
+"dep": "TRV",
+"arr": "HYD",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO342": {
+"dep": "BOM",
+"arr": "LKO",
+"dep_city": "Mumbai",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO343H": {
+"dep": "MAA",
+"arr": "CCU",
+"dep_city": "Chennai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO347H": {
+"dep": "SAG",
+"arr": "DEL",
+"dep_city": "Kakadi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO34FP": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO34ME": {
+"dep": "BBI",
+"arr": "HYD",
+"dep_city": "Bhubaneswar",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO352C": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO354M": {
+"dep": "BOM",
+"arr": "NAG",
+"dep_city": "Mumbai",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO357": {
+"dep": "IXE",
+"arr": "BLR",
+"dep_city": "Mangalore",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO35HD": {
+"dep": "IDR",
+"arr": "BOM",
+"dep_city": "Indore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO362H": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO365K": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO36AK": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO36FK": {
+"dep": "AMD",
+"arr": "HYD",
+"dep_city": "Ahmedabad",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO371H": {
+"dep": "CCU",
+"arr": "IMF",
+"dep_city": "Kolkata",
+"arr_city": "Imphal",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO373H": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO376E": {
+"dep": "NAG",
+"arr": "CCU",
+"dep_city": "Nagpur",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO378M": {
+"dep": "GOX",
+"arr": "BOM",
+"dep_city": "Mopa",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO37LH": {
+"dep": "NAG",
+"arr": "BOM",
+"dep_city": "Nagpur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO37RE": {
+"dep": "IXM",
+"arr": "BOM",
+"dep_city": "Madurai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO381": {
+"dep": "GOI",
+"arr": "AMD",
+"dep_city": "Vasco da Gama",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO387W": {
+"dep": "BLR",
+"arr": "NAG",
+"dep_city": "Bangalore",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO388": {
+"dep": "IXE",
+"arr": "BLR",
+"dep_city": "Mangalore",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO38FL": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO38J": {
+"dep": "MAA",
+"arr": "DXB",
+"dep_city": "Chennai",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO38MR": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO3FV": {
+"dep": "JAI",
+"arr": "LKO",
+"dep_city": "Jaipur",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO3VF": {
+"dep": "VNS",
+"arr": "BBI",
+"dep_city": "Varanasi",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO401V": {
+"dep": "MAA",
+"arr": "BBI",
+"dep_city": "Chennai",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO403W": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO409": {
+"dep": "HYD",
+"arr": "VTZ",
+"dep_city": "Hyderabad",
+"arr_city": "Visakhapatnam",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO411": {
+"dep": "BLR",
+"arr": "BBI",
+"dep_city": "Bangalore",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO413": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO413V": {
+"dep": "VNS",
+"arr": "CCU",
+"dep_city": "Varanasi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO416P": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO417C": {
+"dep": "MAA",
+"arr": "RDP",
+"dep_city": "Chennai",
+"arr_city": "Durgapur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO41HP": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO422C": {
+"dep": "LKO",
+"arr": "BOM",
+"dep_city": "Lucknow",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO423": {
+"dep": "DED",
+"arr": "HYD",
+"dep_city": "Dehradun",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO426": {
+"dep": "HYD",
+"arr": "PNQ",
+"dep_city": "Hyderabad",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO427C": {
+"dep": "BOM",
+"arr": "CCU",
+"dep_city": "Mumbai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO429": {
+"dep": "IXC",
+"arr": "BLR",
+"dep_city": "Chandigarh",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO42FP": {
+"dep": "MAA",
+"arr": "CJB",
+"dep_city": "Chennai",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO435W": {
+"dep": "BBI",
+"arr": "AMD",
+"dep_city": "Bhubaneswar",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO437": {
+"dep": "GOP",
+"arr": "BLR",
+"dep_city": "Gorakhpur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO437W": {
+"dep": "DEL",
+"arr": "MAA",
+"dep_city": "New Delhi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO43EC": {
+"dep": "HSR",
+"arr": "HYD",
+"dep_city": "Rajkot",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO43V": {
+"dep": "BOM",
+"arr": "HYD",
+"dep_city": "Mumbai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO441": {
+"dep": "BLR",
+"arr": "PNQ",
+"dep_city": "Bangalore",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO455": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO456M": {
+"dep": "HSR",
+"arr": "DEL",
+"dep_city": "Rajkot",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO457": {
+"dep": "BLR",
+"arr": "GAU",
+"dep_city": "Bangalore",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO45CH": {
+"dep": "GOI",
+"arr": "BLR",
+"dep_city": "Vasco da Gama",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO463": {
+"dep": "GOI",
+"arr": "BOM",
+"dep_city": "Vasco da Gama",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO464E": {
+"dep": "AMD",
+"arr": "IXR",
+"dep_city": "Ahmedabad",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO466W": {
+"dep": "BBI",
+"arr": "MAA",
+"dep_city": "Bhubaneswar",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO46E": {
+"dep": "COK",
+"arr": "MCT",
+"dep_city": "Kochi",
+"arr_city": "Muscat",
+"dep_country": "IN",
+"arr_country": "OM"
+},
+"IGO46KP": {
+"dep": "BLR",
+"arr": "HYD",
+"dep_city": "Bangalore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO472": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO472V": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO473C": {
+"dep": "DEL",
+"arr": "IXU",
+"dep_city": "New Delhi",
+"arr_city": "Aurangabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO478K": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO47MF": {
+"dep": "PAT",
+"arr": "DEL",
+"dep_city": "Patna",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO483J": {
+"dep": "VNS",
+"arr": "BOM",
+"dep_city": "Varanasi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO48FC": {
+"dep": "CJB",
+"arr": "MAA",
+"dep_city": "Coimbatore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO493": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO4FE": {
+"dep": "HYD",
+"arr": "RJA",
+"dep_city": "Hyderabad",
+"arr_city": "Rajahmundry",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO4HC": {
+"dep": "CCJ",
+"arr": "MAA",
+"dep_city": "Calicut",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO4VC": {
+"dep": "HYD",
+"arr": "NAG",
+"dep_city": "Hyderabad",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5001": {
+"dep": "DEL",
+"arr": "COK",
+"dep_city": "New Delhi",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5003": {
+"dep": "DEL",
+"arr": "PNQ",
+"dep_city": "New Delhi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5014": {
+"dep": "DEL",
+"arr": "BDQ",
+"dep_city": "New Delhi",
+"arr_city": "Vadodara",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5023": {
+"dep": "DEL",
+"arr": "IXR",
+"dep_city": "New Delhi",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5032": {
+"dep": "BOM",
+"arr": "DED",
+"dep_city": "Mumbai",
+"arr_city": "Dehradun",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5034": {
+"dep": "STV",
+"arr": "BLR",
+"dep_city": "",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5039": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5047": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5054": {
+"dep": "BBI",
+"arr": "BOM",
+"dep_city": "Bhubaneswar",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5055": {
+"dep": "IXL",
+"arr": "DEL",
+"dep_city": "Leh",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5056": {
+"dep": "BOM",
+"arr": "HYD",
+"dep_city": "Mumbai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5066": {
+"dep": "GAU",
+"arr": "BOM",
+"dep_city": "Guwahati",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5094": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5096": {
+"dep": "DEL",
+"arr": "BBI",
+"dep_city": "New Delhi",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5097": {
+"dep": "BOM",
+"arr": "HYD",
+"dep_city": "Mumbai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5098": {
+"dep": "BBI",
+"arr": "DEL",
+"dep_city": "Bhubaneswar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO509K": {
+"dep": "DEL",
+"arr": "MAA",
+"dep_city": "New Delhi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5104": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5123": {
+"dep": "BOM",
+"arr": "VNS",
+"dep_city": "Mumbai",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5124": {
+"dep": "BOM",
+"arr": "NAG",
+"dep_city": "Mumbai",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5126": {
+"dep": "BLR",
+"arr": "PAT",
+"dep_city": "Bangalore",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO512V": {
+"dep": "AMD",
+"arr": "BOM",
+"dep_city": "Ahmedabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5133": {
+"dep": "NAG",
+"arr": "BOM",
+"dep_city": "Nagpur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5135": {
+"dep": "BOM",
+"arr": "JAI",
+"dep_city": "Mumbai",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5136": {
+"dep": "JAI",
+"arr": "DEL",
+"dep_city": "Jaipur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5149": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO515": {
+"dep": "MAA",
+"arr": "LKO",
+"dep_city": "Chennai",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5152": {
+"dep": "BOM",
+"arr": "GOX",
+"dep_city": "Mumbai",
+"arr_city": "Mopa",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5160": {
+"dep": "AMD",
+"arr": "BOM",
+"dep_city": "Ahmedabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5161": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5163": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5164": {
+"dep": "BOM",
+"arr": "NAG",
+"dep_city": "Mumbai",
+"arr_city": "Nagpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO516K": {
+"dep": "TRV",
+"arr": "PNQ",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO517": {
+"dep": "IXU",
+"arr": "BLR",
+"dep_city": "Aurangabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5175": {
+"dep": "NAG",
+"arr": "BOM",
+"dep_city": "Nagpur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO518": {
+"dep": "DED",
+"arr": "LKO",
+"dep_city": "Dehradun",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5190": {
+"dep": "CCU",
+"arr": "DEL",
+"dep_city": "Kolkata",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5194": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO519P": {
+"dep": "BLR",
+"arr": "GOI",
+"dep_city": "Bangalore",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5206": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5226": {
+"dep": "JAI",
+"arr": "BOM",
+"dep_city": "Jaipur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5233": {
+"dep": "BOM",
+"arr": "IXC",
+"dep_city": "Mumbai",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5234": {
+"dep": "IXC",
+"arr": "BOM",
+"dep_city": "Chandigarh",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5242": {
+"dep": "GOI",
+"arr": "BOM",
+"dep_city": "Vasco da Gama",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO525": {
+"dep": "IXA",
+"arr": "BLR",
+"dep_city": "Agartala",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5259": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5273": {
+"dep": "BOM",
+"arr": "BDQ",
+"dep_city": "Mumbai",
+"arr_city": "Vadodara",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO52J": {
+"dep": "HYD",
+"arr": "RKT",
+"dep_city": "Hyderabad",
+"arr_city": "Ras Al Khaimah",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO5304": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO530C": {
+"dep": "BOM",
+"arr": "ATQ",
+"dep_city": "Mumbai",
+"arr_city": "Amritsar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5326": {
+"dep": "BOM",
+"arr": "HYD",
+"dep_city": "Mumbai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5337": {
+"dep": "BOM",
+"arr": "MAA",
+"dep_city": "Mumbai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5347": {
+"dep": "DEL",
+"arr": "GOP",
+"dep_city": "New Delhi",
+"arr_city": "Gorakhpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5355": {
+"dep": "CJB",
+"arr": "BLR",
+"dep_city": "Coimbatore",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5367": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5376": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5388": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO53M": {
+"dep": "BOM",
+"arr": "LHR",
+"dep_city": "Mumbai",
+"arr_city": "London",
+"dep_country": "IN",
+"arr_country": "GB"
+},
+"IGO542Y": {
+"dep": "CCU",
+"arr": "VNS",
+"dep_city": "Kolkata",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO544": {
+"dep": "BOM",
+"arr": "GOP",
+"dep_city": "Mumbai",
+"arr_city": "Gorakhpur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO545Y": {
+"dep": "JAI",
+"arr": "BLR",
+"dep_city": "Jaipur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO547": {
+"dep": "PNQ",
+"arr": "AMD",
+"dep_city": "Pune",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO547M": {
+"dep": "GOI",
+"arr": "HYD",
+"dep_city": "Vasco da Gama",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO54DH": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO54TM": {
+"dep": "MAA",
+"arr": "HYD",
+"dep_city": "Chennai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO552": {
+"dep": "IDR",
+"arr": "BOM",
+"dep_city": "Indore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO553C": {
+"dep": "HYD",
+"arr": "GOI",
+"dep_city": "Hyderabad",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO556": {
+"dep": "JAI",
+"arr": "BLR",
+"dep_city": "Jaipur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO561": {
+"dep": "MAA",
+"arr": "PNQ",
+"dep_city": "Chennai",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO561J": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO562": {
+"dep": "MAA",
+"arr": "HYD",
+"dep_city": "Chennai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO573": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO573Y": {
+"dep": "IXB",
+"arr": "BLR",
+"dep_city": "Siliguri",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO577": {
+"dep": "PNQ",
+"arr": "HYD",
+"dep_city": "Pune",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO583H": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO58AY": {
+"dep": "GOI",
+"arr": "DEL",
+"dep_city": "Vasco da Gama",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO58J": {
+"dep": "JAF",
+"arr": "MAA",
+"dep_city": "Jaffna",
+"arr_city": "Chennai",
+"dep_country": "LK",
+"arr_country": "IN"
+},
+"IGO58WP": {
+"dep": "BLR",
+"arr": "AMD",
+"dep_city": "Bangalore",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5927": {
+"dep": "DEL",
+"arr": "HGI",
+"dep_city": "New Delhi",
+"arr_city": "Higleig",
+"dep_country": "IN",
+"arr_country": "SS"
+},
+"IGO593": {
+"dep": "IXC",
+"arr": "BLR",
+"dep_city": "Chandigarh",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5931": {
+"dep": "BOM",
+"arr": "AIP",
+"dep_city": "Mumbai",
+"arr_city": "Adampur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO595C": {
+"dep": "NAG",
+"arr": "PNQ",
+"dep_city": "Nagpur",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO597M": {
+"dep": "DED",
+"arr": "DEL",
+"dep_city": "Dehradun",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO59P": {
+"dep": "BBI",
+"arr": "VNS",
+"dep_city": "Bhubaneswar",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5AK": {
+"dep": "BBI",
+"arr": "CCU",
+"dep_city": "Bhubaneswar",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5CC": {
+"dep": "BLR",
+"arr": "TRZ",
+"dep_city": "Bangalore",
+"arr_city": "Tiruchirappalli",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO5JP": {
+"dep": "IMF",
+"arr": "SHL",
+"dep_city": "Imphal",
+"arr_city": "Shillong",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6006": {
+"dep": "LKO",
+"arr": "DEL",
+"dep_city": "Lucknow",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6011": {
+"dep": "MAA",
+"arr": "GAU",
+"dep_city": "Chennai",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO601P": {
+"dep": "MAA",
+"arr": "DEL",
+"dep_city": "Chennai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6025": {
+"dep": "MAA",
+"arr": "COK",
+"dep_city": "Chennai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6031": {
+"dep": "HYD",
+"arr": "DEL",
+"dep_city": "Hyderabad",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6034": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6039": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6041": {
+"dep": "SXR",
+"arr": "IXC",
+"dep_city": "Srinagar",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6046": {
+"dep": "PAT",
+"arr": "DEL",
+"dep_city": "Patna",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO604C": {
+"dep": "IXB",
+"arr": "HYD",
+"dep_city": "Siliguri",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6061": {
+"dep": "DEL",
+"arr": "MAA",
+"dep_city": "New Delhi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6072": {
+"dep": "CCJ",
+"arr": "DEL",
+"dep_city": "Calicut",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6077": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6093": {
+"dep": "PNQ",
+"arr": "BDQ",
+"dep_city": "Pune",
+"arr_city": "Vadodara",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6095": {
+"dep": "LKO",
+"arr": "PNQ",
+"dep_city": "Lucknow",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6103": {
+"dep": "CCU",
+"arr": "DIB",
+"dep_city": "Kolkata",
+"arr_city": "Dibrugarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6110": {
+"dep": "RPR",
+"arr": "BOM",
+"dep_city": "Raipur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6117": {
+"dep": "PNQ",
+"arr": "JAI",
+"dep_city": "Pune",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6127": {
+"dep": "PAT",
+"arr": "HYD",
+"dep_city": "Patna",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO612J": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6135": {
+"dep": "IXB",
+"arr": "CCU",
+"dep_city": "Siliguri",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6136": {
+"dep": "DED",
+"arr": "BLR",
+"dep_city": "Dehradun",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6137": {
+"dep": "MAA",
+"arr": "RPR",
+"dep_city": "Chennai",
+"arr_city": "Raipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6141": {
+"dep": "BLR",
+"arr": "JAI",
+"dep_city": "Bangalore",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6147": {
+"dep": "TRV",
+"arr": "BLR",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6149": {
+"dep": "MAA",
+"arr": "TRV",
+"dep_city": "Chennai",
+"arr_city": "Thiruvananthapuram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6152": {
+"dep": "LKO",
+"arr": "BOM",
+"dep_city": "Lucknow",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6161": {
+"dep": "IXE",
+"arr": "BLR",
+"dep_city": "Mangalore",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6162": {
+"dep": "BLR",
+"arr": "IXE",
+"dep_city": "Bangalore",
+"arr_city": "Mangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6163": {
+"dep": "GOX",
+"arr": "BLR",
+"dep_city": "Mopa",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6166": {
+"dep": "LKO",
+"arr": "HYD",
+"dep_city": "Lucknow",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6173": {
+"dep": "CCU",
+"arr": "IXA",
+"dep_city": "Kolkata",
+"arr_city": "Agartala",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6174": {
+"dep": "HYD",
+"arr": "MAA",
+"dep_city": "Hyderabad",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6177": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6179": {
+"dep": "DEL",
+"arr": "VNS",
+"dep_city": "New Delhi",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6186": {
+"dep": "IXM",
+"arr": "BOM",
+"dep_city": "Madurai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO619Y": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO61C": {
+"dep": "BLR",
+"arr": "MAA",
+"dep_city": "Bangalore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6225": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6229": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6235": {
+"dep": "COK",
+"arr": "HYD",
+"dep_city": "Kochi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6237": {
+"dep": "AMD",
+"arr": "BBI",
+"dep_city": "Ahmedabad",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO624M": {
+"dep": "RDP",
+"arr": "HYD",
+"dep_city": "Durgapur",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO625P": {
+"dep": "GOP",
+"arr": "BLR",
+"dep_city": "Gorakhpur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6265": {
+"dep": "AMD",
+"arr": "SXR",
+"dep_city": "Ahmedabad",
+"arr_city": "Srinagar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO626W": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6272": {
+"dep": "IXR",
+"arr": "PNQ",
+"dep_city": "Ranchi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6273": {
+"dep": "BLR",
+"arr": "JAI",
+"dep_city": "Bangalore",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6276": {
+"dep": "PAT",
+"arr": "BLR",
+"dep_city": "Patna",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6283": {
+"dep": "BLR",
+"arr": "BOM",
+"dep_city": "Bangalore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6292": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6307": {
+"dep": "CJB",
+"arr": "HYD",
+"dep_city": "Coimbatore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6314": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6319": {
+"dep": "GOP",
+"arr": "HYD",
+"dep_city": "Gorakhpur",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6329": {
+"dep": "DEL",
+"arr": "GOI",
+"dep_city": "New Delhi",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO632P": {
+"dep": "BOM",
+"arr": "GWL",
+"dep_city": "Mumbai",
+"arr_city": "Gwalior",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6336": {
+"dep": "BLR",
+"arr": "VTZ",
+"dep_city": "Bangalore",
+"arr_city": "Visakhapatnam",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6339": {
+"dep": "CCU",
+"arr": "DMU",
+"dep_city": "Kolkata",
+"arr_city": "Dimapur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6351": {
+"dep": "AMD",
+"arr": "BOM",
+"dep_city": "Ahmedabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6363": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6379": {
+"dep": "DEL",
+"arr": "PAT",
+"dep_city": "New Delhi",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6383": {
+"dep": "IMF",
+"arr": "DEL",
+"dep_city": "Imphal",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO63H": {
+"dep": "IXE",
+"arr": "DXB",
+"dep_city": "Mangalore",
+"arr_city": "Dubai",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO6401": {
+"dep": "BLR",
+"arr": "DEL",
+"dep_city": "Bangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6407": {
+"dep": "SAG",
+"arr": "DEL",
+"dep_city": "Kakadi",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6414": {
+"dep": "VNS",
+"arr": "AMD",
+"dep_city": "Varanasi",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6428": {
+"dep": "TRV",
+"arr": "BLR",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6431": {
+"dep": "BOM",
+"arr": "HYD",
+"dep_city": "Mumbai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6432": {
+"dep": "GOP",
+"arr": "DEL",
+"dep_city": "Gorakhpur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6439": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6442": {
+"dep": "BLR",
+"arr": "GOI",
+"dep_city": "Bangalore",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6457": {
+"dep": "AMD",
+"arr": "GAU",
+"dep_city": "Ahmedabad",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6465": {
+"dep": "BLR",
+"arr": "BHO",
+"dep_city": "Bangalore",
+"arr_city": "Bhopal",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6466": {
+"dep": "BHO",
+"arr": "BLR",
+"dep_city": "Bhopal",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6467": {
+"dep": "HYD",
+"arr": "RPR",
+"dep_city": "Hyderabad",
+"arr_city": "Raipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6473": {
+"dep": "PNQ",
+"arr": "HYD",
+"dep_city": "Pune",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6479": {
+"dep": "UDR",
+"arr": "HYD",
+"dep_city": "Udaipur",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO647M": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO647Y": {
+"dep": "NAG",
+"arr": "BLR",
+"dep_city": "Nagpur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6485": {
+"dep": "PAT",
+"arr": "IXC",
+"dep_city": "Patna",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6494": {
+"dep": "HYD",
+"arr": "CCU",
+"dep_city": "Hyderabad",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6502": {
+"dep": "VNS",
+"arr": "CCU",
+"dep_city": "Varanasi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6504": {
+"dep": "IXA",
+"arr": "DEL",
+"dep_city": "Agartala",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6505": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6515": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO651H": {
+"dep": "LKO",
+"arr": "BLR",
+"dep_city": "Lucknow",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6521": {
+"dep": "RPR",
+"arr": "BBI",
+"dep_city": "Raipur",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO653": {
+"dep": "PNQ",
+"arr": "PAT",
+"dep_city": "Pune",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6541": {
+"dep": "BLR",
+"arr": "GAU",
+"dep_city": "Bangalore",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6542": {
+"dep": "GAU",
+"arr": "BLR",
+"dep_city": "Guwahati",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6548": {
+"dep": "ISK",
+"arr": "BLR",
+"dep_city": "Nasik",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6549": {
+"dep": "BOM",
+"arr": "IXE",
+"dep_city": "Mumbai",
+"arr_city": "Mangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6551": {
+"dep": "IDR",
+"arr": "BOM",
+"dep_city": "Indore",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6552": {
+"dep": "GAU",
+"arr": "LKO",
+"dep_city": "Guwahati",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6556": {
+"dep": "AMD",
+"arr": "CCU",
+"dep_city": "Ahmedabad",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6561": {
+"dep": "PNQ",
+"arr": "CCU",
+"dep_city": "Pune",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6565": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6573": {
+"dep": "NAG",
+"arr": "DEL",
+"dep_city": "Nagpur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6575": {
+"dep": "DED",
+"arr": "DEL",
+"dep_city": "Dehradun",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6585": {
+"dep": "BLR",
+"arr": "IXM",
+"dep_city": "Bangalore",
+"arr_city": "Madurai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6587": {
+"dep": "PNQ",
+"arr": "DEL",
+"dep_city": "Pune",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO659": {
+"dep": "CJB",
+"arr": "MAA",
+"dep_city": "Coimbatore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6595": {
+"dep": "BLR",
+"arr": "AMD",
+"dep_city": "Bangalore",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6601": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6619": {
+"dep": "PAT",
+"arr": "BOM",
+"dep_city": "Patna",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6636": {
+"dep": "ISK",
+"arr": "DEL",
+"dep_city": "Nasik",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO663P": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6645": {
+"dep": "VTZ",
+"arr": "HYD",
+"dep_city": "Visakhapatnam",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6654": {
+"dep": "IXR",
+"arr": "AMD",
+"dep_city": "Ranchi",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6673": {
+"dep": "DEL",
+"arr": "PNQ",
+"dep_city": "New Delhi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6676": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6682": {
+"dep": "HYD",
+"arr": "COK",
+"dep_city": "Hyderabad",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6701": {
+"dep": "BOM",
+"arr": "COK",
+"dep_city": "Mumbai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6703": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6705": {
+"dep": "IXA",
+"arr": "CCU",
+"dep_city": "Agartala",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6706": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO671": {
+"dep": "CJB",
+"arr": "PNQ",
+"dep_city": "Coimbatore",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6717": {
+"dep": "CCU",
+"arr": "BBI",
+"dep_city": "Kolkata",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO672": {
+"dep": "PNQ",
+"arr": "VNS",
+"dep_city": "Pune",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO673": {
+"dep": "BOM",
+"arr": "PAT",
+"dep_city": "Mumbai",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6737": {
+"dep": "BBI",
+"arr": "DEL",
+"dep_city": "Bhubaneswar",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6744": {
+"dep": "IDR",
+"arr": "BLR",
+"dep_city": "Indore",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO674F": {
+"dep": "DEL",
+"arr": "JAI",
+"dep_city": "New Delhi",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO674P": {
+"dep": "HYD",
+"arr": "IXC",
+"dep_city": "Hyderabad",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO676": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6764": {
+"dep": "GAU",
+"arr": "MAA",
+"dep_city": "Guwahati",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6774": {
+"dep": "BLR",
+"arr": "GAU",
+"dep_city": "Bangalore",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6852": {
+"dep": "HYD",
+"arr": "BOM",
+"dep_city": "Hyderabad",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6875": {
+"dep": "BLR",
+"arr": "CJB",
+"dep_city": "Bangalore",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6884": {
+"dep": "VNS",
+"arr": "PNQ",
+"dep_city": "Varanasi",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6903": {
+"dep": "MAA",
+"arr": "COK",
+"dep_city": "Chennai",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6907": {
+"dep": "HYD",
+"arr": "CCU",
+"dep_city": "Hyderabad",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6914": {
+"dep": "GAU",
+"arr": "BBI",
+"dep_city": "Guwahati",
+"arr_city": "Bhubaneswar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6916": {
+"dep": "IDR",
+"arr": "HYD",
+"dep_city": "Indore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6921": {
+"dep": "PNQ",
+"arr": "CCU",
+"dep_city": "Pune",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6922": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6932": {
+"dep": "CCJ",
+"arr": "BOM",
+"dep_city": "Calicut",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6951": {
+"dep": "GOP",
+"arr": "BOM",
+"dep_city": "Gorakhpur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6959": {
+"dep": "TRV",
+"arr": "MAA",
+"dep_city": "Thiruvananthapuram",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO697": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO697J": {
+"dep": "DEL",
+"arr": "GOI",
+"dep_city": "New Delhi",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO69TA": {
+"dep": "CCU",
+"arr": "BOM",
+"dep_city": "Kolkata",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6FA": {
+"dep": "VGA",
+"arr": "MAA",
+"dep_city": "Gannavaram",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO6MH": {
+"dep": "NMI",
+"arr": "BHU",
+"dep_city": "Mumbai",
+"arr_city": "Bhavnagar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO701J": {
+"dep": "DEL",
+"arr": "MAA",
+"dep_city": "New Delhi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO703": {
+"dep": "BBI",
+"arr": "BLR",
+"dep_city": "Bhubaneswar",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7052": {
+"dep": "TRZ",
+"arr": "MAA",
+"dep_city": "Tiruchirappalli",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO705Y": {
+"dep": "IXE",
+"arr": "DEL",
+"dep_city": "Mangalore",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7103": {
+"dep": "HYD",
+"arr": "IXE",
+"dep_city": "Hyderabad",
+"arr_city": "Mangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7122": {
+"dep": "BHO",
+"arr": "HYD",
+"dep_city": "Bhopal",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7126": {
+"dep": "HYD",
+"arr": "MYQ",
+"dep_city": "Hyderabad",
+"arr_city": "Mysore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7133": {
+"dep": "VGA",
+"arr": "BLR",
+"dep_city": "Gannavaram",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7134": {
+"dep": "BLR",
+"arr": "VGA",
+"dep_city": "Bangalore",
+"arr_city": "Gannavaram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7139": {
+"dep": "VGA",
+"arr": "MAA",
+"dep_city": "Gannavaram",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO713V": {
+"dep": "IXM",
+"arr": "HYD",
+"dep_city": "Madurai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7146": {
+"dep": "PNY",
+"arr": "HYD",
+"dep_city": "Puducherry (Pondicherry)",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7151": {
+"dep": "TRZ",
+"arr": "MAA",
+"dep_city": "Tiruchirappalli",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7166": {
+"dep": "TRZ",
+"arr": "BLR",
+"dep_city": "Tiruchirappalli",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO717": {
+"dep": "DEL",
+"arr": "HYD",
+"dep_city": "New Delhi",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO71N": {
+"dep": "LKO",
+"arr": "AUH",
+"dep_city": "Lucknow",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO7204": {
+"dep": "BLR",
+"arr": "VGA",
+"dep_city": "Bangalore",
+"arr_city": "Gannavaram",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7216": {
+"dep": "RPR",
+"arr": "CCU",
+"dep_city": "Raipur",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7227": {
+"dep": "BLR",
+"arr": "HBX",
+"dep_city": "Bangalore",
+"arr_city": "Hubli",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7232": {
+"dep": "RJA",
+"arr": "BLR",
+"dep_city": "Rajahmundry",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7235": {
+"dep": "IXR",
+"arr": "CCU",
+"dep_city": "Ranchi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7236": {
+"dep": "BLR",
+"arr": "TRZ",
+"dep_city": "Bangalore",
+"arr_city": "Tiruchirappalli",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO724": {
+"dep": "GOI",
+"arr": "IXC",
+"dep_city": "Vasco da Gama",
+"arr_city": "Chandigarh",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7241": {
+"dep": "IXE",
+"arr": "HYD",
+"dep_city": "Mangalore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7249": {
+"dep": "RPR",
+"arr": "HYD",
+"dep_city": "Raipur",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO725": {
+"dep": "MAA",
+"arr": "SAG",
+"dep_city": "Chennai",
+"arr_city": "Kakadi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7253": {
+"dep": "IXM",
+"arr": "MAA",
+"dep_city": "Madurai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO726": {
+"dep": "SAG",
+"arr": "MAA",
+"dep_city": "Kakadi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO726K": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO727H": {
+"dep": "BOM",
+"arr": "DEL",
+"dep_city": "Mumbai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO729M": {
+"dep": "MAA",
+"arr": "DEL",
+"dep_city": "Chennai",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO731": {
+"dep": "MAA",
+"arr": "CJB",
+"dep_city": "Chennai",
+"arr_city": "Coimbatore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7326": {
+"dep": "BLR",
+"arr": "IXE",
+"dep_city": "Bangalore",
+"arr_city": "Mangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO737": {
+"dep": "HBX",
+"arr": "BOM",
+"dep_city": "Hubli",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO738": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO73M": {
+"dep": "COK",
+"arr": "AUH",
+"dep_city": "Kochi",
+"arr_city": "Abu Dhabi",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO7425": {
+"dep": "DEL",
+"arr": "PGH",
+"dep_city": "New Delhi",
+"arr_city": "Pantnagar",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO744E": {
+"dep": "CCJ",
+"arr": "HYD",
+"dep_city": "Calicut",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO745J": {
+"dep": "HSR",
+"arr": "DEL",
+"dep_city": "Rajkot",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO746": {
+"dep": "GAU",
+"arr": "PNQ",
+"dep_city": "Guwahati",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO746L": {
+"dep": "UDR",
+"arr": "BOM",
+"dep_city": "Udaipur",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO749": {
+"dep": "GAU",
+"arr": "JAI",
+"dep_city": "Guwahati",
+"arr_city": "Jaipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO74P": {
+"dep": "AUH",
+"arr": "CNN",
+"dep_city": "Abu Dhabi",
+"arr_city": "Kannur",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"IGO751L": {
+"dep": "GOI",
+"arr": "MAA",
+"dep_city": "Vasco da Gama",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7547": {
+"dep": "RJA",
+"arr": "HYD",
+"dep_city": "Rajahmundry",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO756": {
+"dep": "IDR",
+"arr": "MAA",
+"dep_city": "Indore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7567": {
+"dep": "RJA",
+"arr": "HYD",
+"dep_city": "Rajahmundry",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO757": {
+"dep": "CCU",
+"arr": "BLR",
+"dep_city": "Kolkata",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7592": {
+"dep": "MAA",
+"arr": "IXM",
+"dep_city": "Chennai",
+"arr_city": "Madurai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7603": {
+"dep": "MAA",
+"arr": "MYQ",
+"dep_city": "Chennai",
+"arr_city": "Mysore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7605": {
+"dep": "MAA",
+"arr": "TCR",
+"dep_city": "Chennai",
+"arr_city": "Vagaikulam",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7606": {
+"dep": "TCR",
+"arr": "MAA",
+"dep_city": "Vagaikulam",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7615": {
+"dep": "MYQ",
+"arr": "MAA",
+"dep_city": "Mysore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO761M": {
+"dep": "DEL",
+"arr": "DMU",
+"dep_city": "New Delhi",
+"arr_city": "Dimapur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO765H": {
+"dep": "AMD",
+"arr": "DED",
+"dep_city": "Ahmedabad",
+"arr_city": "Dehradun",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO766H": {
+"dep": "MAA",
+"arr": "BOM",
+"dep_city": "Chennai",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7674": {
+"dep": "CCU",
+"arr": "IXR",
+"dep_city": "Kolkata",
+"arr_city": "Ranchi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7695": {
+"dep": "NAG",
+"arr": "HYD",
+"dep_city": "Nagpur",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO76C": {
+"dep": "BOM",
+"arr": "RKT",
+"dep_city": "Mumbai",
+"arr_city": "Ras Al Khaimah",
+"dep_country": "IN",
+"arr_country": "AE"
+},
+"IGO770": {
+"dep": "TRZ",
+"arr": "DEL",
+"dep_city": "Tiruchirappalli",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO771C": {
+"dep": "BOM",
+"arr": "GOI",
+"dep_city": "Mumbai",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO772": {
+"dep": "IXR",
+"arr": "MAA",
+"dep_city": "Ranchi",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7729": {
+"dep": "CNN",
+"arr": "BLR",
+"dep_city": "Kannur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO773": {
+"dep": "LKO",
+"arr": "HYD",
+"dep_city": "Lucknow",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO7736": {
+"dep": "TCR",
+"arr": "BLR",
+"dep_city": "Vagaikulam",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO773W": {
+"dep": "MAA",
+"arr": "BLR",
+"dep_city": "Chennai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO773Y": {
+"dep": "JAI",
+"arr": "CCU",
+"dep_city": "Jaipur",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO774Y": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO785K": {
+"dep": "DEL",
+"arr": "IXE",
+"dep_city": "New Delhi",
+"arr_city": "Mangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO792F": {
+"dep": "MAA",
+"arr": "CCU",
+"dep_city": "Chennai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO794": {
+"dep": "AMD",
+"arr": "PNQ",
+"dep_city": "Ahmedabad",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO796": {
+"dep": "MAA",
+"arr": "BLR",
+"dep_city": "Chennai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO813F": {
+"dep": "DEL",
+"arr": "IXB",
+"dep_city": "New Delhi",
+"arr_city": "Siliguri",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO814": {
+"dep": "CJB",
+"arr": "HYD",
+"dep_city": "Coimbatore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO848": {
+"dep": "MAA",
+"arr": "AMD",
+"dep_city": "Chennai",
+"arr_city": "Ahmedabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO84CY": {
+"dep": "VNS",
+"arr": "BLR",
+"dep_city": "Varanasi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO850": {
+"dep": "DEL",
+"arr": "BLR",
+"dep_city": "New Delhi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO863": {
+"dep": "AMD",
+"arr": "BLR",
+"dep_city": "Ahmedabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO87RT": {
+"dep": "VNS",
+"arr": "BLR",
+"dep_city": "Varanasi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO885": {
+"dep": "GOI",
+"arr": "COK",
+"dep_city": "Vasco da Gama",
+"arr_city": "Kochi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO8RC": {
+"dep": "GOI",
+"arr": "BLR",
+"dep_city": "Vasco da Gama",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO901M": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO903": {
+"dep": "BLR",
+"arr": "LKO",
+"dep_city": "Bangalore",
+"arr_city": "Lucknow",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO913L": {
+"dep": "MAA",
+"arr": "CCU",
+"dep_city": "Chennai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO9150": {
+"dep": "DEL",
+"arr": "CCU",
+"dep_city": "New Delhi",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO916Y": {
+"dep": "HYD",
+"arr": "MAA",
+"dep_city": "Hyderabad",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO921": {
+"dep": "AMD",
+"arr": "PAT",
+"dep_city": "Ahmedabad",
+"arr_city": "Patna",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO923": {
+"dep": "MAA",
+"arr": "CCU",
+"dep_city": "Chennai",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO9280": {
+"dep": "HAN",
+"arr": "DEL",
+"dep_city": "Soc Son, Hanoi",
+"arr_city": "New Delhi",
+"dep_country": "VN",
+"arr_country": "IN"
+},
+"IGO92KC": {
+"dep": "CJB",
+"arr": "MAA",
+"dep_city": "Coimbatore",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO932": {
+"dep": "AGR",
+"arr": "HYD",
+"dep_city": "Agra",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO937": {
+"dep": "BDQ",
+"arr": "BOM",
+"dep_city": "Vadodara",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO93VE": {
+"dep": "IDR",
+"arr": "CCU",
+"dep_city": "Indore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO941": {
+"dep": "BLR",
+"arr": "AGR",
+"dep_city": "Bangalore",
+"arr_city": "Agra",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO943Y": {
+"dep": "BOM",
+"arr": "BLR",
+"dep_city": "Mumbai",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO944": {
+"dep": "HYD",
+"arr": "CCU",
+"dep_city": "Hyderabad",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO947": {
+"dep": "GOX",
+"arr": "CCU",
+"dep_city": "Mopa",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO94ET": {
+"dep": "BLR",
+"arr": "RPR",
+"dep_city": "Bangalore",
+"arr_city": "Raipur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO952": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO962K": {
+"dep": "IXC",
+"arr": "HYD",
+"dep_city": "Chandigarh",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO969": {
+"dep": "BLR",
+"arr": "VTZ",
+"dep_city": "Bangalore",
+"arr_city": "Visakhapatnam",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO971": {
+"dep": "IXC",
+"arr": "MAA",
+"dep_city": "Chandigarh",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO971P": {
+"dep": "NAG",
+"arr": "BLR",
+"dep_city": "Nagpur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO972": {
+"dep": "HYD",
+"arr": "GAU",
+"dep_city": "Hyderabad",
+"arr_city": "Guwahati",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO974H": {
+"dep": "CCU",
+"arr": "HYD",
+"dep_city": "Kolkata",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO975": {
+"dep": "BLR",
+"arr": "CCU",
+"dep_city": "Bangalore",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO979": {
+"dep": "RPR",
+"arr": "BLR",
+"dep_city": "Raipur",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO9AW": {
+"dep": "IXM",
+"arr": "MAA",
+"dep_city": "Madurai",
+"arr_city": "Chennai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO9HE": {
+"dep": "BLR",
+"arr": "CNN",
+"dep_city": "Bangalore",
+"arr_city": "Kannur",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"IGO9WK": {
+"dep": "MAA",
+"arr": "TRZ",
+"dep_city": "Chennai",
+"arr_city": "Tiruchirappalli",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR508": {
+"dep": "COK",
+"arr": "BLR",
+"dep_city": "Kochi",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR518": {
+"dep": "HYD",
+"arr": "BLR",
+"dep_city": "Hyderabad",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR547": {
+"dep": "BLR",
+"arr": "GOI",
+"dep_city": "Bangalore",
+"arr_city": "Vasco da Gama",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR548": {
+"dep": "GOI",
+"arr": "BLR",
+"dep_city": "Vasco da Gama",
+"arr_city": "Bangalore",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR602": {
+"dep": "VAJL",
+"arr": "BOM",
+"dep_city": "Jalgaon",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR726": {
+"dep": "IMF",
+"arr": "CCU",
+"dep_city": "Imphal",
+"arr_city": "Kolkata",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR867": {
+"dep": "HYD",
+"arr": "PNQ",
+"dep_city": "Hyderabad",
+"arr_city": "Pune",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR878": {
+"dep": "TIR",
+"arr": "HYD",
+"dep_city": "Tirupati",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"LLR894": {
+"dep": "MAA",
+"arr": "HYD",
+"dep_city": "Chennai",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"SDG151": {
+"dep": "BLR",
+"arr": "HYD",
+"dep_city": "Bangalore",
+"arr_city": "Hyderabad",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"SEJ082": {
+"dep": "HKT",
+"arr": "BOM",
+"dep_city": "Phuket",
+"arr_city": "Mumbai",
+"dep_country": "TH",
+"arr_country": "IN"
+},
+"SEJ2441": {
+"dep": "DEL",
+"arr": "SHL",
+"dep_city": "New Delhi",
+"arr_city": "Shillong",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"SEJ2472": {
+"dep": "GOP",
+"arr": "DEL",
+"dep_city": "Gorakhpur",
+"arr_city": "New Delhi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"SEJ5117": {
+"dep": "DXB",
+"arr": "COK",
+"dep_city": "Dubai",
+"arr_city": "Kochi",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"SEJ5156": {
+"dep": "DXB",
+"arr": "ATQ",
+"dep_city": "Dubai",
+"arr_city": "Amritsar",
+"dep_country": "AE",
+"arr_country": "IN"
+},
+"SEJ800": {
+"dep": "DEL",
+"arr": "BOM",
+"dep_city": "New Delhi",
+"arr_city": "Mumbai",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"SEJ809": {
+"dep": "BOM",
+"arr": "VNS",
+"dep_city": "Mumbai",
+"arr_city": "Varanasi",
+"dep_country": "IN",
+"arr_country": "IN"
+},
+"SEJ9060": {
+"dep": "DXB",
+"arr": "BOM",
+"dep_city": "Dubai",
+"arr_city": "Mumbai",
+"dep_country": "AE",
+"arr_country": "IN"
+}
+}
+}

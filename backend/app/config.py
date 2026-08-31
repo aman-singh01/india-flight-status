@@ -8,11 +8,19 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    # demo | adsblol | readsb:<url>  (comma-separated, later wins on conflict)
+    # demo | adsblol | adsbfi | opensky | readsb:<url>  (comma-separated, later wins on conflict)
     sources: str = "adsblol"
     # adsblol self-paces at ~25s/sweep; this just gates the WS push cadence.
     poll_interval: float = 5.0
-    stale_ttl: float = 150.0
+    # retain an aircraft this many seconds after its last report -- long enough to
+    # survive a sweep where its region was rate-limited.
+    stale_ttl: float = 210.0
+
+    # OpenSky Network (sources=...,opensky). Anonymous works but is capped at
+    # ~400 calls/day; a free account lifts that to ~4000. Leave blank for anon.
+    opensky_user: str = ""
+    opensky_pass: str = ""
+    opensky_interval: float = 0.0  # 0 = auto (10s authed, 300s anon)
     include_ga: bool = False
     persist: bool = True
     db_path: str = "flights.db"

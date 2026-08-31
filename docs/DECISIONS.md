@@ -97,3 +97,45 @@ error. The app must run with no key at all.
 key or the user's feeders (which also activate track-history origin inference). The
 provider abstraction (`route(flight_no, callsign)`) keeps adding a third provider to
 one class.
+
+---
+
+## 6. A shipped route seed, not a live schedule feed
+
+**Decision.** `data/routes_seed.json` — a committed snapshot of ~1,000 callsign →
+route entries resolved from adsbdb — is loaded at startup as the base layer, with
+the live disk cache overlaid on top. The alternative considered was a *schedule-first*
+design: poll a provider's airport departures/arrivals endpoints so every scheduled
+flight is a row whether or not ADS-B sees it.
+
+**Why.** Schedule-first is how commercial products (MMT, Google Flights) get to "every
+flight" — but the airport-schedule endpoints are unit-expensive and none of the free
+tiers sustain continuous coverage of even six airports. The seed gets the cheap 80 %
+of that benefit for free: a cold start on a host that sleeps (the free deploy target)
+begins knowing most routes instead of hammering adsbdb from zero, which also cuts
+rate-limiting on the resolver.
+
+**Cost.** The seed is point-in-time; a seasonally renumbered flight can carry a stale
+route until the seed is regenerated from `route_cache.json`. It does nothing for
+completeness — a flight ADS-B can't see is still absent. Schedule-first stays the
+right move the day a paid key or an FIDS scraper is in the budget.
+
+---
+
+## 7. OpenSky joins the union as a bounding-box source
+
+**Decision.** Add OpenSky Network alongside the grid-poll sources: one
+`/states/all` call for the whole India bbox per cycle, self-throttled (10 s with a
+free account, 300 s anonymous) and re-serving its last result in between.
+
+**Why.** It roughly doubled the flights seen in testing (~46 → ~110 at evening peak)
+— a different feeder network plus MLAT surfaces Mode-S-only airframes and low
+climb-outs the `adsb.lol` grid misses. It doesn't fit `GridPollSource` (one wide
+query, not a tiled one) so it's a plain `Source` with its own state-vector
+normaliser. `adsb.one` was evaluated and rejected — it sits behind a Cloudflare
+bot-wall that blocks server-side clients.
+
+**Cost.** Anonymous OpenSky is capped near 400 calls/day, so without an account the
+positions can be up to 300 s stale (the client still shows them, dead-reckoned).
+Unit conversions (m→ft, m/s→kt/fpm) are one more place for an off-by-a-factor bug,
+covered by a normaliser test.

@@ -38,19 +38,22 @@ flowchart LR
   subgraph Sources["ADS-B sources (SOURCES env, merged by ICAO hex)"]
     A[adsb.lol grid poll]
     B[adsb.fi grid poll]
+    E["OpenSky (bbox + MLAT)"]
     C["readsb (private feeder)"]
     D["demo (synthetic)"]
   end
   A --> I
   B --> I
+  E --> I
   C --> I
   D --> I
   I[ingest loop: normalise + merge] --> S[(in-memory store + track history)]
   S --> K["classify(): domestic? + route"]
   K -->|callsign| R[route resolver]
+  R --> R0[(routes_seed.json - shipped)]
   R --> R1[adsbdb.com free routeset]
   R --> R2["schedule API - AeroDataBox / FlightAware (optional key)"]
-  R --> RC[(route_cache.json)]
+  R --> RC[(route_cache.json - live)]
   K --> M[flight record + phase + nearest place + schedule]
   M --> WS[WebSocket /ws]
   M --> API[REST /api/*]
@@ -62,15 +65,18 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
 
 ## Implementation notes
 
-- **Resilient ingestion.** Public ADS-B endpoints are polled over a shuffled 12-point
-  grid at roughly one request every three seconds. Rate-limited cells are skipped rather
-  than retried, aircraft are retained across sweeps for `STALE_TTL` seconds, and
-  multiple sources are merged and deduplicated by ICAO 24-bit address.
-- **Two-stage route resolution.** Origin and destination come first from the free adsbdb
-  routeset; an optional keyed schedule API (AeroDataBox or FlightAware) is queried only
-  for the remaining gaps, behind an hourly and daily quota guard and an on-disk cache
-  that survives restarts. Without a key the board still runs, showing route but no
-  scheduled times.
+- **Resilient, multi-network ingestion.** `adsb.lol` / `adsb.fi` are polled over a
+  shuffled 12-point grid (~1 request / 3 s, rate-limited cells skipped not retried);
+  `OpenSky` is a single bounding-box call against a different feeder network with MLAT,
+  which roughly doubles the flights seen. Sources are merged and deduplicated by ICAO
+  24-bit address, and aircraft are retained for `STALE_TTL` seconds so a starved sweep
+  doesn't drop them.
+- **Route resolution with a shipped seed.** A snapshot of ~1,000 resolved routes
+  (`data/routes_seed.json`) ships with the app, so a cold start (e.g. a free host waking
+  from sleep) isn't route-blind. On top of that: the free adsbdb routeset for anything
+  new, then an optional keyed schedule API (AeroDataBox / FlightAware) for the remaining
+  gaps, quota-guarded and cached to disk. Without a key the board still runs, showing
+  route but no scheduled times.
 - **Domain-aware classification.** A flight counts as domestic only when both endpoints
   are Indian airports, which also excludes international flights operated by Indian
   carriers. This follows India's cabotage rule: domestic point-to-point service is
@@ -109,9 +115,10 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `SOURCES` | `adsblol,adsbfi` | Comma-separated ingest sources, merged: `adsblol`, `adsbfi`, `demo`, `readsb:<url>` |
+| `SOURCES` | `adsblol,adsbfi,opensky` | Comma-separated ingest sources, merged: `adsblol`, `adsbfi`, `opensky`, `demo`, `readsb:<url>` |
+| `OPENSKY_USER` / `OPENSKY_PASS` | _(none)_ | Optional free OpenSky account -> 10 s poll instead of 300 s anonymous |
 | `POLL_INTERVAL` | `5` | WebSocket push interval (seconds) |
-| `STALE_TTL` | `150` | Drop an aircraft after this many seconds unseen |
+| `STALE_TTL` | `210` | Drop an aircraft after this many seconds unseen |
 | `PERSIST` / `DB_PATH` | `true` / `flights.db` | SQLite position history |
 | `SCHEDULE_PROVIDER` | _(none)_ | `aerodatabox` or `flightaware`; requires `SCHEDULE_API_KEY` |
 | `SCHEDULE_ALL` | `false` | Query the schedule API for every flight, not only unresolved ones |
@@ -141,9 +148,9 @@ ruff check backend/
 black --check backend/app backend/tests
 ```
 
-47 unit tests cover the classification, route-inference and provider-parsing logic.
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs linting, formatting,
-tests and a Docker build on every push and pull request.
+The unit tests cover the classification, route-inference, source-normalisation and
+provider-parsing logic. CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs
+linting, formatting, tests and a Docker build on every push and pull request.
 
 ## Deployment
 
@@ -155,9 +162,13 @@ tests and a Docker build on every push and pull request.
 
 ## Limitations
 
-- Public feeds surface roughly 90-130 domestic flights against a real peak of 350+.
-  Full coverage requires a private `readsb` feeder or a paid aggregator.
+- Free feeds surface roughly 110-160 domestic flights at peak (measured with
+  `adsblol,adsbfi,opensky`), against ~250-300 actually airborne — DGCA reports ~2,800
+  domestic movements/day. Closing that gap needs a private `readsb` feeder or a paid
+  aggregator; ADS-B alone can never see grounded, delayed or cancelled flights.
 - Scheduled times, gate and delay require a keyed schedule provider.
+- The shipped route seed is a point-in-time snapshot; airlines renumber flights
+  seasonally, so a stale seed entry can misroute until it's regenerated.
 - Track-history origin inference needs a feed that captures departures and is inactive
   on the public feed.
 

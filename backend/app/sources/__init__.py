@@ -6,6 +6,7 @@ from .adsbfi import AdsbFiSource
 from .adsblol import AdsbLolSource
 from .base import Source
 from .demo import DemoSource
+from .opensky import OpenSkySource
 from .readsb import ReadsbSource
 
 log = logging.getLogger("sources")
@@ -14,6 +15,7 @@ _SIMPLE = {
     "demo": DemoSource,
     "adsblol": AdsbLolSource,
     "adsbfi": AdsbFiSource,
+    "opensky": OpenSkySource,
 }
 
 

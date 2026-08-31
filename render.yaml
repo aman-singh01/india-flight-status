@@ -1,6 +1,7 @@
 # Render blueprint -- New > Blueprint, point at this repo.
-# Free tier: no persistent disk (cache is ephemeral, adsbdb refetches on cold
-# start) and the service sleeps after ~15 min idle.
+# Free tier: no persistent disk (the live route cache is ephemeral, but the app
+# ships a route seed so a cold start still knows ~1000 routes) and the service
+# sleeps after ~15 min idle.
 services:
   - type: web
     name: india-flight-status
@@ -11,11 +12,11 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: SOURCES
-        value: adsblol,adsbfi
+        value: adsblol,adsbfi,opensky
       - key: POLL_INTERVAL
         value: "5"
       - key: STALE_TTL
-        value: "150"
+        value: "210"
       # - key: SCHEDULE_PROVIDER
       #   value: aerodatabox
       # - key: SCHEDULE_API_KEY

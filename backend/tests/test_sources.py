@@ -1,5 +1,6 @@
 from app.sources import build_sources
 from app.sources.base import GRID, norm_alt, normalize_reapi
+from app.sources.opensky import _normalize as opensky_normalize
 
 
 def test_norm_alt():
@@ -43,6 +44,43 @@ def test_normalize_reapi_ground_and_missing_callsign():
     assert n["callsign"] is None
 
 
+def test_opensky_normalize_converts_units():
+    # [icao24, callsign, country, t_pos, last_contact, lon, lat, baro_alt_m,
+    #  on_ground, velocity_ms, track, vrate_ms, sensors, geo_alt_m, squawk, spi, src]
+    s = [
+        "4baa12",
+        "IGO2416 ",
+        "India",
+        1788187509,
+        1788187509,
+        75.2,
+        19.1,
+        10668.0,
+        False,
+        239.0,
+        210.2,
+        -2.03,
+        None,
+        11277.6,
+        None,
+        False,
+        0,
+    ]
+    n = opensky_normalize(s)
+    assert n["hex"] == "4baa12"
+    assert n["callsign"] == "IGO2416"
+    assert n["lat"] == 19.1 and n["lon"] == 75.2
+    assert n["alt_ft"] == 35000  # barometric altitude, m -> ft
+    assert n["gs_kt"] == 465  # m/s -> kt
+    assert n["vs_fpm"] == -400  # m/s -> fpm
+    assert n["source"] == "opensky"
+
+
+def test_opensky_normalize_rejects_incomplete():
+    assert opensky_normalize([]) is None
+    assert opensky_normalize(["abc", "X", "IN", 0, 0, None, None, 0, False, 0, 0, 0]) is None
+
+
 def test_grid_covers_india_span():
     lats = {p[0] for p in GRID}
     lons = {p[1] for p in GRID}
@@ -52,8 +90,8 @@ def test_grid_covers_india_span():
 
 
 def test_build_sources_parses_and_dedups_kinds():
-    names = [s.name for s in build_sources("demo,adsblol,adsbfi,readsb:http://pi/x.json,bogus")]
-    assert names == ["demo", "adsblol", "adsbfi", "readsb"]
+    names = [s.name for s in build_sources("demo,adsblol,adsbfi,opensky,readsb:http://pi/x.json,bogus")]
+    assert names == ["demo", "adsblol", "adsbfi", "opensky", "readsb"]
 
 
 def test_build_sources_falls_back_to_demo():

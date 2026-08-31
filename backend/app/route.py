@@ -43,6 +43,7 @@ _ADSBDB_SPACING = 0.4
 
 _sched_hits: list[float] = []  # timestamps of schedule-API calls, for the quota window
 _CACHE = Path(settings.route_cache_path)
+_SEED = Path(__file__).resolve().parent.parent / "data" / "routes_seed.json"  # shipped snapshot
 _dirty = False
 
 
@@ -132,13 +133,22 @@ def _quota_ok() -> bool:
 
 def _load_cache() -> None:
     global _dirty
+    # 1. shipped seed (a snapshot so a fresh deploy doesn't start route-blind)
+    try:
+        seed = json.loads(_SEED.read_text(encoding="utf-8")).get("routes", {})
+        _routes.update(seed)
+        if seed:
+            log.info("seeded %d routes from %s", len(seed), _SEED.name)
+    except (OSError, ValueError):
+        pass
+    # 2. live disk cache overlays the seed (fresher wins)
     try:
         raw = json.loads(_CACHE.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return
     _routes.update(raw.get("routes", {}))
     _meta.update(raw.get("meta", {}))
-    log.info("loaded %d cached routes from %s", len(_routes), _CACHE)
+    log.info("loaded %d routes total (+%d schedule metas)", len(_routes), len(_meta))
 
 
 def _save_cache() -> None:
