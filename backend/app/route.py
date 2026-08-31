@@ -14,6 +14,7 @@ import asyncio
 import datetime as _dt
 import json
 import logging
+import re
 import time
 from pathlib import Path
 
@@ -47,12 +48,21 @@ _SEED = Path(__file__).resolve().parent.parent / "data" / "routes_seed.json"  # 
 _dirty = False
 
 
+_OP_SUFFIX = re.compile(r"^([A-Z]{3}\d{1,4})[A-Z]{1,2}$")  # IGO674P -> IGO674
+
+
 def _norm(cs: str | None) -> str:
     return (cs or "").strip().upper()
 
 
 def get(callsign: str | None) -> dict | None:
-    return _routes.get(_norm(callsign))
+    cs = _norm(callsign)
+    r = _routes.get(cs)
+    if r is None:
+        m = _OP_SUFFIX.match(cs)  # fall back to the base callsign minus the ATC suffix
+        if m:
+            r = _routes.get(m.group(1))
+    return r
 
 
 def meta(callsign: str | None) -> dict | None:

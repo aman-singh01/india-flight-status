@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 from pathlib import Path
 
 from . import route as route_db
@@ -157,15 +158,25 @@ def airline_from_callsign(cs: str | None) -> dict | None:
     return {"icao": prefix, **info}
 
 
+_CALLSIGN_TAIL = re.compile(r"^(\d{2,4})[A-Z]{0,2}$")
+
+
 def flight_number(cs: str | None, airline: dict | None) -> str | None:
+    """Marketed IATA flight number from an ADS-B callsign, e.g. IGO674P -> 6E674.
+
+    The callsign's numeric part is the flight number; a trailing 1-2 letter suffix
+    is an ATC operational tag (two same-numbered flights airborne at once) and is
+    not shown to passengers. A callsign with no clean numeric core is returned raw.
+    """
     if not cs:
         return None
     if not airline:
         return cs
-    tail = cs[3:].strip()
-    tail = tail.lstrip("0") or tail
     iata = airline.get("iata")
-    return f"{iata}{tail}" if iata and tail else cs
+    m = _CALLSIGN_TAIL.match(cs[3:].strip().upper())
+    if not iata or not m:
+        return cs
+    return f"{iata}{m.group(1).lstrip('0') or '0'}"
 
 
 def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> dict | None:

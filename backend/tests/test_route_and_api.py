@@ -26,6 +26,14 @@ def test_schedule_summary_computes_delay(monkeypatch):
     assert route.schedule_summary("NOPE") is None
 
 
+def test_get_falls_back_to_base_callsign_minus_op_suffix(monkeypatch):
+    # ZZZ* is not in the shipped seed, so these assertions are hermetic
+    monkeypatch.setitem(route._routes, "ZZZ674", {"dep": "DEL", "arr": "HYD"})
+    assert route.get("ZZZ674P") == {"dep": "DEL", "arr": "HYD"}  # 1-letter suffix stripped
+    assert route.get("ZZZ674PQ") == {"dep": "DEL", "arr": "HYD"}  # 2-letter suffix stripped
+    assert route.get("ZZZ999X") is None  # no base route -> no false match
+
+
 def test_enqueue_schedule_skips_when_route_known(monkeypatch):
     monkeypatch.setattr(route.settings, "schedule_all", False)
     monkeypatch.setitem(route._routes, "IGOKNOWN", {"dep": "DEL", "arr": "BOM"})

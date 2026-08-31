@@ -35,8 +35,13 @@ def test_flight_number():
     igo = airline_from_callsign("IGO0203")
     assert flight_number("IGO0203", igo) == "6E203"  # ICAO -> IATA, leading zero stripped
     assert flight_number("AIC2984", airline_from_callsign("AIC2984")) == "AI2984"
-    assert flight_number("IGO2WJ", airline_from_callsign("IGO2WJ")) == "6E2WJ"
     assert flight_number("ABC123", None) == "ABC123"
+    # trailing 1-2 letters are an ATC operational tag, not the marketed number
+    assert flight_number("IGO674P", airline_from_callsign("IGO674P")) == "6E674"
+    assert flight_number("IGO154H", airline_from_callsign("IGO154H")) == "6E154"
+    assert flight_number("AIC12A", airline_from_callsign("AIC12A")) == "AI12"
+    # a callsign with no clean numeric core is returned raw, not "6E2WJ"
+    assert flight_number("IGO2WJ", airline_from_callsign("IGO2WJ")) == "IGO2WJ"
 
 
 def test_in_bbox():
