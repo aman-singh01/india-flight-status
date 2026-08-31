@@ -231,10 +231,26 @@ function showView(name) {
   }
 }
 document.querySelectorAll(".view-switch").forEach((b) =>
-  b.addEventListener("click", () => showView(b.dataset.goto))
+  b.addEventListener("click", () => {
+    location.hash = b.dataset.goto === "map" ? "#map" : "#status";
+  })
 );
+// honour #map / #status in the URL: deep link, shareable, back/forward
+function viewFromHash() {
+  showView(location.hash === "#map" ? "map" : "status");
+}
+addEventListener("hashchange", viewFromHash);
+// defer the first run to after layout so a direct #map load gives the map a sized container
+requestAnimationFrame(() => {
+  try {
+    viewFromHash();
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 async function trackOnMap(hex) {
+  if (location.hash !== "#map") location.hash = "#map";
   showView("map");
   ensureMap();
   // wait until the map has drawn this aircraft, then select + fly to it
@@ -328,15 +344,22 @@ function ensureMap() {
   if (mapReady) return;
   mapReady = true;
 
-  map = new maplibregl.Map({
-    container: "map",
-    style: STYLES.dark,
-    center: [80.9, 22.6],
-    zoom: 4.4,
-    minZoom: 3,
-    maxBounds: [[58, 2], [102, 40]],
-    attributionControl: { compact: true },
-  });
+  try {
+    map = new maplibregl.Map({
+      container: "map",
+      style: STYLES.dark,
+      center: [80.9, 22.6],
+      zoom: 4.4,
+      minZoom: 3,
+      maxBounds: [[58, 2], [102, 40]],
+      attributionControl: { compact: true },
+    });
+  } catch (e) {
+    // no WebGL (e.g. a headless or locked-down browser) -- the board still works
+    console.error("map init failed:", e);
+    map = null;
+    return;
+  }
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
   map.on("error", (e) => console.warn("map error:", e && e.error));
 
