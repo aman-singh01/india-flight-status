@@ -29,6 +29,8 @@ the first request after an idle period takes ~40 s to wake.
 - **Operational endpoints** - Prometheus metrics at `/metrics`, resolver statistics at
   `/api/health`.
 
+![Live map: aircraft as altitude-coloured, heading-aligned silhouettes over an Esri satellite basemap.](docs/map.jpg)
+
 ## Architecture
 
 ```mermaid
