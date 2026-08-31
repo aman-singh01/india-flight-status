@@ -7,6 +7,7 @@ set, so the app runs fine without any key.
 A provider's `route(flight_no, callsign)` returns, or None (or "ratelimited"):
     {
       "dep", "arr",                      IATA codes
+      "flight_iata",                     marketed number (AIC2CE -> "AI865"), or None
       "dep_city", "arr_city",
       "dep_country", "arr_country",      ISO-2 (used for the domestic check)
       "sched_dep", "sched_arr",          ISO8601 UTC strings or None
@@ -140,6 +141,7 @@ class AeroDataBoxProvider:
         return {
             "dep": dep_iata,
             "arr": arr_iata,
+            "flight_iata": (best.get("number") or "").replace(" ", "").upper() or None,
             "dep_city": da.get("municipalityName") or da.get("name"),
             "arr_city": aa.get("municipalityName") or aa.get("name"),
             "dep_country": (da.get("countryCode") or "").upper() or None,
@@ -230,6 +232,7 @@ class FlightAwareProvider:
         return {
             "dep": dep,
             "arr": arr,
+            "flight_iata": (best.get("ident_iata") or "").replace(" ", "").upper() or None,
             "dep_city": o.get("city"),
             "arr_city": d.get("city"),
             "dep_country": country(o),

@@ -168,8 +168,10 @@ linting, formatting, tests and a Docker build on every push and pull request.
   aggregator; ADS-B alone can never see grounded, delayed or cancelled flights.
 - Scheduled times, gate and delay require a keyed schedule provider.
 - Air India files many domestic legs under opaque ATC callsigns (`AIC2CE`) that
-  don't encode the marketed flight number; without a schedule feed the board shows
-  the callsign for those rather than inventing an `AI2CE`.
+  don't encode the marketed flight number. A FlightAware key resolves these
+  automatically (its `ident_iata`), or add rows to
+  [`data/callsign_flightno.json`](backend/data/callsign_flightno.json) by hand;
+  otherwise the board shows the callsign rather than inventing an `AI2CE`.
 - The shipped route seed is a point-in-time snapshot; airlines renumber flights
   seasonally, so a stale seed entry can misroute until it's regenerated.
 - Track-history origin inference needs a feed that captures departures and is inactive

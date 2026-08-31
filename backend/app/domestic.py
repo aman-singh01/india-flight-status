@@ -210,7 +210,9 @@ def classify(ac: dict, track: list[tuple[float, float, float, int | None]]) -> d
             "status": "domestic",
             "airline": airline["name"] if airline else "General Aviation",
             "airline_icao": airline["icao"] if airline else None,
-            "flight_no": flight_number(cs, airline),
+            # a keyed feed / override maps opaque callsigns (AIC2CE -> AI865);
+            # otherwise derive the best we can from the callsign itself
+            "flight_no": route_db.flight_no(cs) or flight_number(cs, airline),
             "dep": dep,
             "arr": arr,
             "dep_city": dep_city,

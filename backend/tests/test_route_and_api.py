@@ -34,6 +34,14 @@ def test_get_falls_back_to_base_callsign_minus_op_suffix(monkeypatch):
     assert route.get("ZZZ999X") is None  # no base route -> no false match
 
 
+def test_flight_no_lookup_and_suffix_fallback(monkeypatch):
+    assert route.flight_no("QQQ2CE") is None  # nothing resolved -> caller derives from callsign
+    monkeypatch.setitem(route._flightno, "QQQ2CE", "AI865")
+    assert route.flight_no("QQQ2CE") == "AI865"  # direct hit (opaque AI callsign -> marketed no.)
+    monkeypatch.setitem(route._flightno, "QQQ400", "6E400")
+    assert route.flight_no("QQQ400W") == "6E400"  # ATC suffix stripped, base callsign resolved
+
+
 def test_enqueue_schedule_skips_when_route_known(monkeypatch):
     monkeypatch.setattr(route.settings, "schedule_all", False)
     monkeypatch.setitem(route._routes, "IGOKNOWN", {"dep": "DEL", "arr": "BOM"})

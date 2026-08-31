@@ -30,6 +30,7 @@ _HEADERS = {"User-Agent": "india-domestic-flight-tracker/0.1"}
 
 _routes: dict[str, dict] = {}  # callsign -> {dep, arr, dep_city, arr_city, dep_country, arr_country}
 _meta: dict[str, dict] = {}  # callsign -> {sched_dep, sched_arr, est_arr, sched_status, gate, terminal}
+_flightno: dict[str, str] = {}  # callsign -> marketed IATA number (AIC2CE -> AI865), from a keyed feed
 _noroute: dict[str, float] = {}  # callsign -> ts of last unsuccessful adsbdb lookup
 _sched_tried: dict[str, float] = {}  # callsign -> ts of last schedule-API attempt
 
@@ -44,7 +45,9 @@ _ADSBDB_SPACING = 0.4
 
 _sched_hits: list[float] = []  # timestamps of schedule-API calls, for the quota window
 _CACHE = Path(settings.route_cache_path)
-_SEED = Path(__file__).resolve().parent.parent / "data" / "routes_seed.json"  # shipped snapshot
+_DATA = Path(__file__).resolve().parent.parent / "data"
+_SEED = _DATA / "routes_seed.json"  # shipped route snapshot
+_FLIGHTNO_OVERRIDES = _DATA / "callsign_flightno.json"  # hand-maintained callsign -> number
 _dirty = False
 
 
@@ -63,6 +66,19 @@ def get(callsign: str | None) -> dict | None:
         if m:
             r = _routes.get(m.group(1))
     return r
+
+
+def flight_no(callsign: str | None) -> str | None:
+    """Marketed IATA flight number for an ADS-B callsign, if a keyed feed or the
+    override file has resolved one (e.g. AIC2CE -> AI865). None otherwise --
+    domestic.flight_number() then derives the best it can from the callsign."""
+    cs = _norm(callsign)
+    n = _flightno.get(cs)
+    if n is None:
+        m = _OP_SUFFIX.match(cs)
+        if m:
+            n = _flightno.get(m.group(1))
+    return n
 
 
 def meta(callsign: str | None) -> dict | None:
@@ -151,14 +167,25 @@ def _load_cache() -> None:
             log.info("seeded %d routes from %s", len(seed), _SEED.name)
     except (OSError, ValueError):
         pass
-    # 2. live disk cache overlays the seed (fresher wins)
+    # 2. hand-maintained callsign -> marketed flight number overrides
+    try:
+        ov = json.loads(_FLIGHTNO_OVERRIDES.read_text(encoding="utf-8")).get("map", {})
+        _flightno.update({_norm(k): v for k, v in ov.items() if v})
+        if ov:
+            log.info("loaded %d flight-number overrides", len(ov))
+    except (OSError, ValueError):
+        pass
+    # 3. live disk cache overlays the seed (fresher wins)
     try:
         raw = json.loads(_CACHE.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return
     _routes.update(raw.get("routes", {}))
     _meta.update(raw.get("meta", {}))
-    log.info("loaded %d routes total (+%d schedule metas)", len(_routes), len(_meta))
+    _flightno.update(raw.get("flightno", {}))
+    log.info(
+        "loaded %d routes total (+%d metas, +%d flight numbers)", len(_routes), len(_meta), len(_flightno)
+    )
 
 
 def _save_cache() -> None:
@@ -166,7 +193,9 @@ def _save_cache() -> None:
     if not _dirty:
         return
     try:
-        _CACHE.write_text(json.dumps({"routes": _routes, "meta": _meta}), encoding="utf-8")
+        _CACHE.write_text(
+            json.dumps({"routes": _routes, "meta": _meta, "flightno": _flightno}), encoding="utf-8"
+        )
         _dirty = False
     except OSError as e:
         log.debug("route cache save failed: %s", e)
@@ -276,6 +305,9 @@ async def schedule_loop() -> None:
                     k: res.get(k)
                     for k in ("sched_dep", "sched_arr", "est_arr", "sched_status", "gate", "terminal")
                 }
+                fi = (res.get("flight_iata") or "").replace(" ", "").upper()
+                if fi and fi != cs:
+                    _flightno[cs] = fi  # e.g. AIC2CE -> AI865
                 _dirty = True
                 log.info(
                     "schedule: %s -> %s-%s d=%s",

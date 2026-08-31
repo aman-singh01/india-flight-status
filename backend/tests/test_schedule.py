@@ -71,6 +71,7 @@ async def test_aerodatabox_parses_leg():
     assert res["dep_country"] == "IN"
     assert res["est_arr"] == "2026-08-30T10:53:00+00:00"
     assert res["gate"] == "22" and res["terminal"] == "2"
+    assert res["flight_iata"] == "AI2984"  # from "number", space stripped
 
 
 async def test_aerodatabox_204_is_none():
@@ -99,6 +100,7 @@ async def test_flightaware_parses_and_derives_country():
         "flights": [
             {
                 "status": "En Route",
+                "ident_iata": "AI865",
                 "origin": {"code_iata": "DEL", "code_icao": "VIDP", "city": "New Delhi"},
                 "destination": {"code_iata": "BOM", "code_icao": "VABB", "city": "Mumbai"},
                 "scheduled_out": "2026-08-30T18:30:00Z",
@@ -114,6 +116,7 @@ async def test_flightaware_parses_and_derives_country():
     assert res["dep_country"] == "IN" and res["arr_country"] == "IN"  # from VA/VI ICAO prefix
     assert res["est_arr"] == "2026-08-30T20:53:00+00:00"
     assert res["gate"] == "A12"
+    assert res["flight_iata"] == "AI865"  # marketed number from ident_iata, not the callsign
 
 
 async def test_flightaware_auth_failure_returns_none():

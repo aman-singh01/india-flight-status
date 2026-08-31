@@ -1,0 +1,4 @@
+{
+  "_note": "Manual ICAO-callsign -> marketed IATA flight number overrides. Airlines (Air India especially) file domestic legs under opaque ATC callsigns like AIC2CE that don't encode the marketed number (AI865). adsbdb/hexdb don't carry it; only keyed feeds do. Add rows here (or run SCHEDULE_PROVIDER=flightaware, which fills them automatically). Keys are UPPERCASE, no spaces.",
+  "map": {}
+}
