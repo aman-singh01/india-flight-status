@@ -9,7 +9,8 @@ the front end. No build step and no required API keys.
 
 [![CI](https://github.com/aman-singh01/india-flight-status/actions/workflows/ci.yml/badge.svg)](https://github.com/aman-singh01/india-flight-status/actions/workflows/ci.yml)
 
-<!-- Live demo: add the deploy URL here once hosted. -->
+**Live demo: <https://india-flight-status.onrender.com>** — hosted on a free tier, so
+the first request after an idle period takes ~40 s to wake.
 
 ![Status board: every live domestic flight over India, each with its phase, route and a plain-language status line.](docs/board.png)
 
@@ -144,11 +145,11 @@ tests and a Docker build on every push and pull request.
 
 ## Deployment
 
+- **Render** - New > Blueprint, point it at this repository; it reads
+  [`render.yaml`](render.yaml). Free tier, no card required.
 - **Fly.io** - `fly launch --copy-config --no-deploy`, then `fly deploy`
   ([`fly.toml`](fly.toml), region `bom`). Set the schedule key with
-  `fly secrets set SCHEDULE_API_KEY=...`.
-- **Render** - create a new Blueprint from this repository
-  ([`render.yaml`](render.yaml)).
+  `fly secrets set SCHEDULE_API_KEY=...`. Requires a payment method on file.
 
 ## Limitations
 
