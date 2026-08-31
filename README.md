@@ -7,8 +7,10 @@ schedule-API key it also carries scheduled and estimated times, gate and delay.
 **Stack:** Python, FastAPI, SQLite, WebSockets; vanilla JavaScript with MapLibre GL on
 the front end. No build step and no required API keys.
 
-<!-- Add a screenshot at docs/board.png and a live demo URL here once deployed. -->
+<!-- Live demo: add the deploy URL here once hosted. -->
 <!-- [![CI](https://github.com/<owner>/india-flight-status/actions/workflows/ci.yml/badge.svg)](https://github.com/<owner>/india-flight-status/actions/workflows/ci.yml) -->
+
+![Status board: every live domestic flight over India, each with its phase, route and a plain-language status line.](docs/board.png)
 
 ## Features
 
