@@ -146,6 +146,54 @@ async def test_airports_and_airlines_handlers():
     assert "IGO" in al and al["IGO"]["name"] == "IndiGo"
 
 
+async def test_airport_board_handler(monkeypatch):
+    dep = _tracked(
+        hex="d1",
+        klass={
+            "status": "domestic",
+            "airline": "IndiGo",
+            "airline_icao": "IGO",
+            "flight_no": "6E1",
+            "dep": "DEL",
+            "arr": "BOM",
+        },
+    )
+    arr = _tracked(
+        hex="a1",
+        klass={
+            "status": "domestic",
+            "airline": "IndiGo",
+            "airline_icao": "IGO",
+            "flight_no": "6E2",
+            "dep": "BLR",
+            "arr": "DEL",
+        },
+    )
+    other = _tracked(
+        hex="o1",
+        klass={
+            "status": "domestic",
+            "airline": "IndiGo",
+            "airline_icao": "IGO",
+            "flight_no": "6E3",
+            "dep": "BLR",
+            "arr": "BOM",
+        },
+    )
+    monkeypatch.setattr(main.store, "_ac", {"d1": dep, "a1": arr, "o1": other}, raising=False)
+    b = await main.airport_board("del")  # case-insensitive
+    assert b["airport"]["iata"] == "DEL"
+    assert [f["flight_no"] for f in b["departures"]] == ["6E1"]
+    assert [f["flight_no"] for f in b["arrivals"]] == ["6E2"]
+    assert b["count"] == 2
+
+    import pytest
+    from fastapi import HTTPException
+
+    with pytest.raises(HTTPException):
+        await main.airport_board("ZZZ")  # not an Indian airport -> 404
+
+
 # ---- response schemas match the actual payloads ----
 
 

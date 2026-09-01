@@ -22,6 +22,10 @@ the first request after an idle period takes ~40 s to wake.
   1,875 ft, 34 km ESE of Mumbai"* or *"boarding at Delhi · gate D22"*. Live ADS-B
   flights are unioned with the **Delhi airport schedule** (FIDS), so grounded, boarding
   and cancelled flights show too. Filter, sort, expand a row for detail.
+- **Airport boards & deep-links** - click any airport code in a route for that
+  airport's board, split into departures and arrivals. Every view is a shareable URL:
+  `#airport/DEL`, `#flight/6E2361`, `#map`. `GET /api/airport/{iata}` serves the same
+  split as JSON.
 - **Live map** - aircraft as heading-aligned silhouettes coloured by altitude, with
   dead-reckoned motion between updates and a trail for the selected flight.
 - **Historical playback** - a scrubber over persisted position history; replay any
@@ -145,6 +149,7 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 |---|---|
 | `GET /api/flights` | Current domestic flights with route, phase and schedule |
 | `GET /api/flights/{hex}` | One flight with its position trail |
+| `GET /api/airport/{iata}` | One airport's board — departures and arrivals |
 | `GET /api/status/{ident}` | Live status by flight number, registration or hex |
 | `GET /api/history/span` &middot; `GET /api/history?at=` | Playback data range and a snapshot at time `at` |
 | `GET /api/airports` &middot; `/api/airlines` &middot; `/api/stats` | Reference data and breakdowns |

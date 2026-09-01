@@ -98,6 +98,13 @@ class AirportsResponse(BaseModel):
     airports: list[Airport]
 
 
+class AirportBoard(BaseModel):
+    airport: Airport
+    departures: list[Flight]
+    arrivals: list[Flight]
+    count: int
+
+
 class AirlineInfo(BaseModel):
     name: str
     iata: str = ""

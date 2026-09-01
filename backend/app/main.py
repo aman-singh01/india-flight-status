@@ -143,10 +143,39 @@ async def history(at: float, window: float = 240.0):
     return {"at": round(at), "aircraft": await db.snapshot(at, window)}
 
 
+_AIRPORT_BY_IATA = {a["iata"]: a for a in _airports}
+
+
 @app.get("/api/airports", response_model=schemas.AirportsResponse, tags=["reference"])
 async def airports():
     """The bundled Indian airport list used for route inference and place names."""
     return {"count": len(_airports), "airports": _airports}
+
+
+@app.get("/api/airport/{code}", response_model=schemas.AirportBoard, tags=["flights"])
+async def airport_board(code: str):
+    """Departures and arrivals for one Indian airport, from the merged feed.
+
+    Rich for Delhi (ADS-B + FIDS schedule); ADS-B-only elsewhere. 404 if `code`
+    isn't a known Indian airport.
+    """
+    iata = code.strip().upper()
+    ap = _AIRPORT_BY_IATA.get(iata)
+    if ap is None:
+        raise HTTPException(status_code=404, detail=f"unknown airport {iata!r}")
+    fl = domestic_flights()
+
+    def _key(f: dict) -> tuple:
+        return ((f.get("schedule") or {}).get("sched_dep") or "", f.get("flight_no") or "")
+
+    deps = sorted((f for f in fl if f.get("dep") == iata), key=_key)
+    arrs = sorted((f for f in fl if f.get("arr") == iata), key=_key)
+    return {
+        "airport": ap,
+        "departures": deps,
+        "arrivals": arrs,
+        "count": len(deps) + len(arrs),
+    }
 
 
 @app.get("/api/airlines", response_model=dict[str, schemas.AirlineInfo], tags=["reference"])

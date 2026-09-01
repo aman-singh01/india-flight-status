@@ -48,6 +48,15 @@ const boardExpanded = new Set();
 let feedTs = 0;
 let feedLive = false;
 let statusFallback = null; // {query, data} from /api/status when the filter matched no live row
+let scope = { kind: "all", value: "" }; // "all" | "airport" (IATA) | "flight" (number)
+const airportCity = new Map(); // IATA -> city, for the scope banner
+fetch("/api/airports")
+  .then((r) => r.json())
+  .then((j) => {
+    for (const a of j.airports || []) airportCity.set(a.iata, a.city);
+    if (scope.kind === "airport") renderBoard();
+  })
+  .catch(() => {});
 
 function fmt(n, s = "") {
   return n == null ? "—" : Number(n).toLocaleString() + s;
@@ -109,10 +118,11 @@ function boardRow(f) {
   const open = boardExpanded.has(f.hex);
 
   const arrow = '<span class="ar">→</span>';
+  const ap = (c) => (c ? `<span class="apx" data-ap="${c}" title="${c} airport board">${c}</span>` : "");
   const routeShort =
-    dep && arr ? `${dep}${arrow}${arr}`
-    : arr ? `${arrow}${arr}`
-    : dep ? `${dep}${arrow}`
+    dep && arr ? `${ap(dep)}${arrow}${ap(arr)}`
+    : arr ? `${arrow}${ap(arr)}`
+    : dep ? `${ap(dep)}${arrow}`
     : '<span class="runknown">—</span>';
 
   const inferred = f.route_src === "inferred" ? " (inferred)" : "";
@@ -156,7 +166,10 @@ function boardRow(f) {
            ${hasPos ? bxCell("Tracked for", since(f.first_seen)) : ""}
            ${schedCells}
          </div>
-         ${hasPos ? `<button class="sv-track" data-track="${f.hex}">Track on map →</button>` : ""}
+         <div class="brow-act">
+           ${hasPos ? `<button class="sv-track" data-track="${f.hex}">Track on map →</button>` : ""}
+           ${f.flight_no ? `<button class="bshare" data-share="${f.flight_no}">🔗 link to this flight</button>` : ""}
+         </div>
        </div>`
     : "";
   return `<div class="brow${open ? " x" : ""}" data-hex="${f.hex}">
@@ -172,23 +185,80 @@ function boardRow(f) {
   </div>`;
 }
 
+function inScope(f) {
+  if (scope.kind === "airport") return f.dep === scope.value || f.arr === scope.value;
+  if (scope.kind === "flight") {
+    const v = scope.value.toUpperCase();
+    return (f.flight_no || "").toUpperCase() === v || (f.callsign || "").toUpperCase() === v;
+  }
+  return true;
+}
+
+function renderScopeBanner() {
+  const b = el("board-scope");
+  if (!b) return;
+  if (scope.kind === "all") {
+    b.className = "hidden";
+    b.innerHTML = "";
+    return;
+  }
+  b.className = "";
+  const back = `<a class="scope-back" href="#status">&times; all flights</a>`;
+  if (scope.kind === "airport") {
+    const inScoped = state.flights.filter(inScope);
+    const d = inScoped.filter((f) => f.dep === scope.value).length;
+    const a = inScoped.filter((f) => f.arr === scope.value).length;
+    const city = airportCity.get(scope.value);
+    b.innerHTML =
+      `<span class="scope-h">&#9992; ${city ? city + " &middot; " : ""}${scope.value}</span>` +
+      `<span class="scope-sub">${d} departures &middot; ${a} arrivals</span>${back}`;
+  } else {
+    const hit = state.flights.find(inScope);
+    b.innerHTML =
+      `<span class="scope-h">${scope.value}</span>` +
+      `<span class="scope-sub">${hit ? [hit.airline, hit.phase].filter(Boolean).join(" &middot; ") : "not on the live board"}</span>${back}`;
+  }
+}
+
 function renderBoard() {
   const listEl = el("board-list");
   if (!listEl) return;
   const q = (el("board-filter").value || "").trim().toLowerCase();
-  const rows = sortBoard(state.flights.filter((f) => boardMatch(f, q)), el("board-sort").value);
+  const sortMode = el("board-sort").value;
+  const base = state.flights.filter(inScope).filter((f) => boardMatch(f, q));
 
-  el("board-count").textContent = state.flights.length;
-  el("board-air").textContent = state.flights.filter((f) => (f.alt_ft || 0) > 1000).length;
+  el("board-count").textContent = scope.kind === "all" ? state.flights.length : base.length;
+  el("board-air").textContent = base.filter((f) => (f.alt_ft || 0) > 1000).length;
   updateBoardAge();
   const conn = el("board-conn");
   conn.textContent = feedLive ? "● live" : "connecting…";
   conn.className = "board-conn" + (feedLive ? " ok" : "");
+  renderScopeBanner();
+
+  // auto-expand a uniquely-scoped flight so a #flight/ link opens it ready to read
+  if (scope.kind === "flight" && base.length === 1) boardExpanded.add(base[0].hex);
 
   const keep = listEl.scrollTop;
-  if (rows.length) {
-    listEl.innerHTML = rows.map(boardRow).join("");
+  if (scope.kind === "airport" && base.length) {
+    const sec = (label, rows) =>
+      rows.length
+        ? `<div class="bsub">${label} (${rows.length})</div>` + sortBoard(rows, sortMode).map(boardRow).join("")
+        : "";
+    listEl.innerHTML =
+      sec("&#8593; Departures", base.filter((f) => f.dep === scope.value)) +
+      sec("&#8595; Arrivals", base.filter((f) => f.arr === scope.value));
     statusFallback = null;
+  } else if (base.length) {
+    listEl.innerHTML = sortBoard(base, sortMode).map(boardRow).join("");
+    statusFallback = null;
+  } else if (scope.kind === "flight") {
+    if (!statusFallback || statusFallback.query !== scope.value.toLowerCase()) lookupOne(scope.value);
+    listEl.innerHTML =
+      `<div class="board-empty">${scope.value} isn't on the live board right now.` +
+      (statusFallback && statusFallback.query === scope.value.toLowerCase()
+        ? renderFallback(statusFallback.data)
+        : "") +
+      `</div>`;
   } else if (q) {
     const canLookup = /^[0-9a-z]{2}[0-9a-z]*\d/i.test(q);
     listEl.innerHTML =
@@ -198,6 +268,8 @@ function renderBoard() {
       `</div>`;
     const lk = el("board-lookup");
     if (lk) lk.addEventListener("click", () => lookupOne(q));
+  } else if (scope.kind === "airport") {
+    listEl.innerHTML = `<div class="board-empty">No flights to or from ${scope.value} in coverage right now.</div>`;
   } else {
     listEl.innerHTML = `<div class="board-empty">Waiting for the feed…</div>`;
   }
@@ -230,6 +302,16 @@ function renderFallback(d) {
 el("board-filter").addEventListener("input", renderBoard);
 el("board-sort").addEventListener("change", renderBoard);
 el("board-list").addEventListener("click", (e) => {
+  const apEl = e.target.closest("[data-ap]");
+  if (apEl) {
+    location.hash = "#airport/" + apEl.dataset.ap;
+    return;
+  }
+  const shareEl = e.target.closest("[data-share]");
+  if (shareEl) {
+    location.hash = "#flight/" + encodeURIComponent(shareEl.dataset.share);
+    return;
+  }
   const track = e.target.closest("[data-track]");
   if (track) {
     trackOnMap(track.dataset.track);
@@ -257,9 +339,25 @@ document.querySelectorAll(".view-switch").forEach((b) =>
     location.hash = b.dataset.goto === "map" ? "#map" : "#status";
   })
 );
-// honour #map / #status in the URL: deep link, shareable, back/forward
+// honour the URL hash: #map, #status, #airport/DEL, #flight/6E2361 — all shareable
 function viewFromHash() {
-  showView(location.hash === "#map" ? "map" : "status");
+  const h = location.hash.replace(/^#/, "");
+  if (h === "map") {
+    showView("map");
+    return;
+  }
+  const slash = h.indexOf("/");
+  const kind = slash < 0 ? h : h.slice(0, slash);
+  const val = slash < 0 ? "" : decodeURIComponent(h.slice(slash + 1));
+  if (kind === "airport" && /^[A-Za-z]{3}$/.test(val)) {
+    scope = { kind: "airport", value: val.toUpperCase() };
+  } else if (kind === "flight" && val) {
+    scope = { kind: "flight", value: val.trim().toUpperCase() };
+  } else {
+    scope = { kind: "all", value: "" };
+  }
+  showView("status");
+  renderBoard();
 }
 addEventListener("hashchange", viewFromHash);
 // defer the first run to after layout so a direct #map load gives the map a sized container
