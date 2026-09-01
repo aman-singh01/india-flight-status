@@ -13,13 +13,37 @@ Zero dependencies — standard-library Python 3.9+.
 
 ## 1. Turn ingest on (once)
 
-In the app's environment (Render dashboard → Environment), set a secret:
+`POST /ingest/fids` returns **503** until `FIDS_INGEST_TOKEN` is set on the server.
 
-```
-FIDS_INGEST_TOKEN = <a long random string>
+1. Generate a token:
+
+   ```bash
+   python -c "import secrets; print(secrets.token_urlsafe(36))"
+   ```
+
+2. Render dashboard → **`india-flight-status`** → **Environment** → **Add Environment
+   Variable**:
+
+   | Key | Value |
+   |---|---|
+   | `FIDS_INGEST_TOKEN` | *(the generated token)* |
+
+3. **Save Changes** — Render redeploys (~3–5 min).
+
+Keep the token out of git — it lives only in the Render dashboard and in your local
+shell env (below). It's a shared secret between the server and this script; anyone
+with it can push rows to the board.
+
+**Sanity check** once the redeploy is done:
+
+```bash
+curl -X POST https://india-flight-status.onrender.com/ingest/fids \
+  -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" \
+  -d '{"airport":"DEL","flights":[{"flight_no":"6E9","direction":"departure","sched_time":"10:00","status":"On Time"}]}'
 ```
 
-Without it, `POST /ingest/fids` returns 503.
+`{"airport":"DEL","accepted":1,"dropped":0}` = working. `401` = wrong token. `503` =
+`FIDS_INGEST_TOKEN` still not set / redeploy not finished.
 
 ## 2. Prove the pipeline
 
