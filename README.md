@@ -87,11 +87,14 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   carriers. This follows India's cabotage rule: domestic point-to-point service is
   reserved for Indian-AOC operators.
 - **Schedule board, not just transponders.** A scraper for Delhi's open `dial-api`
-  turns its FIDS into scheduled-flight rows (windowed to a few hours around now), which
-  are unioned with the ADS-B feed: a number match enriches the live row, the rest show
-  position-less with their airport status. This surfaces grounded / boarding / delayed /
-  cancelled flights that no ADS-B feed can. The other big Indian airports sit behind
-  Akamai / edge bot protection, so only Delhi is wired.
+  pulls ~950 scheduled legs per poll and keeps the ~350–550 within a −2 h/+10 h window,
+  then unions them with the ADS-B feed: a flight-number match (gated to Delhi-touching
+  flights) enriches the live row with gate and airport status, the rest show
+  position-less. On a measured afternoon that took the board to **555 flights (7 live
+  ADS-B + 548 scheduled)** — En route 239, Scheduled 175, Landed 43, Departed 38,
+  Boarding 26, Delayed 21, Cancelled 6 — states no ADS-B feed can produce. ~95 % of
+  scraped rows carry a gate/belt. The other big Indian airports sit behind Akamai /
+  edge bot protection, so only Delhi is wired.
 - **Smooth motion from a slow feed.** The client advances each aircraft along its track
   at ground speed at 20 fps and eases into each WebSocket update, so ~25 s server sweeps
   still render as continuous movement.
@@ -174,11 +177,12 @@ linting, formatting, tests and a Docker build on every push and pull request.
 
 ## Limitations
 
-- Coverage is ~110-160 airborne flights from the free ADS-B feeds, plus the full Delhi
-  schedule (~350 flights in a typical window) from FIDS. Everywhere except Delhi is
-  still ADS-B-only, because the other airport sites are bot-walled; closing that gap
-  needs a private `readsb` feeder or a paid aggregator. About 4% of Delhi rows have a
-  destination the bundled airport table can't map to an IATA code (shown by city name).
+- Coverage: ~110–160 airborne flights from the free ADS-B feeds, plus ~350–550 Delhi
+  legs from FIDS in the display window (varies with time of day) — a board of roughly
+  400–560 versus ~2,800 domestic movements/day nationally. Everywhere except Delhi is
+  ADS-B-only, because the other airport sites are bot-walled; closing that gap needs a
+  private `readsb` feeder or a paid aggregator. ~4–5% of Delhi rows have a destination
+  the bundled airport table can't map to an IATA code (shown by city name).
 - Scheduled times, gate and delay require a keyed schedule provider.
 - Air India files many domestic legs under opaque ATC callsigns (`AIC2CE`) that
   don't encode the marketed flight number. A FlightAware key resolves these
