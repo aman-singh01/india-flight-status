@@ -35,6 +35,8 @@ the first request after an idle period takes ~40 s to wake.
 - **Operational endpoints** - Prometheus metrics at `/metrics`, resolver statistics at
   `/api/health`.
 
+![Airport board: Delhi departures and arrivals, split, at `#airport/DEL`.](docs/airport.png)
+
 ![Live map: aircraft as altitude-coloured, heading-aligned silhouettes over an Esri satellite basemap.](docs/map.jpg)
 
 ## Architecture
