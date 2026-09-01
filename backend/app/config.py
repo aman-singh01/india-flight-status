@@ -50,6 +50,10 @@ class Settings(BaseSettings):
     fids_refresh: float = 200.0  # seconds between FIDS polls
     fids_window_behind: float = 2.0  # hours: keep flights scheduled up to this long ago
     fids_window_ahead: float = 10.0  # hours: keep flights scheduled up to this far ahead
+    # POST /ingest/fids lets a scraper on a residential IP push the airports that
+    # block datacenter IPs. Disabled unless a token is set; pushed rows expire.
+    fids_ingest_token: str = ""
+    fids_push_ttl: float = 600.0  # seconds a pushed airport's rows survive without a refresh
 
 
 settings = Settings()

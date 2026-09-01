@@ -159,8 +159,18 @@ scraper roughly quadruples what the board shows for flights touching Delhi.
 Building it as a *union* (not a replacement) keeps the live map and dead-reckoning
 working unchanged for the ADS-B half.
 
-**Cost.** Delhi-only, and dependent on one undocumented endpoint that can change
-or block. A reused flight number on an unrelated sector could mis-enrich, so the
-match is gated to flights that touch Delhi (or have no known route yet). ~4% of
-FIDS destinations don't resolve to an IATA code in the bundled table. No revised
-*times* are exposed by the endpoint, only a revised date and a status string.
+**Cost.** Delhi-only from the app's host, and dependent on one undocumented
+endpoint that can change or block. A reused flight number on another leg of a
+multi-leg rotation could mis-enrich, so a match requires the *same city pair*, not
+just a shared endpoint. ~4% of FIDS destinations don't resolve to an IATA code in
+the bundled table. No revised *times* are exposed, only a revised date and a
+status string.
+
+**Update — multi-source board + push ingest.** `board.py` now keys rows by source
+id (`fids:del`, `push:BOM`, …). The built-in Delhi loop refreshes its own id; a
+scraper on a residential IP can `POST /ingest/fids` one airport's rows (the big
+airports — BOM/BLR/HYD/COK — Akamai/Radware/edge-block datacenter traffic, so they
+can't be scraped from Render). Pushed sources expire after `FIDS_PUSH_TTL` seconds
+so a dead scraper doesn't leave stale flights. The endpoint is 503 unless
+`FIDS_INGEST_TOKEN` is set, and `tools/fids_push.py` (stdlib-only, with a working
+Delhi example and stubs for the rest) is the reference client.

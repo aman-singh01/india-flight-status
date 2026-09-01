@@ -6,7 +6,7 @@ import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Response, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Header, HTTPException, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -14,6 +14,7 @@ from . import board, db, metrics, schemas
 from . import route as route_db
 from .config import settings
 from .domestic import _airlines, _airports
+from .fids.base import normalize_pushed
 from .ingest import run_ingest
 from .models import flight_dict
 from .status import lookup as status_lookup
@@ -212,6 +213,26 @@ async def ws_endpoint(websocket: WebSocket) -> None:
         manager.disconnect(websocket)
     except Exception:
         manager.disconnect(websocket)
+
+
+@app.post("/ingest/fids", response_model=schemas.IngestResult, tags=["ops"])
+async def ingest_fids(payload: schemas.FidsIngest, authorization: str = Header(default="")):
+    """Push one airport's FIDS rows (for a scraper on a residential IP -- the big
+    airports block datacenter IPs). Requires `Authorization: Bearer <FIDS_INGEST_TOKEN>`.
+    Pushed rows expire after `FIDS_PUSH_TTL` seconds without a refresh.
+    """
+    if not settings.fids_ingest_token:
+        raise HTTPException(status_code=503, detail="push ingest disabled (set FIDS_INGEST_TOKEN)")
+    token = authorization.removeprefix("Bearer ").strip()
+    if token != settings.fids_ingest_token:
+        raise HTTPException(status_code=401, detail="bad or missing ingest token")
+    iata = payload.airport.strip().upper()
+    if iata not in _AIRPORT_BY_IATA:
+        raise HTTPException(status_code=422, detail=f"unknown airport {iata!r}")
+    rows = [r for it in payload.flights if (r := normalize_pushed(iata, it.model_dump()))]
+    total = board.ingest(f"push:{iata}", rows)
+    log.info("fids push: %s -> %d rows (%d dropped)", iata, total, len(payload.flights) - len(rows))
+    return {"airport": iata, "accepted": total, "dropped": len(payload.flights) - len(rows)}
 
 
 @app.get("/metrics", include_in_schema=False)

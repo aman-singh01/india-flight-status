@@ -69,10 +69,15 @@ class RouteStats(BaseModel):
     sched_calls_24h: int
 
 
+class BoardSourceStat(BaseModel):
+    rows: int
+    age_s: int
+
+
 class BoardStats(BaseModel):
     rows: int
     in_window: int
-    last_ok_age_s: int
+    sources: dict[str, BoardSourceStat] = {}
 
 
 class Health(BaseModel):
@@ -103,6 +108,29 @@ class AirportBoard(BaseModel):
     departures: list[Flight]
     arrivals: list[Flight]
     count: int
+
+
+class FidsFlightIn(BaseModel):
+    flight_no: str = Field(description='e.g. "6E 5301" or "6E5301"')
+    airline: str | None = Field(None, description="name, IATA/ICAO code, or omitted")
+    direction: str = Field(description='"departure" or "arrival" (relative to this airport)')
+    other: str | None = Field(None, description="the other endpoint, IATA or free-text name")
+    sched_time: str = Field(description='local "HH:MM"')
+    sched_date: str | None = Field(None, description='"YYYY-MM-DD"; defaults to today (IST)')
+    status: str | None = Field(None, description="airport status text, e.g. 'Boarding', 'Delayed'")
+    gate: str | None = None
+    terminal: str | None = None
+
+
+class FidsIngest(BaseModel):
+    airport: str = Field(description="IATA code this batch is for, e.g. BOM")
+    flights: list[FidsFlightIn]
+
+
+class IngestResult(BaseModel):
+    airport: str
+    accepted: int
+    dropped: int
 
 
 class AirlineInfo(BaseModel):

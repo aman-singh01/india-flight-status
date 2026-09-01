@@ -23,3 +23,5 @@ services:
       #   value: aerodatabox
       # - key: SCHEDULE_API_KEY
       #   sync: false            # set in the Render dashboard, not in git
+      # - key: FIDS_INGEST_TOKEN  # enables POST /ingest/fids for tools/fids_push.py
+      #   sync: false            # set a random string in the Render dashboard

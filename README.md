@@ -99,8 +99,10 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   position-less. On a measured afternoon that took the board to **555 flights (7 live
   ADS-B + 548 scheduled)** — En route 239, Scheduled 175, Landed 43, Departed 38,
   Boarding 26, Delayed 21, Cancelled 6 — states no ADS-B feed can produce. ~95 % of
-  scraped rows carry a gate/belt. The other big Indian airports sit behind Akamai /
-  edge bot protection, so only Delhi is wired.
+  scraped rows carry a gate/belt. The other big airports (BOM / BLR / HYD / COK) sit
+  behind Akamai / Radware / edge IP-blocks that reject datacenter traffic, so the app
+  scrapes only Delhi itself; `POST /ingest/fids` + [`tools/fids_push.py`](tools/) let a
+  scraper on a residential IP push those, keyed per airport and expiring after a TTL.
 - **Smooth motion from a slow feed.** The client advances each aircraft along its track
   at ground speed at 20 fps and eases into each WebSocket update, so ~25 s server sweeps
   still render as continuous movement.
@@ -152,6 +154,7 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 | `GET /api/flights` | Current domestic flights with route, phase and schedule |
 | `GET /api/flights/{hex}` | One flight with its position trail |
 | `GET /api/airport/{iata}` | One airport's board — departures and arrivals |
+| `POST /ingest/fids` | Push an airport's FIDS rows (token-gated; see `tools/`) |
 | `GET /api/status/{ident}` | Live status by flight number, registration or hex |
 | `GET /api/history/span` &middot; `GET /api/history?at=` | Playback data range and a snapshot at time `at` |
 | `GET /api/airports` &middot; `/api/airlines` &middot; `/api/stats` | Reference data and breakdowns |
@@ -186,10 +189,11 @@ linting, formatting, tests and a Docker build on every push and pull request.
 
 - Coverage: ~110–160 airborne flights from the free ADS-B feeds, plus ~350–550 Delhi
   legs from FIDS in the display window (varies with time of day) — a board of roughly
-  400–560 versus ~2,800 domestic movements/day nationally. Everywhere except Delhi is
-  ADS-B-only, because the other airport sites are bot-walled; closing that gap needs a
-  private `readsb` feeder or a paid aggregator. ~4–5% of Delhi rows have a destination
-  the bundled airport table can't map to an IATA code (shown by city name).
+  400–560 versus ~2,800 domestic movements/day nationally. The app scrapes only Delhi
+  (others block datacenter IPs); adding BOM/BLR/HYD needs `tools/fids_push.py` on a
+  residential IP, a private `readsb` feeder, or a paid aggregator. ~4–5% of Delhi rows
+  have a destination the bundled airport table can't map to an IATA code (shown by
+  city name).
 - Scheduled times, gate and delay require a keyed schedule provider.
 - Air India files many domestic legs under opaque ATC callsigns (`AIC2CE`) that
   don't encode the marketed flight number. A FlightAware key resolves these
