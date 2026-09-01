@@ -57,9 +57,9 @@ flowchart LR
   R --> R2["schedule API - AeroDataBox / FlightAware (optional key)"]
   R --> RC[(route_cache.json - live)]
   K --> M[flight record + phase + nearest place + schedule]
-  F["Delhi FIDS scraper"] --> B["schedule board (windowed)"]
-  M --> MG[merge: ADS-B ∪ schedule board]
-  B --> MG
+  F["Delhi FIDS scraper"] --> SB["schedule board (windowed)"]
+  M --> MG["merge: ADS-B + schedule board"]
+  SB --> MG
   MG --> WS[WebSocket /ws]
   MG --> API[REST /api/*]
   WS --> UI[status board + map]
