@@ -16,11 +16,14 @@ class Settings(BaseSettings):
     # survive a sweep where its region was rate-limited.
     stale_ttl: float = 210.0
 
-    # OpenSky Network (sources=...,opensky). Anonymous works but is capped at
-    # ~400 calls/day; a free account lifts that to ~4000. Leave blank for anon.
-    opensky_user: str = ""
-    opensky_pass: str = ""
-    opensky_interval: float = 0.0  # 0 = auto (10s authed, 300s anon)
+    # OpenSky Network (sources=...,opensky). OAuth2 client-credentials only (Basic auth
+    # is no longer accepted); create an API client on the OpenSky account page. Blank
+    # = anonymous. A /states/all call over the India bbox costs 4 credits, and the
+    # daily budget is 400 anonymous (bucketed per IP -- exhausted on a shared host) /
+    # 4000 registered, so the poll interval must stay >= ~90 s.
+    opensky_client_id: str = ""
+    opensky_client_secret: str = ""
+    opensky_interval: float = 0.0  # 0 = auto (100 s authed, 900 s anonymous)
     include_ga: bool = False
     persist: bool = True
     db_path: str = "flights.db"
@@ -50,8 +53,8 @@ class Settings(BaseSettings):
     fids_refresh: float = 200.0  # seconds between FIDS polls
     fids_window_behind: float = 2.0  # hours: keep flights scheduled up to this long ago
     fids_window_ahead: float = 10.0  # hours: keep flights scheduled up to this far ahead
-    # POST /ingest/fids lets a scraper on a residential IP push the airports that
-    # block datacenter IPs. Disabled unless a token is set; pushed rows expire.
+    # POST /ingest/fids lets a scraper run elsewhere push airports the app can't scrape;
+    # disabled unless a token is set, and pushed rows expire.
     fids_ingest_token: str = ""
     fids_push_ttl: float = 600.0  # seconds a pushed airport's rows survive without a refresh
 

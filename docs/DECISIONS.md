@@ -125,8 +125,9 @@ right move the day a paid key or an FIDS scraper is in the budget.
 ## 7. OpenSky joins the union as a bounding-box source
 
 **Decision.** Add OpenSky Network alongside the grid-poll sources: one
-`/states/all` call for the whole India bbox per cycle, self-throttled (10 s with a
-free account, 300 s anonymous) and re-serving its last result in between.
+`/states/all` call for the whole India bbox, throttled to its credit budget (see
+Cost) and re-serving its last result only while that result is fresher than
+`STALE_TTL`.
 
 **Why.** It roughly doubled the flights seen in testing (~46 → ~110 at evening peak)
 — a different feeder network plus MLAT surfaces Mode-S-only airframes and low
@@ -135,10 +136,16 @@ query, not a tiled one) so it's a plain `Source` with its own state-vector
 normaliser. `adsb.one` was evaluated and rejected — it sits behind a Cloudflare
 bot-wall that blocks server-side clients.
 
-**Cost.** Anonymous OpenSky is capped near 400 calls/day, so without an account the
-positions can be up to 300 s stale (the client still shows them, dead-reckoned).
-Unit conversions (m→ft, m/s→kt/fpm) are one more place for an off-by-a-factor bug,
-covered by a normaliser test.
+**Cost.** Quota, and I got it wrong the first time. A call over the India bbox
+(~990 sq°) costs **4 credits**, against 400/day anonymous — bucketed **per IP**, so
+a shared free host's budget is gone almost at once — or 4000/day registered. The
+first version assumed "~400 calls/day", polled every 10–300 s, and used HTTP Basic
+auth, which OpenSky has since removed (OAuth2 client-credentials only). In
+production it silently returned 0 aircraft while working fine from a laptop. Now:
+OAuth2 with a cached token, a 100 s poll with credentials (900 s without), the
+server's `Retry-After` honoured on a 429, and `/api/health → feeds` reports each
+source's last count and a one-line note, so a dead feed is visible rather than
+guessed at. Unit conversions (m→ft, m/s→kt/fpm) are covered by a normaliser test.
 
 ---
 
@@ -168,9 +175,16 @@ status string.
 
 **Update — multi-source board + push ingest.** `board.py` now keys rows by source
 id (`fids:del`, `push:BOM`, …). The built-in Delhi loop refreshes its own id; a
-scraper on a residential IP can `POST /ingest/fids` one airport's rows (the big
-airports — BOM/BLR/HYD/COK — Akamai/Radware/edge-block datacenter traffic, so they
-can't be scraped from Render). Pushed sources expire after `FIDS_PUSH_TTL` seconds
-so a dead scraper doesn't leave stale flights. The endpoint is 503 unless
-`FIDS_INGEST_TOKEN` is set, and `tools/fids_push.py` (stdlib-only, with a working
-Delhi example and stubs for the rest) is the reference client.
+scraper run elsewhere can `POST /ingest/fids` one airport's rows. Pushed sources
+expire after `FIDS_PUSH_TTL` seconds so a dead scraper doesn't leave stale flights.
+The endpoint is 503 unless `FIDS_INGEST_TOKEN` is set, and `tools/fids_push.py`
+(stdlib-only, with a working Delhi example and stubs for the rest) is the reference
+client.
+
+*Correction.* I first described BOM/BLR/HYD/COK as blocking only *datacenter* IPs,
+implying a home connection would get through. That was an inference, not a test:
+every probe had in fact been made from a home machine, and they still failed (HYD
+503, Adani DNS refused, COK a Radware CAPTCHA). The walls are bot-fingerprinting, so
+plain `urllib` stubs probably won't pass even at home — those airports likely need a
+real browser session. The ingest path is the plumbing for that; the scrapers are
+unwritten and unverified.

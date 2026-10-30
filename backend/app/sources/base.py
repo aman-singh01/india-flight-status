@@ -19,6 +19,7 @@ class Source:
     """A pluggable feed of aircraft observations."""
 
     name = "base"
+    note = ""  # one-line status of the last fetch, surfaced in /api/health
 
     async def fetch(self) -> list[dict]:
         raise NotImplementedError
@@ -44,7 +45,7 @@ class GridPollSource(Source):
         out: dict[str, dict] = {}
         grid = GRID[:]
         random.shuffle(grid)
-        limited = 0
+        limited = blocked = 0
         for i, (lat, lon) in enumerate(grid):
             url = self.url_template.format(lat=lat, lon=lon, dist=self.dist)
             try:
@@ -52,6 +53,7 @@ class GridPollSource(Source):
                 if r.status_code == 429:
                     limited += 1
                 elif r.status_code in (401, 403):
+                    blocked += 1
                     if r.status_code not in self._warned:
                         log.warning("%s: HTTP %s -- %s", self.name, r.status_code, r.text[:180])
                         self._warned.add(r.status_code)
@@ -69,6 +71,12 @@ class GridPollSource(Source):
             log.info(
                 "%s sweep: %d aircraft, %d/%d cells rate-limited", self.name, len(out), limited, len(grid)
             )
+        bits = []
+        if limited:
+            bits.append(f"{limited}/{len(grid)} cells rate-limited")
+        if blocked:
+            bits.append(f"{blocked}/{len(grid)} cells HTTP 401/403")
+        self.note = "; ".join(bits) or "ok"
         return list(out.values())
 
     async def aclose(self) -> None:

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Scrape airport FIDS boards and push them to India Flight Status.
 
-The big Indian airports (BOM / BLR / HYD / COK) block datacenter IPs, so the app
-can't scrape them from its host. Run this on a machine with a normal residential
-connection (your PC, a home Pi) and it POSTs the rows to `/ingest/fids`, where
-they're merged into the board just like the built-in Delhi feed.
+The app can't scrape the big airports (BOM / BLR / HYD / COK) from its own host:
+their sites block bots. Run this elsewhere and it POSTs rows to `/ingest/fids`,
+where they merge into the board just like the built-in Delhi feed. Only Delhi's
+scraper is real; the other four are stubs, and plain-HTTP versions of them may well
+be blocked even from a home connection (see tools/README.md).
 
 Zero dependencies -- standard library only.
 
@@ -78,30 +79,32 @@ def scrape_del() -> list[dict]:
 
 
 def scrape_bom() -> list[dict]:
-    """Mumbai (csmia.adani.com). TODO from a residential IP:
+    """Mumbai (csmia.adani.com). UNVERIFIED -- the host didn't resolve in my probes.
 
-    1. Open https://csmia.adani.com/ (or the current CSMIA site) in Chrome.
-    2. Go to the flight-status page; open DevTools -> Network -> filter XHR/Fetch.
-    3. Find the request that returns the departures/arrivals list (JSON).
-    4. Reproduce it here with urllib and map its fields to the dict shape above.
+    1. Open the current CSMIA flight-status page in Chrome.
+    2. DevTools -> Network -> filter XHR/Fetch; find the request returning the list.
+    3. If it only works with the page's cookies/JS, drive a real browser instead of
+       urllib (e.g. Playwright with your own Chrome profile), and keep the dict shape.
     """
     return []
 
 
 def scrape_blr() -> list[dict]:
-    """Bengaluru (bengaluruairport.com). React SPA behind Akamai -- from a real
-    browser session the flight list XHR is reachable; find it the same way as BOM."""
+    """Bengaluru (bengaluruairport.com). React SPA behind Akamai Bot Manager -- the
+    flight-list XHR needs a JS-generated sensor cookie, so plain urllib will be
+    refused; this one needs a real browser session. UNVERIFIED."""
     return []
 
 
 def scrape_hyd() -> list[dict]:
-    """Hyderabad (hyderabad.aero). 503s to datacenter IPs; usually fine residential."""
+    """Hyderabad (hyderabad.aero). Returned 503 to every plain-HTTP probe, including
+    from a home connection -- likely needs a real browser session. UNVERIFIED."""
     return []
 
 
 def scrape_cok() -> list[dict]:
-    """Cochin (cial.aero). Radware bot check -- realistic headers + a residential IP
-    usually pass; find the FIDS endpoint via DevTools."""
+    """Cochin (cial.aero). Radware CAPTCHA, even from a home connection -- likely
+    needs a real browser session; find the FIDS endpoint via DevTools. UNVERIFIED."""
     return []
 
 

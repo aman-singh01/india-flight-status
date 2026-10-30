@@ -197,6 +197,10 @@ async def test_ingest_fids_endpoint(monkeypatch):
     from app.schemas import FidsIngest
 
     monkeypatch.setattr(main.settings, "fids_ingest_token", "secret")
+    # the pushed flight is "10:00 IST today": keep the assertion independent of the
+    # time of day the suite runs at by opening the display window fully
+    monkeypatch.setattr(board.settings, "fids_window_behind", 48.0)
+    monkeypatch.setattr(board.settings, "fids_window_ahead", 48.0)
     payload = FidsIngest(
         airport="BOM",
         flights=[

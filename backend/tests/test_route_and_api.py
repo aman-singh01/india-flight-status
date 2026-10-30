@@ -223,3 +223,19 @@ def test_schemas_validate_real_payloads():
         airports=[{"iata": "DEL", "icao": "VIDP", "name": "x", "city": "Delhi", "lat": 1.0, "lon": 2.0}],
     )
     schemas.FlightStatus(query="6E1", found=False, reason="none")
+
+
+async def test_health_reports_per_feed_status(monkeypatch):
+    from app import ingest
+
+    monkeypatch.setattr(main.store, "_ac", {}, raising=False)
+    monkeypatch.setattr(ingest, "_feeds", {})
+    ingest.record_feed("opensky", 0, "quota exhausted (429); retry in 5400s")
+    ingest.record_feed("adsblol", 169, "6/12 cells rate-limited")
+    h = await main.health()
+    assert h["feeds"]["opensky"]["aircraft"] == 0
+    assert "429" in h["feeds"]["opensky"]["note"]
+    assert h["feeds"]["adsblol"]["aircraft"] == 169
+    from app import schemas
+
+    schemas.Health(**h)  # the payload matches the declared response model

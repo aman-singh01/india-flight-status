@@ -100,9 +100,11 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   ADS-B + 548 scheduled)** — En route 239, Scheduled 175, Landed 43, Departed 38,
   Boarding 26, Delayed 21, Cancelled 6 — states no ADS-B feed can produce. ~95 % of
   scraped rows carry a gate/belt. The other big airports (BOM / BLR / HYD / COK) sit
-  behind Akamai / Radware / edge IP-blocks that reject datacenter traffic, so the app
-  scrapes only Delhi itself; `POST /ingest/fids` + [`tools/fids_push.py`](tools/) let a
-  scraper on a residential IP push those, keyed per airport and expiring after a TTL.
+  behind Akamai / Radware / edge blocks that turned away every plain HTTP client I
+  tried, so the app scrapes only Delhi itself. `POST /ingest/fids` +
+  [`tools/fids_push.py`](tools/) are the plumbing for pushing more airports from a
+  scraper you run elsewhere (keyed per airport, expiring after a TTL) — the Delhi
+  client works end to end; the other airports' scrapers are unwritten stubs.
 - **Smooth motion from a slow feed.** The client advances each aircraft along its track
   at ground speed at 20 fps and eases into each WebSocket update, so ~25 s server sweeps
   still render as continuous movement.
@@ -138,7 +140,7 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 | Variable | Default | Purpose |
 |---|---|---|
 | `SOURCES` | `adsblol,adsbfi,opensky` | Comma-separated ingest sources, merged: `adsblol`, `adsbfi`, `opensky`, `demo`, `readsb:<url>` |
-| `OPENSKY_USER` / `OPENSKY_PASS` | _(none)_ | Optional free OpenSky account -> 10 s poll instead of 300 s anonymous |
+| `OPENSKY_CLIENT_ID` / `OPENSKY_CLIENT_SECRET` | _(none)_ | OpenSky OAuth2 client (free account). Without it the source is anonymous: 400 credits/day *per IP*, which a shared host exhausts — set these on any hosted deploy |
 | `FIDS_SOURCES` | `del` | Airport FIDS scrapers for the schedule board; only `del` implemented, empty to disable |
 | `POLL_INTERVAL` | `5` | WebSocket push interval (seconds) |
 | `STALE_TTL` | `210` | Drop an aircraft after this many seconds unseen |
@@ -190,10 +192,10 @@ linting, formatting, tests and a Docker build on every push and pull request.
 - Coverage: ~110–160 airborne flights from the free ADS-B feeds, plus ~350–550 Delhi
   legs from FIDS in the display window (varies with time of day) — a board of roughly
   400–560 versus ~2,800 domestic movements/day nationally. The app scrapes only Delhi
-  (others block datacenter IPs); adding BOM/BLR/HYD needs `tools/fids_push.py` on a
-  residential IP, a private `readsb` feeder, or a paid aggregator. ~4–5% of Delhi rows
-  have a destination the bundled airport table can't map to an IATA code (shown by
-  city name).
+  (the other airports' sites block bots); adding BOM/BLR/HYD needs a real-browser
+  scraper feeding `tools/fids_push.py`, a private `readsb` feeder, or a paid
+  aggregator. ~4–5% of Delhi rows have a destination the bundled airport table can't
+  map to an IATA code (shown by city name).
 - Scheduled times, gate and delay require a keyed schedule provider.
 - Air India files many domestic legs under opaque ATC callsigns (`AIC2CE`) that
   don't encode the marketed flight number. A FlightAware key resolves these

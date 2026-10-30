@@ -80,11 +80,18 @@ class BoardStats(BaseModel):
     sources: dict[str, BoardSourceStat] = {}
 
 
+class FeedStat(BaseModel):
+    aircraft: int = Field(description="aircraft this feed returned on its last cycle")
+    age_s: int
+    note: str = Field("", description="one-line status, e.g. 'quota exhausted (429); retry in 5400s'")
+
+
 class Health(BaseModel):
     ok: bool
     tracked: int
     domestic: int
     sources: str
+    feeds: dict[str, FeedStat] = {}
     routes: RouteStats
     board: BoardStats
 

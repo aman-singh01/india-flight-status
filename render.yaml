@@ -23,5 +23,9 @@ services:
       #   value: aerodatabox
       # - key: SCHEDULE_API_KEY
       #   sync: false            # set in the Render dashboard, not in git
+      # - key: OPENSKY_CLIENT_ID      # OpenSky OAuth2 client; anonymous quota is per-IP
+      #   sync: false                 # and a shared host exhausts it -- set both in the dashboard
+      # - key: OPENSKY_CLIENT_SECRET
+      #   sync: false
       # - key: FIDS_INGEST_TOKEN  # enables POST /ingest/fids for tools/fids_push.py
       #   sync: false            # set a random string in the Render dashboard

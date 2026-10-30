@@ -1,10 +1,16 @@
-# `fids_push.py` — residential FIDS scraper
+# `fids_push.py` — push scraped airport boards to the app
 
 The app scrapes **Delhi** itself (its `dial-api` is open). The other big airports
-(**BOM, BLR, HYD, COK**) sit behind Akamai / Radware / edge IP-blocks that reject
-datacenter traffic — so they can only be scraped from a normal home connection.
+(**BOM, BLR, HYD, COK**) sit behind Akamai / Radware / edge blocks.
 
-This script runs on your machine, scrapes those boards, and POSTs the rows to the
+> **Heads-up — unverified for those four.** Every probe of those sites was made from
+> a home machine and still failed (HYD 503, Adani DNS refused, COK a Radware
+> CAPTCHA), so they're bot-fingerprinting plain HTTP clients, not just datacenter
+> IPs. The `urllib` stubs below may not get through even at home; those airports
+> likely need a real browser session (e.g. Playwright driving your own Chrome
+> profile) feeding the same `push()`. Delhi works end to end today.
+
+This script runs on your machine, scrapes boards, and POSTs the rows to the
 app's `POST /ingest/fids`, where they merge into the board exactly like the Delhi
 feed. Pushed rows expire after `FIDS_PUSH_TTL` seconds (default 600) if the script
 stops, so a dead scraper doesn't leave stale flights on the board.

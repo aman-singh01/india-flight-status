@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import time
 
 from . import db, metrics
 from . import route as route_db
@@ -12,6 +13,22 @@ from .store import store
 
 log = logging.getLogger("ingest")
 
+_feeds: dict[str, dict] = {}  # source name -> {aircraft, at, note}: what each feed gave last cycle
+
+
+def record_feed(name: str, aircraft: int, note: str = "") -> None:
+    _feeds[name] = {"aircraft": aircraft, "at": time.time(), "note": note}
+
+
+def feed_stats() -> dict:
+    """Per-source health for /api/health -- so a feed that silently returns nothing
+    (a quota, a block) is visible instead of guessed at."""
+    now = time.time()
+    return {
+        n: {"aircraft": f["aircraft"], "age_s": round(now - f["at"]), "note": f["note"]}
+        for n, f in sorted(_feeds.items())
+    }
+
 
 async def _cycle(sources) -> None:
     merged: dict[str, dict] = {}
@@ -20,7 +37,9 @@ async def _cycle(sources) -> None:
             items = await src.fetch()
         except Exception as e:  # noqa: BLE001 - one bad source shouldn't kill ingest
             log.warning("source %s failed: %s", src.name, e)
+            record_feed(src.name, 0, f"error: {e.__class__.__name__}: {e}"[:160])
             continue
+        record_feed(src.name, len(items), getattr(src, "note", ""))
         metrics.source_aircraft.labels(source=src.name).set(len(items))
         for it in items:
             merged[it["hex"]] = it  # later source in SOURCES wins on conflict

@@ -2,8 +2,8 @@
 
 Rows come from two kinds of source, each identified by a string id:
   - "fids:del"   the built-in Delhi scraper (`refresh_loop()`), self-refreshing
-  - "push:BOM"   pushed to `POST /ingest/fids` by a scraper on a residential IP
-                 (the big airports block datacenter IPs), expires after
+  - "push:BOM"   pushed to `POST /ingest/fids` by a scraper run elsewhere (the big
+                 airports bot-wall the app's host), expires after
                  `fids_push_ttl` seconds without a fresh push.
 
 `rows()` flattens every source, drops stale ones, and keeps only flights within a

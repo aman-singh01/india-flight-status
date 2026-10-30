@@ -15,7 +15,7 @@ from . import route as route_db
 from .config import settings
 from .domestic import _airlines, _airports
 from .fids.base import normalize_pushed
-from .ingest import run_ingest
+from .ingest import feed_stats, run_ingest
 from .models import flight_dict
 from .status import lookup as status_lookup
 from .store import store
@@ -96,6 +96,7 @@ async def health():
         "tracked": len(store.all()),
         "domestic": len(domestic_flights()),
         "sources": settings.sources,
+        "feeds": feed_stats(),
         "routes": route_db.stats(),
         "board": board.stats(),
     }
@@ -217,8 +218,8 @@ async def ws_endpoint(websocket: WebSocket) -> None:
 
 @app.post("/ingest/fids", response_model=schemas.IngestResult, tags=["ops"])
 async def ingest_fids(payload: schemas.FidsIngest, authorization: str = Header(default="")):
-    """Push one airport's FIDS rows (for a scraper on a residential IP -- the big
-    airports block datacenter IPs). Requires `Authorization: Bearer <FIDS_INGEST_TOKEN>`.
+    """Push one airport's FIDS rows (for a scraper run elsewhere -- the big airports
+    bot-wall the app's host). Requires `Authorization: Bearer <FIDS_INGEST_TOKEN>`.
     Pushed rows expire after `FIDS_PUSH_TTL` seconds without a refresh.
     """
     if not settings.fids_ingest_token:
