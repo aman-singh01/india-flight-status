@@ -25,8 +25,9 @@ the first request after an idle period takes ~40 s to wake.
 - **Airport boards & deep-links** - click any airport code in a route for that
   airport's board, split into departures and arrivals. Every view is a shareable URL:
   `#airport/DEL`, `#flight/6E2361`, `#map`. `GET /api/airport/{iata}` serves the same
-  split as JSON. Below it, a **Seen on ADS-B** list shows the takeoffs and landings
-  actually heard at that airport in the last six hours, for any airport the feeds cover.
+  split as JSON. Above the schedule, a **Seen on ADS-B** list shows the takeoffs and
+  landings actually heard at that airport in the last six hours, for any airport the
+  feeds cover.
 - **Live map** - aircraft as heading-aligned silhouettes coloured by altitude, with
   dead-reckoned motion between updates and a trail for the selected flight.
 - **Historical playback** - a scrubber over persisted position history; replay any
@@ -36,7 +37,7 @@ the first request after an idle period takes ~40 s to wake.
 - **Operational endpoints** - Prometheus metrics at `/metrics`, resolver statistics at
   `/api/health`.
 
-![Airport board: Delhi departures and arrivals, split, at `#airport/DEL`.](docs/airport.png)
+![Airport board: Bengaluru at `#airport/BLR`, with the takeoffs and landings seen on ADS-B above the split departures and arrivals.](docs/airport.png)
 
 ![Live map: aircraft as altitude-coloured, heading-aligned silhouettes over an Esri satellite basemap.](docs/map.jpg)
 
