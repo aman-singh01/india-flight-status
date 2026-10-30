@@ -95,15 +95,15 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   carriers. This follows India's cabotage rule: domestic point-to-point service is
   reserved for Indian-AOC operators.
 - **Schedule board, not just transponders.** A scraper for Delhi's open `dial-api`
-  pulls ~950 scheduled legs per poll and keeps the ~350–550 within a −2 h/+10 h window,
+  pulls ~1,000 scheduled legs per poll and keeps the ~350–550 within a −2 h/+10 h window,
   then unions them with the ADS-B feed: a flight-number match (gated to Delhi-touching
   flights) enriches the live row with gate and airport status, the rest show
-  position-less. On a measured afternoon that took the board to **555 flights (7 live
-  ADS-B + 548 scheduled)** — En route 239, Scheduled 175, Landed 43, Departed 38,
-  Boarding 26, Delayed 21, Cancelled 6 — states no ADS-B feed can produce. ~95 % of
-  scraped rows carry a gate/belt. The other big airports (BOM / BLR / HYD / COK) sit
-  behind Akamai / Radware / edge blocks that turned away every plain HTTP client I
-  tried, so the app scrapes only Delhi itself. `POST /ingest/fids` +
+  position-less. On a measured evening that took the board to **479 flights (94 with a
+  live ADS-B position + 385 schedule-only)** — En route 178, Scheduled 120, Departed 60,
+  Landed 54, Delayed 23, Boarding 21, On approach 14, On ground 7, Cancelled 2 — states
+  no ADS-B feed can produce. ~95 % of scraped rows carry a gate/belt. The other big
+  airports (BOM / BLR / HYD / COK) sit behind Akamai / Radware / edge blocks that turned
+  away every plain HTTP client I tried, so the app scrapes only Delhi itself. `POST /ingest/fids` +
   [`tools/fids_push.py`](tools/) are the plumbing for pushing more airports from a
   scraper you run elsewhere (keyed per airport, expiring after a TTL) — the Delhi
   client works end to end; the other airports' scrapers are unwritten stubs.
@@ -191,13 +191,16 @@ linting, formatting, tests and a Docker build on every push and pull request.
 
 ## Limitations
 
-- Coverage: ~110–160 airborne flights from the free ADS-B feeds, plus ~350–550 Delhi
-  legs from FIDS in the display window (varies with time of day) — a board of roughly
-  400–560 versus ~2,800 domestic movements/day nationally. The app scrapes only Delhi
-  (the other airports' sites block bots); adding BOM/BLR/HYD needs a real-browser
-  scraper feeding `tools/fids_push.py`, a private `readsb` feeder, or a paid
-  aggregator. ~4–5% of Delhi rows have a destination the bundled airport table can't
-  map to an IATA code (shown by city name).
+- Coverage: ~200–250 aircraft tracked over India from the free ADS-B feeds (94 of them
+  identified domestic flights with a live position in the evening measurement), plus
+  ~350–550 Delhi legs from FIDS in the display window (varies with time of day) — a board
+  of roughly 400–560 versus ~2,800 domestic movements/day nationally. Live positions come
+  almost entirely from `adsb.lol`, whose public limiter costs some cells in most sweeps.
+  The app scrapes only Delhi: the other airports' sites bot-block plain clients
+  (Bengaluru's data API only answers requests from its own pages), so BOM/BLR/HYD would
+  need a private `readsb` feeder, a paid aggregator, or an airport data agreement.
+  ~4–5% of Delhi rows have a destination the bundled airport table can't map to an IATA
+  code (shown by city name).
 - Scheduled times, gate and delay require a keyed schedule provider.
 - Air India files many domestic legs under opaque ATC callsigns (`AIC2CE`) that
   don't encode the marketed flight number. A FlightAware key resolves these
