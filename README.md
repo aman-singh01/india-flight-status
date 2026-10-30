@@ -100,10 +100,11 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   pulls ~1,000 scheduled legs per poll and keeps the ~350–550 within a −2 h/+10 h window,
   then unions them with the ADS-B feed: a flight-number match (gated to Delhi-touching
   flights) enriches the live row with gate and airport status, the rest show
-  position-less. On a measured evening that took the board to **479 flights (94 with a
-  live ADS-B position + 385 schedule-only)** — En route 178, Scheduled 120, Departed 60,
-  Landed 54, Delayed 23, Boarding 21, On approach 14, On ground 7, Cancelled 2 — states
-  no ADS-B feed can produce. ~95 % of scraped rows carry a gate/belt. The other big
+  position-less. On a measured evening (about 22:00 IST) that took the board to **467
+  flights (93 with a live ADS-B position + 374 schedule-only)** — En route 186, Scheduled
+  128, Landed 45, Departed 41, Delayed 28, Boarding 23, On approach 9, On ground 4,
+  Cancelled 3 — states no ADS-B feed can produce. ~96 % of the schedule-only rows carry
+  a gate/belt. The other big
   airports (BOM / BLR / HYD / COK) sit behind Akamai / Radware / edge blocks that turned
   away every plain HTTP client I tried, so the app scrapes only Delhi itself. `POST /ingest/fids` +
   [`tools/fids_push.py`](tools/) are the plumbing for pushing more airports from a
@@ -122,8 +123,8 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   next 15 minutes and 9 of 10 climb-outs kept climbing; that checks plausibility, not
   ground truth.
 - **Smooth motion from a slow feed.** The client advances each aircraft along its track
-  at ground speed at 20 fps and eases into each WebSocket update, so ~25 s server sweeps
-  still render as continuous movement.
+  at ground speed at 20 fps and eases into each WebSocket update, so ~25–40 s server
+  sweeps still render as continuous movement.
 - **Extensible by design.** A new ADS-B source is one `GridPollSource` subclass; a new
   schedule provider is one class implementing `route(flight_no, callsign)`.
 
@@ -194,7 +195,9 @@ black --check backend/app backend/tests
 ```
 
 The unit tests cover the classification, route-inference, source-normalisation and
-provider-parsing logic. CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs
+provider-parsing logic, the grid poller's rate-limit handling, the FIDS parsing and
+schedule-board merge, and the takeoff / landing detector (including the false positives
+found when replaying real tracks). CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs
 linting, formatting, tests and a Docker build on every push and pull request.
 
 ## Deployment
@@ -207,7 +210,7 @@ linting, formatting, tests and a Docker build on every push and pull request.
 
 ## Limitations
 
-- Coverage: ~200–250 aircraft tracked over India from the free ADS-B feeds (94 of them
+- Coverage: ~200–250 aircraft tracked over India from the free ADS-B feeds (93 of them
   identified domestic flights with a live position in the evening measurement), plus
   ~350–550 Delhi legs from FIDS in the display window (varies with time of day) — a board
   of roughly 400–560 versus ~2,800 domestic movements/day nationally. Live positions come
