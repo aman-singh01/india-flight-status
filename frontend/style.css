@@ -201,6 +201,12 @@ body {
 .mv-b { font-size: 11px; color: var(--muted); white-space: nowrap; }
 .mv-b.inferred { font-style: italic; opacity: 0.85; }
 .mv-empty { padding: 14px 16px; font-size: 12.5px; color: var(--muted); }
+.mv-more {
+  display: block; width: 100%; padding: 8px 16px; cursor: pointer; text-align: left;
+  color: var(--accent); background: none; border: none; border-bottom: 1px solid var(--border);
+  font: 600 12px/1 system-ui, sans-serif;
+}
+.mv-more:hover { background: rgba(56, 189, 248, 0.06); }
 
 @media (max-width: 640px) {
   .mv { grid-template-columns: 46px 16px 1fr; }

@@ -246,9 +246,9 @@ function renderBoard() {
         ? `<div class="bsub">${label} (${rows.length})</div>` + sortBoard(rows, sortMode).map(boardRow).join("")
         : "";
     listEl.innerHTML =
+      movementsHtml() +
       sec("&#8593; Departures", base.filter((f) => f.dep === scope.value)) +
-      sec("&#8595; Arrivals", base.filter((f) => f.arr === scope.value)) +
-      movementsHtml();
+      sec("&#8595; Arrivals", base.filter((f) => f.arr === scope.value));
     statusFallback = null;
   } else if (base.length) {
     listEl.innerHTML = sortBoard(base, sortMode).map(boardRow).join("");
@@ -325,12 +325,21 @@ function movementRow(m) {
   );
 }
 
+// shown first, newest few only: below a 400-row Delhi board nobody would scroll to find it
+let mvExpanded = false;
+const MV_PREVIEW = 6;
+
 function movementsHtml() {
   if (scope.kind !== "airport" || movements.iata !== scope.value) return "";
-  const head = `<div class="bsub">&#128225; Seen on ADS-B &middot; last 6 h (${movements.rows.length})</div>`;
-  if (!movements.rows.length)
+  const rows = movements.rows;
+  const head = `<div class="bsub">&#128225; Seen on ADS-B &middot; last 6 h (${rows.length})</div>`;
+  if (!rows.length)
     return head + `<div class="mv-empty">No takeoffs or landings heard at ${scope.value} since this server started watching.</div>`;
-  return head + movements.rows.map(movementRow).join("");
+  const more =
+    rows.length > MV_PREVIEW
+      ? `<button class="mv-more" data-mvmore>${mvExpanded ? "show fewer" : "show all " + rows.length}</button>`
+      : "";
+  return head + (mvExpanded ? rows : rows.slice(0, MV_PREVIEW)).map(movementRow).join("") + more;
 }
 
 function updateBoardAge() {
@@ -359,6 +368,11 @@ function renderFallback(d) {
 el("board-filter").addEventListener("input", renderBoard);
 el("board-sort").addEventListener("change", renderBoard);
 el("board-list").addEventListener("click", (e) => {
+  if (e.target.closest("[data-mvmore]")) {
+    mvExpanded = !mvExpanded;
+    renderBoard();
+    return;
+  }
   const apEl = e.target.closest("[data-ap]");
   if (apEl) {
     location.hash = "#airport/" + apEl.dataset.ap;
