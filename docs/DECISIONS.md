@@ -207,7 +207,11 @@ client.
 *Correction.* I first described BOM/BLR/HYD/COK as blocking only *datacenter* IPs,
 implying a home connection would get through. That was an inference, not a test:
 every probe had in fact been made from a home machine, and they still failed (HYD
-503, Adani DNS refused, COK a Radware CAPTCHA). The walls are bot-fingerprinting, so
-plain `urllib` stubs probably won't pass even at home — those airports likely need a
-real browser session. The ingest path is the plumbing for that; the scrapers are
-unwritten and unverified.
+503, Adani DNS refused, COK a Radware CAPTCHA). Looking at Bengaluru in a browser
+showed why: the page loads its board from a gateway that answers only requests
+claiming to come from the airport's own site (`HTTP 500 Unknown Origin` otherwise).
+Reaching that from a script means forging browser headers, and a scheduled headless
+browser is the same thing in a more elaborate form. I decided against both, and against
+solving the Cochin CAPTCHA. So the ingest path stays as plumbing for airports that
+publish openly (Delhi does) or agree to share a feed; the BOM/BLR/HYD/COK scrapers are
+deliberate stubs.

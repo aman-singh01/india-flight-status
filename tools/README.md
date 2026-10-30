@@ -1,14 +1,16 @@
 # `fids_push.py` — push scraped airport boards to the app
 
 The app scrapes **Delhi** itself (its `dial-api` is open). The other big airports
-(**BOM, BLR, HYD, COK**) sit behind Akamai / Radware / edge blocks.
+(**BOM, BLR, HYD, COK**) restrict their flight data to their own websites.
 
-> **Heads-up — unverified for those four.** Every probe of those sites was made from
-> a home machine and still failed (HYD 503, Adani DNS refused, COK a Radware
-> CAPTCHA), so they're bot-fingerprinting plain HTTP clients, not just datacenter
-> IPs. The `urllib` stubs below may not get through even at home; those airports
-> likely need a real browser session (e.g. Playwright driving your own Chrome
-> profile) feeding the same `push()`. Delhi works end to end today.
+> **Only Delhi is implemented, and the other four are deliberately left as stubs.**
+> Probed from a home connection, none of them serves its board to a plain HTTP client:
+> Hyderabad returns 503, Adani's host didn't resolve, Cochin shows a CAPTCHA, and
+> Bengaluru's flight API (`gateway.bengaluruairport.com`) answers only requests that
+> claim to come from its own pages (`HTTP 500 Unknown Origin`). Getting past that would
+> mean forging browser headers, automating a browser to look like a visitor, or solving
+> CAPTCHAs — this project does none of those. See [Adding an
+> airport](#3-adding-an-airport) for what is in scope.
 
 This script runs on your machine, scrapes boards, and POSTs the rows to the
 app's `POST /ingest/fids`, where they merge into the board exactly like the Delhi
@@ -64,15 +66,20 @@ python fids_push.py --once --airport DEL             # actually POST them
 
 Then check `GET /api/health` → `board.sources` should show `push:DEL`.
 
-## 3. Fill in the airports you want
+## 3. Adding an airport
 
-Each `scrape_*()` in `fids_push.py` for BOM/BLR/HYD/COK is a stub returning `[]`.
-To implement one:
+Each `scrape_*()` for BOM/BLR/HYD/COK is a stub returning `[]`. An airport belongs here
+when it publishes its board openly, as Delhi does — or when it has agreed to give you
+access. To check one:
 
-1. Open that airport's flight-status page in Chrome **on this machine**.
-2. DevTools → **Network** → filter **Fetch/XHR** → reload.
-3. Find the request that returns the departures / arrivals list as JSON.
-4. Reproduce it in the stub with `urllib` and map its fields to:
+1. Open its flight-status page in Chrome and read its terms of use.
+2. DevTools → **Network** → filter **Fetch/XHR** → reload, and find the request that
+   returns the departures / arrivals list as JSON.
+3. Call that URL with `urllib` and an honest `User-Agent` — no borrowed `Origin`,
+   `Referer` or browser identity.
+4. If it answers, map its fields to the shape below. If it refuses (403, a CAPTCHA,
+   `Unknown Origin`), stop: ask the airport for a data feed instead.
+
    `{"flight_no", "airline"?, "direction": "departure"|"arrival", "other"?,
      "sched_time": "HH:MM", "sched_date"? "YYYY-MM-DD", "status"?, "gate"?, "terminal"?}`
 
@@ -81,9 +88,13 @@ To implement one:
 ## 4. Run it continuously
 
 ```bash
-export AIRPORTS=BOM,BLR,HYD
+export AIRPORTS=DEL            # the airports you have implemented
 python fids_push.py            # loops every INTERVAL seconds (default 180)
 ```
+
+The built-in default list (`BOM,BLR,HYD`) is stubs, which push nothing until
+implemented, so set `AIRPORTS` explicitly. (The app already scrapes Delhi itself; pushing `DEL` too is
+only useful for testing the pipeline.)
 
 **Windows** — Task Scheduler → Create Task → Trigger "At log on" → Action:
 `python.exe C:\path\to\tools\fids_push.py`, "Start in" = the `tools` folder, and

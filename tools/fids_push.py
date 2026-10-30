@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Scrape airport FIDS boards and push them to India Flight Status.
 
-The app can't scrape the big airports (BOM / BLR / HYD / COK) from its own host:
-their sites block bots. Run this elsewhere and it POSTs rows to `/ingest/fids`,
-where they merge into the board just like the built-in Delhi feed. Only Delhi's
-scraper is real; the other four are stubs, and plain-HTTP versions of them may well
-be blocked even from a home connection (see tools/README.md).
+The app scrapes Delhi itself; the other big airports (BOM / BLR / HYD / COK) don't
+serve their boards to plain clients. Run this elsewhere and it POSTs rows to
+`/ingest/fids`, where they merge into the board just like the built-in Delhi feed.
+Only Delhi's scraper is real; the other four are deliberate stubs -- this project
+doesn't forge browser headers or solve CAPTCHAs to get past them (see tools/README.md).
 
 Zero dependencies -- standard library only.
 
@@ -79,32 +79,29 @@ def scrape_del() -> list[dict]:
 
 
 def scrape_bom() -> list[dict]:
-    """Mumbai (csmia.adani.com). UNVERIFIED -- the host didn't resolve in my probes.
-
-    1. Open the current CSMIA flight-status page in Chrome.
-    2. DevTools -> Network -> filter XHR/Fetch; find the request returning the list.
-    3. If it only works with the page's cookies/JS, drive a real browser instead of
-       urllib (e.g. Playwright with your own Chrome profile), and keep the dict shape.
-    """
+    """Mumbai (csmia.adani.com). Not implemented: the host didn't resolve in my probes
+    and Adani's airport sites turn away plain clients. Add it only if the airport
+    serves its board openly or has agreed to give you access (see tools/README.md)."""
     return []
 
 
 def scrape_blr() -> list[dict]:
-    """Bengaluru (bengaluruairport.com). React SPA behind Akamai Bot Manager -- the
-    flight-list XHR needs a JS-generated sensor cookie, so plain urllib will be
-    refused; this one needs a real browser session. UNVERIFIED."""
+    """Bengaluru. Not implemented, on purpose: the flight-information API
+    (gateway.bengaluruairport.com) only answers requests claiming to come from the
+    airport's own pages ("Unknown Origin"), so a script could use it only by forging
+    headers, which this project doesn't do."""
     return []
 
 
 def scrape_hyd() -> list[dict]:
-    """Hyderabad (hyderabad.aero). Returned 503 to every plain-HTTP probe, including
-    from a home connection -- likely needs a real browser session. UNVERIFIED."""
+    """Hyderabad (hyderabad.aero). Not implemented: returned 503 to every plain-HTTP
+    probe, including from a home connection."""
     return []
 
 
 def scrape_cok() -> list[dict]:
-    """Cochin (cial.aero). Radware CAPTCHA, even from a home connection -- likely
-    needs a real browser session; find the FIDS endpoint via DevTools. UNVERIFIED."""
+    """Cochin (cial.aero). Not implemented: serves a CAPTCHA, which this project
+    won't solve."""
     return []
 
 
