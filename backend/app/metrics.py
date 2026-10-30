@@ -13,6 +13,9 @@ ws_clients = Gauge("tracker_ws_clients", "connected WebSocket clients")
 source_aircraft = Gauge(
     "tracker_source_aircraft", "aircraft returned by a source on its last sweep", ["source"]
 )
+movements_detected = Counter(
+    "tracker_movements_detected_total", "takeoffs / landings detected in the ADS-B stream", ["kind", "basis"]
+)
 
 
 def render() -> tuple[bytes, str]:

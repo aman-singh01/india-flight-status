@@ -6,7 +6,7 @@ import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, Header, HTTPException, Response, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Header, HTTPException, Query, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -17,6 +17,7 @@ from .domestic import _airlines, _airports
 from .fids.base import normalize_pushed
 from .ingest import feed_stats, run_ingest
 from .models import flight_dict
+from .movements import movement_log
 from .status import lookup as status_lookup
 from .store import store
 from .ws import manager, push_loop
@@ -99,6 +100,7 @@ async def health():
         "feeds": feed_stats(),
         "routes": route_db.stats(),
         "board": board.stats(),
+        "movements": movement_log.stats(),
     }
 
 
@@ -178,6 +180,27 @@ async def airport_board(code: str):
         "arrivals": arrs,
         "count": len(deps) + len(arrs),
     }
+
+
+@app.get("/api/airport/{code}/movements", response_model=schemas.AirportMovements, tags=["flights"])
+async def airport_movements(
+    code: str,
+    hours: float = Query(6.0, gt=0, le=24, description="look-back window; capped by MOVEMENTS_KEEP_HOURS"),
+    limit: int = Query(100, ge=1, le=500),
+):
+    """Takeoffs and landings actually seen at one airport in the live ADS-B stream, newest first.
+
+    Each carries a `basis` and a `confidence`: "observed" movements were seen happen
+    (takeoff, touchdown); "inferred" ones are where coverage ended mid-climb or on final
+    approach. In memory, so it covers only what this instance has watched since it
+    started, and only where a receiver can hear aircraft low down.
+    """
+    iata = code.strip().upper()
+    ap = _AIRPORT_BY_IATA.get(iata)
+    if ap is None:
+        raise HTTPException(status_code=404, detail=f"unknown airport {iata!r}")
+    rows = movement_log.recent(iata, hours, limit)
+    return {"airport": ap, "hours": hours, "count": len(rows), "movements": rows}
 
 
 @app.get("/api/airlines", response_model=dict[str, schemas.AirlineInfo], tags=["reference"])

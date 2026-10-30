@@ -239,6 +239,7 @@ function renderBoard() {
   if (scope.kind === "flight" && base.length === 1) boardExpanded.add(base[0].hex);
 
   const keep = listEl.scrollTop;
+  loadMovements();
   if (scope.kind === "airport" && base.length) {
     const sec = (label, rows) =>
       rows.length
@@ -246,7 +247,8 @@ function renderBoard() {
         : "";
     listEl.innerHTML =
       sec("&#8593; Departures", base.filter((f) => f.dep === scope.value)) +
-      sec("&#8595; Arrivals", base.filter((f) => f.arr === scope.value));
+      sec("&#8595; Arrivals", base.filter((f) => f.arr === scope.value)) +
+      movementsHtml();
     statusFallback = null;
   } else if (base.length) {
     listEl.innerHTML = sortBoard(base, sortMode).map(boardRow).join("");
@@ -269,11 +271,66 @@ function renderBoard() {
     const lk = el("board-lookup");
     if (lk) lk.addEventListener("click", () => lookupOne(q));
   } else if (scope.kind === "airport") {
-    listEl.innerHTML = `<div class="board-empty">No flights to or from ${scope.value} in coverage right now.</div>`;
+    listEl.innerHTML =
+      `<div class="board-empty">No flights to or from ${scope.value} in coverage right now.</div>` +
+      movementsHtml();
   } else {
     listEl.innerHTML = `<div class="board-empty">Waiting for the feed…</div>`;
   }
   listEl.scrollTop = keep;
+}
+
+// ---- takeoffs / landings the ADS-B feed actually showed at the scoped airport ----
+let movements = { iata: "", at: 0, rows: [], busy: false };
+const MV_HOW = {
+  takeoff: "took off",
+  "climb-out": "first heard climbing out",
+  touchdown: "landed",
+  "lost-on-approach": "last heard on final approach",
+};
+const escHtml = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+function loadMovements() {
+  if (scope.kind !== "airport") return;
+  const iata = scope.value;
+  if (movements.busy || (movements.iata === iata && Date.now() - movements.at < 45000)) return;
+  movements.busy = true;
+  fetch(`/api/airport/${iata}/movements?hours=6`)
+    .then((r) => (r.ok ? r.json() : { movements: [] }))
+    .catch(() => ({ movements: [] }))
+    .then((j) => {
+      movements = { iata, at: Date.now(), rows: j.movements || [], busy: false };
+      if (scope.kind === "airport" && scope.value === iata) renderBoard();
+    });
+}
+
+function movementRow(m) {
+  const t = new Date(m.ts * 1000).toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Kolkata",
+  });
+  const dep = m.kind === "departure";
+  const who = escHtml([m.flight_no || m.callsign || m.hex, m.airline].filter(Boolean).join(" · "));
+  const other = m.other
+    ? ` ${dep ? "to" : "from"} <span class="apx" data-ap="${escHtml(m.other)}">${escHtml(m.other)}</span>`
+    : "";
+  return (
+    `<div class="mv"><span class="mv-t mono">${t}</span>` +
+    `<span class="mv-k ${dep ? "dep" : "arr"}">${dep ? "&#8593;" : "&#8595;"}</span>` +
+    `<span class="mv-f"><b>${who}</b>${other}</span>` +
+    `<span class="mv-b ${escHtml(m.confidence)}" title="${m.confidence === "observed" ? "seen happen" : "inferred: coverage ended"}">` +
+    `${MV_HOW[m.basis] || escHtml(m.basis)}</span></div>`
+  );
+}
+
+function movementsHtml() {
+  if (scope.kind !== "airport" || movements.iata !== scope.value) return "";
+  const head = `<div class="bsub">&#128225; Seen on ADS-B &middot; last 6 h (${movements.rows.length})</div>`;
+  if (!movements.rows.length)
+    return head + `<div class="mv-empty">No takeoffs or landings heard at ${scope.value} since this server started watching.</div>`;
+  return head + movements.rows.map(movementRow).join("");
 }
 
 function updateBoardAge() {

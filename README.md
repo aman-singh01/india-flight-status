@@ -25,7 +25,8 @@ the first request after an idle period takes ~40 s to wake.
 - **Airport boards & deep-links** - click any airport code in a route for that
   airport's board, split into departures and arrivals. Every view is a shareable URL:
   `#airport/DEL`, `#flight/6E2361`, `#map`. `GET /api/airport/{iata}` serves the same
-  split as JSON.
+  split as JSON. Below it, a **Seen on ADS-B** list shows the takeoffs and landings
+  actually heard at that airport in the last six hours, for any airport the feeds cover.
 - **Live map** - aircraft as heading-aligned silhouettes coloured by altitude, with
   dead-reckoned motion between updates and a trail for the selected flight.
 - **Historical playback** - a scrubber over persisted position history; replay any
@@ -107,6 +108,18 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
   [`tools/fids_push.py`](tools/) are the plumbing for pushing more airports from a
   scraper you run elsewhere (keyed per airport, expiring after a TTL) — the Delhi
   client works end to end; the other airports' scrapers are unwritten stubs.
+- **Observed movements, not just a schedule.** Each ingest cycle, [`movements.py`](backend/app/movements.py)
+  compares every domestic flight's new report with its last one and logs takeoffs and
+  landings per airport: on the ground then flying (*takeoff*), low and fast then on the
+  ground (*touchdown*), first heard already low and climbing (*climb-out*), or last heard
+  low and descending before coverage ended (*lost on approach*). Each event carries its
+  basis and whether it was `observed` or `inferred`. Two things the data forced:
+  "on the ground" is judged by speed as well as altitude, because a parked jet can read
+  ~350 ft on the standard altimeter setting; and arrivals vastly outnumber departures,
+  because receivers hear descending aircraft far better than climbing ones. Replayed over
+  16 hours of recorded tracks, 98 % of the lost-on-approach arrivals stayed down for the
+  next 15 minutes and 9 of 10 climb-outs kept climbing; that checks plausibility, not
+  ground truth.
 - **Smooth motion from a slow feed.** The client advances each aircraft along its track
   at ground speed at 20 fps and eases into each WebSocket update, so ~25 s server sweeps
   still render as continuous movement.
@@ -146,6 +159,7 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 | `FIDS_SOURCES` | `del` | Airport FIDS scrapers for the schedule board; only `del` implemented, empty to disable |
 | `POLL_INTERVAL` | `5` | WebSocket push interval (seconds) |
 | `STALE_TTL` | `210` | Drop an aircraft after this many seconds unseen |
+| `MOVEMENTS_KEEP_HOURS` | `12` | How long observed takeoffs / landings are kept (in memory) |
 | `PERSIST` / `DB_PATH` | `true` / `flights.db` | SQLite position history |
 | `SCHEDULE_PROVIDER` | _(none)_ | `aerodatabox` or `flightaware`; requires `SCHEDULE_API_KEY` |
 | `SCHEDULE_ALL` | `false` | Query the schedule API for every flight, not only unresolved ones |
@@ -158,6 +172,7 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 | `GET /api/flights` | Current domestic flights with route, phase and schedule |
 | `GET /api/flights/{hex}` | One flight with its position trail |
 | `GET /api/airport/{iata}` | One airport's board — departures and arrivals |
+| `GET /api/airport/{iata}/movements` | Takeoffs and landings seen on ADS-B there (`?hours=6&limit=100`), each marked observed or inferred |
 | `POST /ingest/fids` | Push an airport's FIDS rows (token-gated; see `tools/`) |
 | `GET /api/status/{ident}` | Live status by flight number, registration or hex |
 | `GET /api/history/span` &middot; `GET /api/history?at=` | Playback data range and a snapshot at time `at` |
@@ -201,6 +216,11 @@ linting, formatting, tests and a Docker build on every push and pull request.
   need a private `readsb` feeder, a paid aggregator, or an airport data agreement.
   ~4–5% of Delhi rows have a destination the bundled airport table can't map to an IATA
   code (shown by city name).
+- The movement log holds only what this instance has heard since it started (in memory,
+  12 h at most), so on a free host that sleeps it restarts empty. It shows what
+  receivers could hear: far more arrivals than departures, and almost nothing at
+  airports with no receiver nearby. It is a record of observations, not a complete
+  count of movements.
 - Scheduled times, gate and delay require a keyed schedule provider.
 - Air India files many domestic legs under opaque ATC callsigns (`AIC2CE`) that
   don't encode the marketed flight number. A FlightAware key resolves these

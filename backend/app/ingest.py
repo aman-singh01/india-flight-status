@@ -4,7 +4,7 @@ import asyncio
 import logging
 import time
 
-from . import db, metrics
+from . import db, metrics, movements
 from . import route as route_db
 from .config import settings
 from .domestic import airline_from_callsign, classify
@@ -68,6 +68,12 @@ async def _cycle(sources) -> None:
             # enqueue_schedule decides internally: route-gap fill, or (schedule_all)
             # every flight for scheduled times / gate / delay
             route_db.enqueue_schedule(t.callsign, t.klass.get("flight_no"))
+
+    try:  # a bug in the movement log must never take the ingest loop down with it
+        for ev in movements.movement_log.observe(store.all()):
+            metrics.movements_detected.labels(kind=ev["kind"], basis=ev["basis"]).inc()
+    except Exception:
+        log.exception("movement detection failed")
 
     if settings.persist:
         await db.write_positions(store.all())

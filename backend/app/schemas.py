@@ -94,6 +94,7 @@ class Health(BaseModel):
     feeds: dict[str, FeedStat] = {}
     routes: RouteStats
     board: BoardStats
+    movements: MovementStats | None = None
 
 
 class Airport(BaseModel):
@@ -115,6 +116,35 @@ class AirportBoard(BaseModel):
     departures: list[Flight]
     arrivals: list[Flight]
     count: int
+
+
+class Movement(BaseModel):
+    airport: str = Field(description="IATA code of the airport the movement happened at")
+    kind: str = Field(description='"departure" or "arrival"')
+    ts: int = Field(description="unix time the aircraft reported it")
+    basis: str = Field(description='"takeoff" | "touchdown" | "climb-out" | "lost-on-approach"')
+    confidence: str = Field(description='"observed" (seen happen) or "inferred" (coverage ended)')
+    hex: str
+    callsign: str | None = None
+    flight_no: str | None = None
+    airline: str | None = None
+    registration: str | None = None
+    type: str | None = None
+    other: str | None = Field(None, description="the route's other end (IATA), if known")
+    other_city: str | None = None
+
+
+class AirportMovements(BaseModel):
+    airport: Airport
+    hours: float
+    count: int
+    movements: list[Movement]
+
+
+class MovementStats(BaseModel):
+    events: int = Field(description="movements currently held in the log")
+    airports: int
+    watching: int = Field(description="domestic flights whose state is being tracked")
 
 
 class FidsFlightIn(BaseModel):

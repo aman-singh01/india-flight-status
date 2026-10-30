@@ -215,3 +215,48 @@ browser is the same thing in a more elaborate form. I decided against both, and 
 solving the Cochin CAPTCHA. So the ingest path stays as plumbing for airports that
 publish openly (Delhi does) or agree to share a feed; the BOM/BLR/HYD/COK scrapers are
 deliberate stubs.
+
+---
+
+## 9. Movements are detected from state changes, and labelled by how they were seen
+
+**Decision.** `movements.py` keeps the last report of every domestic flight and, each
+ingest cycle, compares it with the new one. A step from on-the-ground to flying near an
+airport is a *takeoff*; low and fast to on-the-ground is a *touchdown*. Because coverage
+near the ground is patchy, two weaker patterns also count, marked `inferred`: first heard
+already low and climbing close to an airport (*climb-out*), and last heard low and
+descending close to an airport before dropping out of the store (*lost-on-approach*).
+Events live in a bounded per-airport deque in memory, behind
+`GET /api/airport/{iata}/movements` and a "Seen on ADS-B" list on the airport view.
+
+**Why.** The schedule board (ADR 8) only exists for Delhi, and the live board only shows
+airborne aircraft. Takeoffs and landings are visible in data we already hold for every
+airport the feeds cover, with no new source and no scraping. Recording the *basis* keeps
+the log honest: an arrival inferred from a last sighting at 1,400 ft is not the same
+claim as a touchdown seen on the surface, and the interface says which is which.
+
+**What the data forced.** I replayed 16 hours of recorded tracks through the detector
+before shipping it, and it was wrong in two ways my synthetic tests had not caught:
+
+- *"Below 75 ft is on the ground" is false.* On a low-pressure day a sea-level airport
+  reads about +350 ft on the standard altimeter setting, so parked jets at Kolkata sat at
+  325–400 ft with no ground flag; when the flag later switched on, the detector logged a
+  landing. "On the ground" now also means slow (under 50 kt) and low, and an arrival must
+  have been at flying speed on its previous report. All nine disagreeing events in the
+  replay were this one cause.
+- *My replay was also wrong at first.* The history table repeats a position every 20 s
+  even when the aircraft hasn't been re-heard, so ground speed derived from it read zero
+  and inflated the counts several-fold. De-duplicating positions gave the real picture:
+  mostly inferred arrivals, few observed touchdowns.
+
+Checked against what each aircraft did in the next 15 minutes: 259 of 263
+lost-on-approach arrivals stayed down (130 later showed on the ground at that airport),
+9 of 10 climb-outs and 28 of 29 takeoffs kept climbing away. That tests plausibility, not
+ground truth — there is no authoritative movement list to compare against.
+
+**Cost.** It reports what receivers could hear, which is not what happened. Arrivals
+outnumber departures roughly seven to one in the replay, because descending aircraft stay
+audible at low level far longer than climbing ones; airports with no nearby receiver show
+almost nothing. State is in memory (ADR 1), so a restart — including a free host waking
+from sleep — empties it. Persisting it would be a small table in the existing SQLite file,
+worth doing the day a deployment has a disk that survives restarts.

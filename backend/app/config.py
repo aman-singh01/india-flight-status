@@ -58,5 +58,8 @@ class Settings(BaseSettings):
     fids_ingest_token: str = ""
     fids_push_ttl: float = 600.0  # seconds a pushed airport's rows survive without a refresh
 
+    # Observed takeoffs / landings (see movements.py); in memory, so a restart empties it.
+    movements_keep_hours: float = 12.0
+
 
 settings = Settings()
