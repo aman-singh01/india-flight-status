@@ -209,3 +209,123 @@ async def test_opensky_bad_credentials_backs_off(monkeypatch):
     assert [c[0] for c in http.calls] == ["post"]  # never reached the data API
     assert await src.fetch() == []
     assert len(http.calls) == 1  # and doesn't hammer the auth server
+
+
+# ---- Grid poll: Retry-After retry, oldest-first order ----
+
+
+class _GridHttp:
+    """Fake client for GridPollSource: per-cell response queues, records request order."""
+
+    def __init__(self, plan=None):
+        self.plan, self.order = plan or {}, []
+
+    async def get(self, url):
+        _, lat, lon, _dist = url.rsplit("/", 3)
+        cell = (int(lat), int(lon))
+        self.order.append(cell)
+        queue = self.plan.get(cell)
+        return queue.pop(0) if queue else _Resp(200, {"ac": []})
+
+    async def aclose(self):
+        pass
+
+
+def _aircraft(hexid):
+    return {"hex": hexid, "flight": "IGO1", "lat": 20.0, "lon": 78.0, "alt_baro": 30000}
+
+
+def _grid(monkeypatch, plan=None):
+    import types
+
+    from app.sources import base
+
+    sleeps: list[float] = []
+
+    async def fake_sleep(s):
+        sleeps.append(s)
+
+    monkeypatch.setattr(base, "asyncio", types.SimpleNamespace(sleep=fake_sleep))
+    src = base.GridPollSource()
+    src.url_template = "http://x/{lat}/{lon}/{dist}"
+    src._client = _GridHttp(plan)
+    return src, sleeps
+
+
+async def test_grid_honours_retry_after_and_recovers_the_cell(monkeypatch):
+    plan = {(20, 79): [_Resp(429, headers={"retry-after": "2"}), _Resp(200, {"ac": [_aircraft("aaa111")]})]}
+    src, sleeps = _grid(monkeypatch, plan)
+    out = await src.fetch()
+    assert [a["hex"] for a in out] == ["aaa111"]  # the retried cell's aircraft are kept
+    assert 2.25 in sleeps  # waited the Retry-After (+ margin) before retrying
+    assert src._client.order.count((20, 79)) == 2
+    assert "rate-limited" not in src.note and "1 recovered" in src.note
+
+
+async def test_grid_skips_cells_whose_retry_after_is_too_long(monkeypatch):
+    plan = {(20, 79): [_Resp(429, headers={"retry-after": "60"})]}
+    src, sleeps = _grid(monkeypatch, plan)
+    assert await src.fetch() == []
+    assert src._client.order.count((20, 79)) == 1  # not retried: would stall the sweep
+    assert max(sleeps) == src.spacing
+    assert "1/12 cells rate-limited" in src.note
+
+
+async def test_grid_caps_total_time_spent_waiting(monkeypatch):
+    plan = {
+        c: [_Resp(429, headers={"retry-after": "3"}), _Resp(429, headers={"retry-after": "3"})]
+        for c in [(12, 73), (12, 79)]
+    }
+    src, _ = _grid(monkeypatch, plan)
+    src.retry_budget = 5.0  # room for one 3 s wait, not two
+    await src.fetch()
+    retried = [c for c in plan if src._client.order.count(c) == 2]
+    assert len(retried) == 1
+    assert "2/12 cells rate-limited" in src.note  # neither recovered (both retries 429'd again)
+
+
+async def test_grid_serves_the_longest_waiting_cell_first(monkeypatch):
+    import time
+
+    src, _ = _grid(monkeypatch)
+    from app.sources.base import GRID
+
+    starved = (28, 91)
+    src._last_ok = {c: time.time() for c in GRID if c != starved}  # everything else was just served
+    await src.fetch()
+    assert src._client.order[0] == starved
+    assert starved in src._last_ok  # and a successful fetch is remembered
+
+
+def test_retry_wait_falls_back_when_header_is_missing_or_a_date():
+    from app.sources.base import _retry_wait
+
+    assert _retry_wait(_Resp(429, headers={"retry-after": "5"}), 3.0) == 5.0
+    assert _retry_wait(_Resp(429), 3.0) == 3.0
+    assert _retry_wait(_Resp(429, headers={"retry-after": "Wed, 21 Oct 2026 07:28:00 GMT"}), 3.0) == 3.0
+
+
+async def test_grid_defers_quiet_cells_but_never_busy_ones(monkeypatch):
+    import time
+
+    src, _ = _grid(monkeypatch)
+    now = time.time()
+    quiet, busy = (12, 91), (12, 79)
+    src._last_ok = {quiet: now - 20, busy: now - 20}  # both served 20 s ago
+    src._last_n = {quiet: 0, busy: 40}
+    await src.fetch()
+    assert quiet not in src._client.order  # thin answer, recent -> skip this sweep
+    assert busy in src._client.order  # busy cells are polled every sweep
+    assert "1 quiet cells deferred" in src.note
+
+
+async def test_grid_repolls_a_quiet_cell_once_its_answer_is_old(monkeypatch):
+    import time
+
+    src, _ = _grid(monkeypatch)
+    quiet = (12, 91)
+    src._last_ok = {quiet: time.time() - src.quiet_period - 1}
+    src._last_n = {quiet: 0}
+    await src.fetch()
+    assert quiet in src._client.order
+    assert "deferred" not in src.note

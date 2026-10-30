@@ -38,8 +38,21 @@ would throw away B's unique aircraft. Union + dedup keeps whatever any source ca
 see, and adding a feeder later just increases coverage with no code change.
 
 **Cost.** More outbound requests per cycle, and a slow/failing source can drag a
-cycle out. Mitigated by per-source request spacing and treating a failed grid cell
-as "skip this sweep", not "retry into the wall".
+cycle out. Mitigated by per-source request spacing and a bounded response to
+rate-limiting (below), rather than "retry into the wall".
+
+**Update — working with the limiter, not against it.** `adsb.lol` allows roughly ten
+requests per window and the grid is twelve cells, so the original "skip a 429 and
+move on" lost a couple of cells every sweep — and with a random cell order it could
+be the same busy cells repeatedly. Measured: its 429s carry `Retry-After` of 1–5 s,
+which we ignored. Now a limited cell is retried once after the stated wait (capped at
+10 s each, 30 s per sweep, so a sweep can't outgrow `STALE_TTL`); cells are served
+longest-waiting first; and a cell whose last answer was thin (≤5 aircraft — the
+Andaman Sea, the Himalaya) is re-polled only every ~110 s, since its aircraft outlive
+that anyway. Locally that took a sweep from ~39 s with 1–2 cells lost to ~25 s with
+none lost. Cells are deferred by *observed yield*, not deleted by geography — a
+one-snapshot measurement said (28°N, 73°E) added nothing unique, but it is the only
+cell covering Amritsar.
 
 ---
 

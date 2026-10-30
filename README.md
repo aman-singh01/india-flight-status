@@ -77,7 +77,8 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
 ## Implementation notes
 
 - **Resilient, multi-network ingestion.** `adsb.lol` / `adsb.fi` are polled over a
-  shuffled 12-point grid (~1 request / 3 s, rate-limited cells skipped not retried);
+  12-point grid (~1 request / 3 s; a `429` is retried once after its `Retry-After`,
+  thin cells are polled every other sweep, longest-waiting cells go first);
   `OpenSky` is a single bounding-box call against a different feeder network with MLAT,
   which roughly doubled the flights seen when run locally (the Render deploy can't reach
   OpenSky, so it runs on `adsb.lol` / `adsb.fi` alone). Sources are merged and deduplicated by ICAO
