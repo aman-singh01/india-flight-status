@@ -79,7 +79,8 @@ Design rationale and trade-offs are recorded in [`docs/DECISIONS.md`](docs/DECIS
 - **Resilient, multi-network ingestion.** `adsb.lol` / `adsb.fi` are polled over a
   shuffled 12-point grid (~1 request / 3 s, rate-limited cells skipped not retried);
   `OpenSky` is a single bounding-box call against a different feeder network with MLAT,
-  which roughly doubles the flights seen. Sources are merged and deduplicated by ICAO
+  which roughly doubled the flights seen when run locally (the Render deploy can't reach
+  OpenSky, so it runs on `adsb.lol` / `adsb.fi` alone). Sources are merged and deduplicated by ICAO
   24-bit address, and aircraft are retained for `STALE_TTL` seconds so a starved sweep
   doesn't drop them.
 - **Route resolution with a shipped seed.** A snapshot of ~1,000 resolved routes
@@ -140,7 +141,7 @@ Set in `backend/.env`; see [`.env.example`](backend/.env.example) for the full l
 | Variable | Default | Purpose |
 |---|---|---|
 | `SOURCES` | `adsblol,adsbfi,opensky` | Comma-separated ingest sources, merged: `adsblol`, `adsbfi`, `opensky`, `demo`, `readsb:<url>` |
-| `OPENSKY_CLIENT_ID` / `OPENSKY_CLIENT_SECRET` | _(none)_ | OpenSky OAuth2 client (free account). Without it the source is anonymous: 400 credits/day *per IP*, which a shared host exhausts — set these on any hosted deploy |
+| `OPENSKY_CLIENT_ID` / `OPENSKY_CLIENT_SECRET` | _(none)_ | OpenSky OAuth2 client (free account). Without it the source is anonymous: 400 credits/day *per IP*, which a shared host can exhaust. Some hosts (Render's included) can't reach OpenSky at all, so leave `opensky` out of `SOURCES` there |
 | `FIDS_SOURCES` | `del` | Airport FIDS scrapers for the schedule board; only `del` implemented, empty to disable |
 | `POLL_INTERVAL` | `5` | WebSocket push interval (seconds) |
 | `STALE_TTL` | `210` | Drop an aircraft after this many seconds unseen |

@@ -149,10 +149,13 @@ guessed at. Unit conversions (m→ft, m/s→kt/fpm) are covered by a normaliser 
 
 *What the diagnostics then showed.* On the Render deploy the anonymous call doesn't
 get as far as a quota error — it fails with `ConnectTimeout`, i.e. OpenSky isn't
-accepting connections from that host at all. Credentials may not fix that (untested:
-the OAuth client needs an OpenSky account I can't create). Connect failures now back
-off for two minutes instead of retrying every cycle, since sources are polled one
-after another and a dead connect would otherwise stall the whole ingest loop.
+accepting connections from that host at all. Credentials don't fix that: with an
+OAuth client configured the failure just moves to the token request
+(`auth.opensky-network.org` also times out), so the host is unreachable on both
+endpoints. Connect failures now back off for two minutes instead of retrying every
+cycle, since sources are polled one after another and a dead connect would otherwise
+stall the whole ingest loop. On such a host `opensky` should be dropped from
+`SOURCES`; it works from a home connection.
 
 ---
 
