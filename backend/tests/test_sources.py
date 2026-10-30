@@ -185,6 +185,22 @@ async def test_opensky_429_honours_retry_after_and_drops_stale(monkeypatch):
     assert len(http.calls) == n
 
 
+async def test_opensky_connect_failure_backs_off(monkeypatch):
+    import httpx
+
+    class _Dead(_FakeHttp):
+        async def get(self, url, params=None, headers=None):
+            self.calls.append(("get", headers or {}))
+            raise httpx.ConnectTimeout("no route")
+
+    http = _Dead()
+    src = _opensky(monkeypatch, creds=False, http=http)
+    assert await src.fetch() == []
+    assert "ConnectTimeout" in src.note
+    assert await src.fetch() == []
+    assert len(http.calls) == 1  # no retry next cycle -- it would stall the whole ingest loop
+
+
 async def test_opensky_bad_credentials_backs_off(monkeypatch):
     http = _FakeHttp(posts=[_Resp(401, {"error": "invalid_client"})])
     src = _opensky(monkeypatch, creds=True, http=http)

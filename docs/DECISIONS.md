@@ -147,6 +147,13 @@ server's `Retry-After` honoured on a 429, and `/api/health → feeds` reports ea
 source's last count and a one-line note, so a dead feed is visible rather than
 guessed at. Unit conversions (m→ft, m/s→kt/fpm) are covered by a normaliser test.
 
+*What the diagnostics then showed.* On the Render deploy the anonymous call doesn't
+get as far as a quota error — it fails with `ConnectTimeout`, i.e. OpenSky isn't
+accepting connections from that host at all. Credentials may not fix that (untested:
+the OAuth client needs an OpenSky account I can't create). Connect failures now back
+off for two minutes instead of retrying every cycle, since sources are polled one
+after another and a dead connect would otherwise stall the whole ingest loop.
+
 ---
 
 ## 8. A schedule board from Delhi FIDS, unioned with the feed

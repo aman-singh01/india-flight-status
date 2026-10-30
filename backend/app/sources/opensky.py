@@ -16,6 +16,7 @@ _MS_TO_FPM = 196.850
 
 
 _TOKEN_URL = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
+_NET_BACKOFF = 120.0  # seconds to wait after a connect/transport failure
 
 
 class OpenSkySource(Source):
@@ -38,7 +39,7 @@ class OpenSkySource(Source):
     _URL = "https://opensky-network.org/api/states/all"
 
     def __init__(self) -> None:
-        self._client = httpx.AsyncClient(timeout=25.0)
+        self._client = httpx.AsyncClient(timeout=httpx.Timeout(25.0, connect=6.0))
         self._cid = settings.opensky_client_id
         self._secret = settings.opensky_client_secret
         self._authed = bool(self._cid and self._secret)
@@ -69,6 +70,7 @@ class OpenSkySource(Source):
             )
         except httpx.HTTPError as e:
             self.note = f"token request failed: {e.__class__.__name__}"
+            self._blocked_until = now + _NET_BACKOFF
             return None
         if r.status_code != 200:
             self.note = f"token rejected (HTTP {r.status_code}) - check OPENSKY_CLIENT_ID/SECRET"
@@ -98,7 +100,10 @@ class OpenSkySource(Source):
         try:
             r = await self._client.get(self._URL, params=params, headers=headers)
         except httpx.HTTPError as e:
+            # e.g. ConnectTimeout: some hosts can't reach OpenSky at all. Back off, or
+            # every ingest cycle (sources run one after another) stalls on the dead connect.
             self.note = f"network error: {e.__class__.__name__}"
+            self._blocked_until = now + _NET_BACKOFF
             return self._cached(now)
         self._last_call = now
 
